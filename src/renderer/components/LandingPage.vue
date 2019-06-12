@@ -1,6 +1,7 @@
 <template>
 <div id="window-top">
   <div class="header-bar-button">
+    
     <!-- <div class="buttons">
       <a class="btn closes" title="关闭" @click="clickItem('window-close')"></a>
       <a class="btn minimize" title="最小化" @click="clickItem('window-min')"></a>
