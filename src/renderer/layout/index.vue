@@ -34,6 +34,7 @@ export default {
 @import "@/assets/style/variables.scss";
 .app-wrapper {
     @include position(relative, 0, 0, 0, 0, 100%, 100%);
+    // -webkit-app-region: drag;
 }
 .sidebar-container {
     @include position(
@@ -57,7 +58,7 @@ export default {
         calc(100% - #{$sideBarWidth}),
         calc(100% - #{$navplayHeight})
     );
-    background: green;
+    // background: green;
 }
 .navbar-container {
     @include position(absolute, 0, 0, auto, auto, 100%, $navBarHeight);

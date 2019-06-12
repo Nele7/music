@@ -116,6 +116,7 @@ export default {};
                 padding: 10px 0;
                 font-size: 14px;
                 padding-left: 20px;
+                color: rgb(154,154,154)
             }
             .menu-text {
                 padding-left: 30px;
@@ -133,10 +134,10 @@ export default {};
                     color: rgb(179, 18, 18);
                 }
                 i {
-                    font-size: 18px;
+                    font-size: 19px;
                 }
                 span {
-                    font-size: 15px;
+                    font-size: 13px;
                     margin-left: 8px;
                 }
             }

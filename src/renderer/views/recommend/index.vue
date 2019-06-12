@@ -1,6 +1,6 @@
 <template>
     <div>
-recommend
+个性推荐12323wqe
     </div>
 </template>
 
