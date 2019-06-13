@@ -2,52 +2,136 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Layout = () => import('@/layout/index.vue')
-const recommend = () => import('@/views/recommend/index')
-const songList = () => import('@/views/songList/index')
-const radio = () => import('@/views/radio/index')
-const rank = () => import('@/views/rank/index')
-const singer = () => import('@/views/singer/index')
-const newMusic = () => import('@/views/newMusic/index')
+const recommend = () => import('@/views/discoverMusic/recommend/index')
+const songList = () => import('@/views/discoverMusic/songList/index')
+const radio = () => import('@/views/discoverMusic/radio/index')
+const rank = () => import('@/views/discoverMusic/rank/index')
+const singer = () => import('@/views/discoverMusic/singer/index')
+const newMusic = () => import('@/views/discoverMusic/newMusic/index')
 
+const fm = () => import('@/views/fm/index')
+
+const mv = () => import('@/views/mv/index')
+const video = () => import('@/views/video/index')
+
+const pal = () => import('@/views/pal/index')
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path:'/',
+      redirect:'/music/recommend'
+    },
+    {
+      path: '/music',
       name: 'Layout',
       component: Layout,
+      redirect: '/music/recommend',
+      
       children:[
+        {
+          path: '/',
+          redirect: 'recommend'
+        },
         {
           path: 'recommend',
           component: recommend,
-          name: 'recommend'
+          name: 'recommend',
+          meta:{
+            flag:true
+          },
         },
         {
           path: 'songList',
           component: songList,
-          name: 'songList'
+          name: 'songList',
+          meta:{
+            flag:true
+          },
         },
         {
           path: 'radio',
           component: radio,
-          name: 'radio'
+          name: 'radio',
+          meta:{
+            flag:true
+          },
         },
         {
           path: 'rank',
           component: rank,
-          name: 'rank'
+          name: 'rank',
+          meta:{
+            flag:true
+          },
         },
         {
           path: 'singer',
           component: singer,
-          name: 'singer'
+          name: 'singer',
+          meta:{
+            flag:true
+          },
         },
         {
           path: 'newMusic',
           component: newMusic,
-          name: 'newMusic'
+          name: 'newMusic',
+          meta:{
+            flag:true
+          },
         }
+      ]
+    },
+    {
+      path: '/fm',
+      name: 'Layout',
+      component: Layout,
+      redirect: '/fm/index',
+      children:[
+        {
+          path: 'index',
+          component: fm,
+          name: 'fm'
+        },
+      ]
+    },
+    {
+      path: '/mv',
+      name: 'Layout',
+      component: Layout,
+      redirect: '/mv/video',
+      children:[
+        {
+          path: 'video',
+          component: video,
+          name: 'video',
+          meta:{
+            show:true
+          }
+        },
+        {
+          path: 'index',
+          component: mv,
+          name: 'mv',
+          meta:{
+            show:true
+          }
+        },
+      ]
+    },
+    {
+      path: '/pal',
+      name: 'Layout',
+      component: Layout,
+      redirect: '/pal/index',
+      children:[
+        {
+          path: 'index',
+          component: pal,
+          name: 'pal'
+        },
       ]
     },
     {

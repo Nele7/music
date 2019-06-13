@@ -25,7 +25,7 @@ function createWindow () {
     // useContentSize: true,
     titleBarStyle: 'hidden',
     transparent: false,
-    frame: false,
+    // frame: false,
     // darkTheme: true,
     // backgroundColor: '#FFFFFFFF'
   })

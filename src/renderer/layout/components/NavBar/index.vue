@@ -2,23 +2,12 @@
   <div class="nav-wrapper">
     <div class="nav-arrows-area">
       <div class="nav-arrows-icon">
-        <i class="el-icon-arrow-left"></i>
-        <i class="el-icon-arrow-right"></i>
+        <i class="el-icon-arrow-left" @click="back"></i>
+        <i class="el-icon-arrow-right" @click="next"></i>
       </div>
     </div>
-    <div class="nav-text">
-      <div class="nav-text-area">
-        <!-- <div> -->
-        <router-link
-          v-for="(item,index) in router"
-          :key="index"
-          :to="item.path"
-          tag="div"
-        >{{item.name}}</router-link>
-        <!-- </div> -->
-      </div>
-      <div class="nav-null-content"></div>
-    </div>
+    <!-- tab栏 -->
+    <tab></tab>
     <div class="nav-search-area">
       <div class="nav-search">
         <i class="el-icon-search"></i>
@@ -35,20 +24,35 @@
 </template>
 
 <script>
+import Tab from './tab'
 export default {
   name: 'navbar',
+  components:{
+    Tab
+  },
   data() {
     return {
-      router: [
-        { path: '/recommend', name: '个性推荐' },
-        { path: '/songList', name: '歌单' },
-        { path: '/radio', name: '主播电台' },
-        { path: '/rank', name: '排行榜' },
-        { path: '/singer', name: '歌手' },
-        { path: '/newMusic', name: '最新音乐' },
-      ]
+      
     }
   },
+  mounted(){
+    
+  },
+  methods: {
+    back(){
+      if(history.length <= 1){ 
+        return
+      }
+      this.$router.go(-1)
+    },
+    next(){
+      console.log('前进了···')
+      this.$router.go(1)
+    }
+  },
+  watch:{
+    
+  }
 }
 </script>
 
@@ -58,7 +62,8 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  -webkit-app-region: drag;
+  // z-index: 999;
+  // -webkit-app-region: drag;
 }
 .nav-arrows-area {
   position: relative;
@@ -75,34 +80,45 @@ export default {
     justify-content: space-between;
     width: 50px;
     i {
+      flex: 1;
+      height: 50px;
+      line-height: 50px;
       font-size: 18px;
+      text-align: center;
       color: rgb(158, 158, 158);
       cursor: pointer;
     }
   }
 }
-.nav-text {
-  flex: 1;
-  display: flex;
+// .nav-text {
+//   flex: 1;
+//   display: flex;
 
-  .nav-text-area {
-    width: 384px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    font-size: 14px;
-    color: #969696;
-    cursor: pointer;
-    .textActive {
-      color: #000;
-      font-weight: bold;
-    }
-  }
-  .nav-null-content {
-    flex: 1;
-  }
-}
+//   .nav-text-area {
+//     width: 384px;
+//     display: flex;
+//     justify-content: space-around;
+//     align-items: center;
+//     padding: 0 20px;
+//     font-size: 14px;
+//     color: #969696;
+//     cursor: pointer;
+//     & > div {
+//       height: 50;
+//       line-height: 50px;
+//       &:hover{
+//         color: #000;
+//       }
+//     }
+//     .router-link-active {
+//       color: #000;
+//       font-weight: bold;
+//     }
+//   }
+//   .nav-null-content {
+//     flex: 1;
+//   }
+// }
 
 .nav-search-area {
   flex: 0 0 180px;
@@ -138,6 +154,10 @@ export default {
   justify-content: space-around;
   cursor: pointer;
   i {
+    flex: 1;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
     font-size: 17px;
     color: rgb(138, 138, 138);
   }

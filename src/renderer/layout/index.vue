@@ -13,18 +13,25 @@
         <div class="player-container">
             <player/>
         </div>
+        <login-dialog></login-dialog>
     </div>
 </template>
 
 <script>
-import { Sidebar, Navbar, AppMain, Player } from "./components";
+import { Sidebar, Navbar, AppMain, Player, LoginDialog } from "./components";
 export default {
     name: "Layout",
     components: {
         Sidebar,
         AppMain,
         Navbar,
-        Player
+        Player,
+        LoginDialog
+    },
+    mounted(){
+    },
+    watch:{
+        
     }
 };
 </script>
