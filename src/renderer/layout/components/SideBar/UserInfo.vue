@@ -4,7 +4,7 @@
         <div class="head-photo">
             <i class="iconfont icon-touxiang"></i>
         </div>
-        <div class="name" @click="showLogin = true">
+        <div class="name" @click="openLogin">
             <span>未登录</span>
             <i class="el-icon-arrow-right"></i>
         </div>
@@ -21,10 +21,12 @@
             }
         },
         mounted(){
-            console.log(this.$store.state.Counter.main)
         },
         methods: {
-            
+            openLogin(){
+                console.log(this.$store)
+                // this.$store.commit('login/setLoginDialogStatus',true)
+            }
         },
     }
 </script>

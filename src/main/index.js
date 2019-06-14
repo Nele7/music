@@ -40,6 +40,8 @@ function createWindow () {
 
 app.on('ready', () => {
   mainWindow = createWindow()
+  // 引入vue-devtools
+  BrowserWindow.addDevToolsExtension("static/devtools")
   command(mainWindow)
 })
 

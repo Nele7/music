@@ -13,7 +13,7 @@
         <div class="player-container">
             <player/>
         </div>
-        <login-dialog></login-dialog>
+        <login-dialog class="login-dialog-container" v-if="loginVisible"></login-dialog>
     </div>
 </template>
 
@@ -29,6 +29,14 @@ export default {
         LoginDialog
     },
     mounted(){
+    },
+    computed:{
+        // 登录模态框状态
+        loginVisible(){
+            return this.$store.state.login.loginDialogVisible
+        }
+    },
+    methods: {
     },
     watch:{
         

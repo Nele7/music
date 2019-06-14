@@ -7,7 +7,6 @@ import modules from './modules'
 
 Vue.use(Vuex)
 
-console.log()
 // // 引入modules所有的文件，除去子文件夹下，并且都是以 .js 结尾的文件
 // const modulesFiles = require.context('./modules', false, /\.js$/)
 
