@@ -22,9 +22,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/variables.scss";
+
 .side-bar-wrapper {
     position: relative;
     height: 100%;
-    background: rgba(233, 233, 233, 0.575);
+    background: $background-grey;
 }
 </style>

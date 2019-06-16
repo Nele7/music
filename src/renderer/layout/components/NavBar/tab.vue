@@ -55,6 +55,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/variables.scss";
+
 .nav-text {
   flex: 1;
   display: flex;
@@ -66,17 +68,17 @@
     align-items: center;
     padding: 0 20px;
     font-size: 14px;
-    color: #969696;
+    color: $color-base-grey;
     cursor: pointer;
     & > div {
       height: 50;
       line-height: 50px;
       &:hover{
-        color: #000;
+        color: $color-base-red;
       }
     }
     .router-link-active {
-      color: #000;
+      color: $color-base-red;
       font-weight: bold;
     }
   }

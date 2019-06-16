@@ -24,14 +24,15 @@
         },
         methods: {
             openLogin(){
-                console.log(this.$store)
-                // this.$store.commit('login/setLoginDialogStatus',true)
+                this.$store.commit('setLoginDialogStatus',true)
             }
         },
     }
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/variables.scss";
+
 .user-info {
     display: flex;
     flex-direction: row;
@@ -46,7 +47,7 @@
     .name {
         margin-left: 10px;
         font-weight: bold;
-        color: rgba(94, 94, 94, 0.925);
+        color: $color-base-grey;
         cursor: pointer;
     }
 }

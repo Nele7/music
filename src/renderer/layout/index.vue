@@ -7,13 +7,17 @@
             <navbar/>
         </div>
         <div class="main-container">
-            <router-view></router-view>
+            <transition name="fade-transform" mode="out-in">
+                <router-view></router-view>
+            </transition>
             <!-- <app-main/> -->
         </div>
         <div class="player-container">
             <player/>
         </div>
-        <login-dialog class="login-dialog-container" v-if="loginVisible"></login-dialog>
+        <transition name="slide-top">
+            <login-dialog class="login-dialog-container" v-if="loginVisible"></login-dialog>
+        </transition>
     </div>
 </template>
 
@@ -47,6 +51,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/style/mixin.scss";
 @import "@/assets/style/variables.scss";
+@import "@/assets/style/transition.scss";
 .app-wrapper {
     @include position(relative, 0, 0, 0, 0, 100%, 100%);
     // -webkit-app-region: drag;
@@ -73,6 +78,8 @@ export default {
         calc(100% - #{$sideBarWidth}),
         calc(100% - #{$navplayHeight})
     );
+    padding: 20px;
+    box-sizing: border-box;
     // background: green;
 }
 .navbar-container {

@@ -57,6 +57,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/variables.scss";
+
 .nav-wrapper {
   position: relative;
   width: 100%;
@@ -71,7 +73,7 @@ export default {
   height: 100%;
   display: flex;
   align-items: center;
-  background: rgba(243, 243, 243, 0.26);
+  background: $background-nav-arrows;
 
   .nav-arrows-icon {
     position: absolute;
@@ -85,40 +87,11 @@ export default {
       line-height: 50px;
       font-size: 18px;
       text-align: center;
-      color: rgb(158, 158, 158);
+      color: $color-base-grey;
       cursor: pointer;
     }
   }
 }
-// .nav-text {
-//   flex: 1;
-//   display: flex;
-
-//   .nav-text-area {
-//     width: 384px;
-//     display: flex;
-//     justify-content: space-around;
-//     align-items: center;
-//     padding: 0 20px;
-//     font-size: 14px;
-//     color: #969696;
-//     cursor: pointer;
-//     & > div {
-//       height: 50;
-//       line-height: 50px;
-//       &:hover{
-//         color: #000;
-//       }
-//     }
-//     .router-link-active {
-//       color: #000;
-//       font-weight: bold;
-//     }
-//   }
-//   .nav-null-content {
-//     flex: 1;
-//   }
-// }
 
 .nav-search-area {
   flex: 0 0 180px;
@@ -132,13 +105,13 @@ export default {
     i {
       position: absolute;
       left: 5px;
-      color: #969696 !important;
+      color: $color-base-grey !important;
     }
     input {
       outline: none;
       border: 0;
       color: rgb(66, 66, 66);
-      background-color: rgba(151, 150, 150, 0.199);
+      background-color: $background-grey;
       padding: 0 23px;
       border-radius: 20px;
       height: 25px;
@@ -158,17 +131,8 @@ export default {
     height: 50px;
     line-height: 50px;
     text-align: center;
-    font-size: 17px;
-    color: rgb(138, 138, 138);
+    font-size: $font-size-iconfont;
+    color: $color-base-grey;
   }
-}
-// placeholder css
-::-webkit-input-placeholder {
-  /* WebKit browsers */
-  color: #999;
-  font-size: 13px;
-}
-input:focus::-webkit-input-placeholder {
-  color: transparent;
 }
 </style>

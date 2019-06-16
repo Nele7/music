@@ -2,28 +2,4 @@
 @import './mixin.scss';
 @import './transition.scss';
 // @import './sidebar.scss';
-// @import './common.scss';
-body {
-    height: 100%;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-    user-select: none;
-}
-
-label {
-    font-weight: 700;
-}
-
-html {
-    height: 100%;
-    box-sizing: border-box;
-}
-
-#app {
-    height: 100%;
-}
-.scrollbar-wrapper {
-    overflow-x: hidden !important;
-}
+@import './common.scss';

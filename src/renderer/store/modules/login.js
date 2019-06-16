@@ -5,7 +5,7 @@ const state = {
 const mutations = {
   setLoginDialogStatus (state,flag) {
     state.loginDialogVisible = flag
-  },
+  }
  
 }
 

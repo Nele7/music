@@ -76,11 +76,13 @@
 
 <style lang="scss" scoped>
 @import "@/assets/style/mixin.scss";
+@import "@/assets/style/variables.scss";
+
 .menu-item {
     .menu-title {
         padding: 10px 20px;
         font-size: 14px;
-        color: rgb(154,154,154);
+        color: $color-menu-title;
     }
     .menu-text {
         padding: 0 30px;
@@ -90,18 +92,18 @@
         line-height: 30px;
         cursor: pointer;
         &.router-link-active {
-            background: rgba(223, 223, 223, 0.555);
-            color: rgb(179, 18, 18);
+            background: $background-active;
+            color: $color-base-red;
         }
         &:hover{
-            background: rgba(223, 223, 223, 0.555);
-            color: rgb(179, 18, 18);
+            background: $background-active;
+            color: $color-base-red;
         }
         i {
-            font-size: 19px;
+            font-size: $font-size-iconfont;
         }
         span {
-            font-size: 13px;
+            font-size: $font-size-text-small;
             margin-left: 8px;
             @include ellipsized;
         }
