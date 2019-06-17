@@ -47,7 +47,7 @@ export default {
     },
     methods: {
         closeLoginDialog() {
-            this.$store.commit(types.TOGGLE_LOGIN_DIALOG, false);
+            this.$store.commit(types.TOGGLE_LOGIN_DIALOG, false)
         },
         dologin() {
             // let from = {
@@ -55,28 +55,28 @@ export default {
             //     password:'wfg931124'
             // }
             if (this.logging) {
-                return;
+                return
             }
             if (!this.phone) {
-                this.errorMsg = "请输入手机号或邮箱";
-                return;
+                this.errorMsg = "请输入手机号或邮箱"
+                return
             }
             if (!this.password) {
-                this.errorMsg = "请输入密码";
-                return;
+                this.errorMsg = "请输入密码"
+                return
             }
-            let params = {};
-            params.password = this.password;
+            let params = {}
+            params.password = this.password
 
             if (isPhone(this.phone)) {
-                params.phone = this.phone;
-                this.$store.dispatch("dologinPhone", params);
+                params.phone = this.phone
+                this.$store.dispatch("dologinPhone", params)
             } else if (isEmail(this.phone)) {
-                params.email = this.phone;
-                this.$store.dispatch("dologinEmail", params);
+                params.email = this.phone
+                this.$store.dispatch("dologinEmail", params)
             }
-            this.phone = "";
-            this.password = "";
+            this.phone = ''
+            this.password = ''
         }
     }
 };
