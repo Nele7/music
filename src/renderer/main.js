@@ -12,10 +12,16 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI)
 
+import 'vue2-toast/lib/toast.css';
+import Toast from 'vue2-toast';
+Vue.use(Toast, {
+    type: 'center',
+    width: '150px'
+});
 
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-Vue.http = Vue.prototype.$http = axios
+// Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({

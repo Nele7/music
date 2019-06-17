@@ -9,4 +9,6 @@ const apiData = (url, type = 'get') => (params) => apiServer[type](url, params)
 export const neteaseApi = {
   phoneLogin: apiData('/login/cellphone'),     // 手机登录
   emailLogin: apiData('/login'),               // 邮箱登录
+  loginStatus: apiData('/login/status'),       // 登录状态             
+  
 }

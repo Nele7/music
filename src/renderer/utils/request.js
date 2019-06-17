@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {baseURL} from '../config/'
+import { baseURL } from '../config/'
 
 let instance = axios.create({
   baseURL,

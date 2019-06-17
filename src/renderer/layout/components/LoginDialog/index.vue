@@ -7,17 +7,22 @@
         <div class="login-input">
             <div class="login-tip">请使用网易云音乐账号进行登录</div>
             <div class="input-row-first">
-                <el-input v-model="username" placeholder="手机号/邮箱" @keyup.enter.native="login">
-                <i slot="prefix" class="el-input__icon iconfont icon-pengyou"></i>
+                <el-input v-model="phone" placeholder="手机号/邮箱" @keyup.enter.native="dologin">
+                    <i slot="prefix" class="el-input__icon iconfont icon-pengyou"></i>
                 </el-input>
             </div>
             <div>
-                <el-input v-model="password" type="password" placeholder="密码" @keyup.enter.native="login">
-                <i slot="prefix" class="el-input__icon el-icon-unlock"></i>
+                <el-input
+                    v-model="password"
+                    type="password"
+                    placeholder="密码"
+                    @keyup.enter.native="dologin"
+                >
+                    <i slot="prefix" class="el-input__icon el-icon-unlock"></i>
                 </el-input>
             </div>
             <div class="error">{{errorMsg}}</div>
-            <div class="button" >
+            <div class="button">
                 <button :class="{disabled: logging}" @click="dologin">立即登录</button>
             </div>
         </div>
@@ -25,48 +30,69 @@
 </template>
 
 <script>
-    import {neteaseApi} from '../../../api/'
-    import to from '@/utils/await-to.js'
-    export default {
-        name:'loginDialog',
-        data() {
-            return {
-                username: '',
-                password: '',
-                errorMsg:'',
-                logging:false
-            }
+import { neteaseApi } from "../../../api/";
+import to from "@/utils/await-to.js";
+import { isEmail, isPhone } from "@/utils/valitate.js";
+import * as types from "@/store/mutation_types";
+
+export default {
+    name: "loginDialog",
+    data() {
+        return {
+            phone: "",
+            password: "",
+            errorMsg: "",
+            logging: false
+        };
+    },
+    methods: {
+        closeLoginDialog() {
+            this.$store.commit(types.TOGGLE_LOGIN_DIALOG, false);
         },
-        methods: {
-            closeLoginDialog(){
-                this.$store.commit('setLoginDialogStatus',false)
-            },
-            async dologin() {
-                let [err, res] = await to(neteaseApi.phoneLogin({
-                    phone:18652737531,
-                    password:'wangyuhan1'
-                }))
-                if(err){
-                    console.log(err.response.data.msg)
-                    return 
-                }
-                
+        dologin() {
+            // let from = {
+            //     phone:15511396949,
+            //     password:'wfg931124'
+            // }
+            if (this.logging) {
+                return;
             }
-        },
+            if (!this.phone) {
+                this.errorMsg = "请输入手机号或邮箱";
+                return;
+            }
+            if (!this.password) {
+                this.errorMsg = "请输入密码";
+                return;
+            }
+            let params = {};
+            params.password = this.password;
+
+            if (isPhone(this.phone)) {
+                params.phone = this.phone;
+                this.$store.dispatch("dologinPhone", params);
+            } else if (isEmail(this.phone)) {
+                params.email = this.phone;
+                this.$store.dispatch("dologinEmail", params);
+            }
+            this.phone = "";
+            this.password = "";
+        }
     }
+};
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/style/variables.scss";
 @import "@/assets/style/mixin.scss";
-.login-dialog-wrapper{
+.login-dialog-wrapper {
     @include position(absolute, 0, 0, 0, 0, 300px, 350px);
     display: flex;
     flex-direction: column;
     z-index: 999;
     margin: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    .login-header{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+    .login-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -74,22 +100,22 @@
         height: 40px;
         border-bottom: 1px solid $color-border;
         line-height: 40px;
-        color:$color-base-red;
-        h3{
+        color: $color-base-red;
+        h3 {
             margin: 0;
             border-bottom: 2px solid $color-base-red;
             // font-family:'微软雅黑';
             font-weight: 500;
             font-size: $font-size-baseText;
         }
-        i{
+        i {
             cursor: pointer;
         }
     }
-    .login-input{
+    .login-input {
         flex: 1;
         padding: 40px 30px;
-        .login-tip{
+        .login-tip {
             color: $color-mark;
             font-size: $font-size-baseText;
             margin-bottom: 10px;
@@ -102,8 +128,9 @@
             margin: 10px 0 20px 0;
             text-align: right;
             color: $color-base-red;
+            font-size: 12px;
         }
-        .button{
+        .button {
             text-align: center;
             button {
                 padding: 10px 26px;
@@ -123,6 +150,5 @@
             }
         }
     }
-    
 }
 </style>

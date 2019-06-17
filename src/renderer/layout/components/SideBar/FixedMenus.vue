@@ -71,6 +71,14 @@
                 ]
             }
         },
+        mounted(){
+
+        },
+        methods: {
+            name() {
+                
+            }
+        },
     }
 </script>
 
