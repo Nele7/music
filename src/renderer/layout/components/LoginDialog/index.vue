@@ -47,7 +47,7 @@ export default {
     },
     methods: {
         closeLoginDialog() {
-            this.$store.commit(types.TOGGLE_LOGIN_DIALOG, false)
+            this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
         },
         dologin() {
             // let from = {
@@ -70,10 +70,16 @@ export default {
 
             if (isPhone(this.phone)) {
                 params.phone = this.phone
-                this.$store.dispatch("dologinPhone", params)
+                this.$store.dispatch('login/dologinPhone', params).then(res => {
+                    this.$toast(res)
+                    this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
+                })
             } else if (isEmail(this.phone)) {
                 params.email = this.phone
-                this.$store.dispatch("dologinEmail", params)
+                this.$store.dispatch('login/dologinEmail', params).then(res => {
+                    this.$toast(res)
+                    this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
+                })
             }
             this.phone = ''
             this.password = ''
@@ -104,7 +110,6 @@ export default {
         h3 {
             margin: 0;
             border-bottom: 2px solid $color-base-red;
-            // font-family:'微软雅黑';
             font-weight: 500;
             font-size: $font-size-baseText;
         }

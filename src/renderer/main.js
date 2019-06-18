@@ -7,13 +7,13 @@ import store from './store'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import './assets/style/index.scss'
-import './assets/iconfont/font_uhbye154y3/iconfont.css'
+import './assets/iconfont/font_vanioot5q9h/iconfont.css'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
-import 'vue2-toast/lib/toast.css';
-import Toast from 'vue2-toast';
+import 'vue2-toast/lib/toast.css'
+import Toast from 'vue2-toast'
 Vue.use(Toast, {
     type: 'center',
     width: '150px'

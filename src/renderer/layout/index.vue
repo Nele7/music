@@ -16,7 +16,7 @@
             <player/>
         </div>
         <transition name="slide-top">
-            <login-dialog class="login-dialog-container" v-if="loginVisible"></login-dialog>
+            <login-dialog class="login-dialog-container" v-if="loginVisible"/>
         </transition>
     </div>
 </template>
