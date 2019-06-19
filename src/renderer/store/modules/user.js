@@ -3,7 +3,7 @@ import { neteaseApi } from '@/api';
 import to from '@/utils/await-to.js'
 import local from '@/utils/storage.js'
 import * as types from '../mutation_types'
-const obj = {}
+// const obj = {}
 // try {
 //   if(local.getItem('userInfo')){
 //     obj = local.getItem('userInfo')
@@ -12,21 +12,30 @@ const obj = {}
 
 const state = {
   // userInfo: obj,
-  userInfo: local.getItem('userInfo') || obj
+  userInfo: local.getItem('userInfo') || {},
+  userPlayList: local.getItem('userPlayList') || {},
 }
 
 const mutations = {
-  [types.USER_SINGIN](state,user){
+  [types.USER_SINGIN](state, user) {
     try {
       state.userInfo = user
-      local.setItem('userInfo',user)
-    } catch (e) {}
+      local.setItem('userInfo', user)
+    } catch (e) { }
   },
-  [types.USER_SINGOUT](state){
+  [types.USER_SINGOUT](state) {
     try {
       state.userInfo = {}
+      state.userPlayList = {}
       local.removeItem('userInfo')
-    } catch (e) {}
+      local.removeItem('userPlayList')
+    } catch (e) { }
+  },
+  [types.USER_PALYLIST](state, res) {
+    try {
+      state.userPlayList = res
+      local.setItem('userPlayList', res)
+    } catch (e) { }
   }
 }
 
@@ -34,14 +43,14 @@ const actions = {
   dologinPhone({ commit }, from) {
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.phoneLogin(from))
-      commit(types.USER_SINGIN,res.profile)
+      commit(types.USER_SINGIN, res.profile)
       resolve('登录成功')
     })
   },
   dologinEmail({ commit }, from) {
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.emailLogin(from))
-      commit(types.USER_SINGIN,res.profile)
+      commit(types.USER_SINGIN, res.profile)
       resolve('登录成功')
     })
   },
@@ -52,6 +61,24 @@ const actions = {
       resolve('退出成功')
     })
   },
+  // 获取用户歌单
+  getUserPlayList({ commit, state }) {
+    return new Promise(async (resolve) => {
+      let [res] = await to(neteaseApi.userPlayList({
+        uid: state.userInfo.userId
+      }))
+      commit(types.USER_PALYLIST, res)
+      resolve(state.userPlayList)
+    })
+  }
+  // dologinPhone({commit}, from) {
+  //   // let [res] = await to(neteaseApi.phoneLogin(from))
+  //   // console.log(Vue.prototype.$store)
+  //   console.log(123)
+  //   Vue.prototype.$toast('登录成功')
+  //   // commit(types.USER_SINGIN,res.profile)
+  //   commit(types.TOGGLE_LOGIN_DIALOG, false,{ root: true })
+  // },
   // async dologinPhone({commit}, from) {
   //   let [res] = await to(neteaseApi.phoneLogin(from))
   //   // console.log(Vue.prototype.$store)

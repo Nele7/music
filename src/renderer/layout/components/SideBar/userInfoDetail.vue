@@ -114,7 +114,9 @@ export default {
     data() {
         return {};
     },
-    mounted() { },
+    mounted() { 
+        
+    },
     computed: {
         userDetail() {
             return this.$store.state.toggle.showUserInfoDetail
@@ -124,9 +126,10 @@ export default {
         closeUserDetail() {
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
         },
+        // 退出登录
         userSignOut() {
             window.event.stopPropagation() // 解决父元素点击事件的问题，阻止事件冒泡即可
-            this.$store.dispatch('login/logout').then(res => {
+            this.$store.dispatch('user/logout').then(res => {
                 this.$toast(res)
                 this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
             })

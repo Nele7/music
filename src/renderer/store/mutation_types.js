@@ -1,6 +1,7 @@
-// login.js
+// user.js
 export const USER_SINGIN = 'USER_SINGIN'                         // 用户登录
 export const USER_SINGOUT = 'USER_SINGOUT'                       // 用户退出
+export const USER_PALYLIST = 'USER_PALYLIST'                     // 用户歌单
 
 
 // toggle.js

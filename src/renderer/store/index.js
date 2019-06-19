@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 // import { createPersistedState, createSharedMutations } from 'vuex-electron'
 
 import modules from './modules'
-
+import getters from './getters';
 Vue.use(Vuex)
 
 // // 引入modules所有的文件，除去子文件夹下，并且都是以 .js 结尾的文件
@@ -21,6 +21,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules,
+  getters,
   // plugins: [
   //   createPersistedState(),
   //   createSharedMutations()

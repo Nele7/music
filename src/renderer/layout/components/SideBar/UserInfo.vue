@@ -2,7 +2,7 @@
   <div>
     <div class="user-info">
       <div class="head-photo">
-        <img :src="userInfo.backgroundUrl" alt width="40" height="40" v-if="userStatus">
+        <img :src="userInfo.backgroundUrl" width="40" height="40" v-if="userStatus">
         <i class="iconfont icon-touxiang" v-else></i>
       </div>
       <div class="name" :class="{nickName:userStatus}" @click="openLogin">
@@ -19,7 +19,7 @@ import * as types from "@/store/mutation_types"
 import userInfoDetail from './userInfoDetail'
 export default {
   data() {
-    return {};
+    return {}
   },
   mounted() { },
   computed: {
@@ -27,7 +27,7 @@ export default {
       return JSON.stringify(this.userInfo) != "{}"
     },
     userInfo() {
-      return this.$store.state.login.userInfo
+      return this.$store.state.user.userInfo
     }
   },
   methods: {

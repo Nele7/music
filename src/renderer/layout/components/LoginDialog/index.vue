@@ -23,17 +23,17 @@
             </div>
             <div class="error">{{errorMsg}}</div>
             <div class="button">
-                <button :class="{disabled: logging}" @click="dologin">立即登录</button>
+                <button @click="dologin">立即登录</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { neteaseApi } from "../../../api/";
-import to from "@/utils/await-to.js";
-import { isEmail, isPhone } from "@/utils/valitate.js";
-import * as types from "@/store/mutation_types";
+import { neteaseApi } from "@/api/"
+import to from "@/utils/await-to.js"
+import { isEmail, isPhone } from "@/utils/valitate.js"
+import * as types from "@/store/mutation_types"
 
 export default {
     name: "loginDialog",
@@ -42,9 +42,9 @@ export default {
             phone: "",
             password: "",
             errorMsg: "",
-            logging: false
-        };
+        }
     },
+   
     methods: {
         closeLoginDialog() {
             this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
@@ -54,9 +54,6 @@ export default {
             //     phone:15511396949,
             //     password:'wfg931124'
             // }
-            if (this.logging) {
-                return
-            }
             if (!this.phone) {
                 this.errorMsg = "请输入手机号或邮箱"
                 return
@@ -70,19 +67,24 @@ export default {
 
             if (isPhone(this.phone)) {
                 params.phone = this.phone
-                this.$store.dispatch('login/dologinPhone', params).then(res => {
-                    this.$toast(res)
-                    this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
-                })
+                this.subLogin('phone',params)
             } else if (isEmail(this.phone)) {
                 params.email = this.phone
-                this.$store.dispatch('login/dologinEmail', params).then(res => {
-                    this.$toast(res)
-                    this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
-                })
+                this.subLogin('email',params)
             }
             this.phone = ''
             this.password = ''
+        },
+        // 登录提交请求 第一个参数为什么类型登录，第二个为参数
+        async subLogin(type,params) {
+            let url = ''
+            type === 'phone' ? url = 'user/dologinPhone': (type === 'email' ? url = 'user/dologinEmail' : url = '')
+            let res = await this.$store.dispatch(url, params)
+            this.$toast(res)
+            this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
+            // playlist请求会依赖第一个的结果
+            await this.$store.dispatch('user/getUserPlayList')
+            // console.log(playlist)
         }
     }
 };
@@ -149,9 +151,9 @@ export default {
                 &:focus {
                     outline: none;
                 }
-                &.disabled {
-                    pointer-events: none;
-                }
+                // &.disabled {
+                //     pointer-events: none;
+                // }
             }
         }
     }
