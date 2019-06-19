@@ -40,6 +40,7 @@ const mutations = {
 }
 
 const actions = {
+  // 手机登录
   dologinPhone({ commit }, from) {
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.phoneLogin(from))
@@ -47,6 +48,7 @@ const actions = {
       resolve('登录成功')
     })
   },
+  // 邮箱登录
   dologinEmail({ commit }, from) {
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.emailLogin(from))
@@ -54,6 +56,7 @@ const actions = {
       resolve('登录成功')
     })
   },
+  // 退出登录
   logout({ commit }) {
     return new Promise(async (resolve) => {
       await to(neteaseApi.logout())
@@ -69,6 +72,13 @@ const actions = {
       }))
       commit(types.USER_PALYLIST, res)
       resolve(state.userPlayList)
+    })
+  },
+  // 用户签到
+  sign({commit}) {
+    return new Promise(async (resolve) => {
+      let [res] = await to(neteaseApi.sign())
+      resolve(res)
     })
   }
   // dologinPhone({commit}, from) {

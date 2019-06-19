@@ -18,7 +18,7 @@
                 </div>
                 <div class="user-info-sign">
                     <div class="sign">
-                        <span>
+                        <span @click="sign">
                             <i class="el-icon-coin"></i>
                             <i>签到</i>
                         </span>
@@ -112,7 +112,7 @@ import * as types from "@/store/mutation_types"
 
 export default {
     data() {
-        return {};
+        return {}
     },
     mounted() { 
         
@@ -125,6 +125,11 @@ export default {
     methods: {
         closeUserDetail() {
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
+        },
+        async sign() {
+            window.event.stopPropagation() // 解决父元素点击事件的问题，阻止事件冒泡即可
+            let res = await this.$store.dispatch('user/sign')
+            console.log(res)
         },
         // 退出登录
         userSignOut() {
