@@ -3,7 +3,7 @@
         <div class="user-detail-wrapper" v-if="userDetail" @click="closeUserDetail">
             <div class="user-info-detail">
                 <div class="user-info-count">
-                    <div class="dynamic">
+                    <div class="dynamic" @click="clickEventList">
                         <span href class="count">{{eventSum}}</span>
                         <span>动态</span>
                     </div>
@@ -114,8 +114,6 @@ export default {
     mounted() {
         if (this.userLoginStatus) {
             this.getUserDetail()
-            // this.getUserFollow()
-            // this.getUserFollower()
         }
     },
     computed: {
@@ -162,14 +160,23 @@ export default {
             this.$toast(res)
             this.getUserDetail()
         },
+        // 点击动态进入动态列表
+        clickEventList() {
+            window.event.stopPropagation()
+            this.$router.push({path:'/userDetail',query:{type:1}})
+            this.closeUserDetail()
+        },
+        // 点击关注进入关注列表
         clickFollowList() {
             window.event.stopPropagation()
-            // this.getUserFollow()
+            this.$router.push({path:'/userDetail',query:{type:2}})
+            this.closeUserDetail()
         },
-        
+        // 点击粉丝进入粉丝列表
         clickFollowerList() {
             window.event.stopPropagation()
-            // this.getUserFollower()
+            this.$router.push({path:'/userDetail',query:{type:3}})
+            this.closeUserDetail()
         },
         // 退出登录
         async userSignOut() {

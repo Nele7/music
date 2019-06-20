@@ -15,6 +15,7 @@ const mv = () => import('@/views/mv/index')
 const video = () => import('@/views/video/index')
 
 const pal = () => import('@/views/pal/index')
+const follow = () => import('@/views/follow/index')
 Vue.use(Router)
 
 export default new Router({
@@ -86,7 +87,7 @@ export default new Router({
     },
     {
       path: '/fm',
-      name: 'Layout',
+      name: 'fm',
       component: Layout,
       redirect: '/fm/index',
       children:[
@@ -99,7 +100,7 @@ export default new Router({
     },
     {
       path: '/mv',
-      name: 'Layout',
+      name: 'mv',
       component: Layout,
       redirect: '/mv/video',
       children:[
@@ -123,7 +124,7 @@ export default new Router({
     },
     {
       path: '/pal',
-      name: 'Layout',
+      name: 'pal',
       component: Layout,
       redirect: '/pal/index',
       children:[
@@ -131,6 +132,19 @@ export default new Router({
           path: 'index',
           component: pal,
           name: 'pal'
+        },
+      ]
+    },
+    {
+      path: '/userDetail',
+      name: 'userDetail',
+      component: Layout,
+      redirect: '/userDetail/index',
+      children:[
+        {
+          path: 'index',
+          component: follow,
+          name: 'follow'
         },
       ]
     },

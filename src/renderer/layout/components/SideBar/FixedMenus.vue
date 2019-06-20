@@ -52,6 +52,11 @@ export default {
         }
     },
     mounted() {
+        neteaseApi.userDJ({
+            uid:this.uid
+        }).then(res => {
+            console.log(res)
+        })
     },
     computed: {
         userStatus() {

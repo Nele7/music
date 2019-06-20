@@ -3,6 +3,7 @@
       <div class="nav-text-area" v-if="currentShow">
         <router-link
           v-for="(item,index) in discoverTab"
+          class="link"
           :key="index"
           :to="item.path"
           tag="div"
@@ -10,11 +11,28 @@
       </div>
       <div class="nav-text-area" v-if="videoShow">
         <router-link
+          class="link"
           v-for="(item,index) in videoTab"
           :key="index"
           :to="item.path"
           tag="div"
         >{{item.name}}</router-link>
+      </div>
+      <!-- 动态，关注，粉丝 -->
+      <div class="nav-text-area nav-text-start" v-if="this.$route.fullPath === '/userDetail/index?type=1'">
+        <div>
+          {{userInfo.nickname}}{{eventTab[0].name}}
+        </div>
+      </div>
+      <div class="nav-text-area nav-text-start" v-if="this.$route.fullPath === '/userDetail/index?type=2'">
+        <div>
+          {{userInfo.nickname}}{{eventTab[1].name}}
+        </div>
+      </div>
+      <div class="nav-text-area nav-text-start" v-if="this.$route.fullPath === '/userDetail/index?type=3'">
+        <div>
+          {{userInfo.nickname}}{{eventTab[2].name}}
+        </div>
       </div>
       <div class="nav-null-content"></div>
     </div>
@@ -37,6 +55,11 @@
                     { path: '/mv/video', name: '视频' },
                     { path: '/mv/index', name: 'MV' },
                 ],
+                eventTab: [
+                  { name: '动态' },
+                  { name: '关注' },
+                  { name: '粉丝' },
+                ],
                 currentShow:false,
                 videoShow: false
             }
@@ -44,6 +67,11 @@
         mounted(){
             this.currentShow = this.$route.meta.flag
             this.videoShow = this.$route.meta.show
+        },
+        computed:{
+          userInfo() {
+            return this.$store.getters.userInfo
+          }
         },
         watch:{
             $route(to){
@@ -60,7 +88,6 @@
 .nav-text {
   flex: 1;
   display: flex;
-
   .nav-text-area {
     width: 384px;
     display: flex;
@@ -69,8 +96,11 @@
     padding: 0 20px;
     font-size: 14px;
     color: $color-base-grey;
+    &.nav-text-start{
+      justify-content:start;
+    }
     cursor: pointer;
-    & > div {
+    & > div.link {
       height: 50;
       line-height: 50px;
       &:hover{
