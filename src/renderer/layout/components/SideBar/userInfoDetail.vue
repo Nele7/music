@@ -4,90 +4,50 @@
             <div class="user-info-detail">
                 <div class="user-info-count">
                     <div class="dynamic">
-                        <span href class="count">0</span>
+                        <span href class="count">{{eventSum}}</span>
                         <span>动态</span>
                     </div>
-                    <div class="follow">
-                        <span href class="count">4</span>
+                    <div class="follow" @click="clickFollowList">
+                        <span href class="count">{{ followSum }}</span>
                         <span>关注</span>
                     </div>
-                    <div class="fans">
-                        <span href class="count">2</span>
+                    <div class="fans" @click="clickFollowerList">
+                        <span href class="count">{{ followerSum }}</span>
                         <span>粉丝</span>
                     </div>
                 </div>
                 <div class="user-info-sign">
                     <div class="sign">
-                        <span @click="sign">
+                        <span @click="sign" v-if="!signStatus" class="noSign">
                             <i class="el-icon-coin"></i>
                             <i>签到</i>
                         </span>
+                        <span v-else class="isSign">
+                            <i class="el-icon-coin"></i>
+                            <i>已签到</i>
+                        </span>
                     </div>
                 </div>
-                <div class="user-info-list user-info-ambitus">
-                    <div class="user-info-item">
+                <div class="user-info-list" v-for="(data,index) in userDetailData" :key="index">
+                    <div
+                        class="user-info-item"
+                        v-for="(item,index) in data.list"
+                        :key="index"
+                        @click="noViews"
+                    >
                         <div class="icon item-style">
-                            <i class="iconfont icon-huiyuanzhongxin"></i>
+                            <i :class="item.icon"></i>
                         </div>
                         <div class="name item-style">
-                            <span>会员中心</span>
+                            <span>{{item.title}}</span>
                         </div>
                         <div class="mark item-style">
-                            <span>未订购</span>
-                            <i class="el-icon-arrow-right"></i>
-                        </div>
-                    </div>
-                    <div class="user-info-item">
-                        <div class="icon item-style">
-                            <i class="iconfont icon-dengji"></i>
-                        </div>
-                        <div class="name item-style">
-                            <span>等级</span>
-                        </div>
-                        <div class="mark item-style">
-                            <span>LV 7</span>
-                            <i class="el-icon-arrow-right"></i>
-                        </div>
-                    </div>
-                    <div class="user-info-item">
-                        <div class="icon item-style">
-                            <i class="iconfont icon-gouwuche"></i>
-                        </div>
-                        <div class="name item-style">
-                            <span>商城</span>
-                        </div>
-                        <div class="mark item-style">
-                            <span></span>
+                            <span>{{item.mark}}</span>
                             <i class="el-icon-arrow-right"></i>
                         </div>
                     </div>
                 </div>
-                <div class="user-info-list user-info-setting">
-                    <div class="user-info-item">
-                        <div class="icon item-style">
-                            <i class="iconfont icon-shezhi"></i>
-                        </div>
-                        <div class="name item-style">
-                            <span>个人信息设置</span>
-                        </div>
-                        <div class="mark item-style">
-                            <span></span>
-                            <i class="el-icon-arrow-right"></i>
-                        </div>
-                    </div>
-                    <div class="user-info-item">
-                        <div class="icon item-style">
-                            <i class="iconfont icon-shouji"></i>
-                        </div>
-                        <div class="name item-style">
-                            <span>绑定社交账号</span>
-                        </div>
-                        <div class="mark item-style">
-                            <span></span>
-                            <i class="el-icon-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="user-info-list" id="user-signout">
                     <div class="user-info-item" @click="userSignOut">
                         <div class="icon item-style">
@@ -109,35 +69,114 @@
 
 <script>
 import * as types from "@/store/mutation_types"
+import { neteaseApi } from "@/api/"
+import to from "@/utils/await-to.js"
 
 export default {
     data() {
-        return {}
+        return {
+            userDetailData: [
+                {
+                    list: [
+                        {
+                            icon: 'iconfont icon-huiyuanzhongxin',
+                            title: '会员中心',
+                            mark: '未选购'
+                        },
+                        {
+                            icon: 'iconfont icon-dengji',
+                            title: '等级',
+                            mark: 'LV 7'
+
+                        },
+                        {
+                            icon: 'iconfont icon-gouwuche',
+                            title: '商城',
+                        }
+                    ]
+                },
+                {
+                    list: [
+                        {
+                            icon: 'iconfont icon-shezhi',
+                            title: '个人信息设置',
+                        },
+                        {
+                            icon: 'iconfont icon-shouji',
+                            title: '绑定社交账号'
+                        }
+                    ]
+                }
+            ],
+            signStatus: false,
+        }
     },
-    mounted() { 
-        
+    mounted() {
+        if (this.userLoginStatus) {
+            this.getUserDetail()
+            // this.getUserFollow()
+            // this.getUserFollower()
+        }
     },
     computed: {
+        // 显示状态
         userDetail() {
-            return this.$store.state.toggle.showUserInfoDetail
+            return this.$store.getters.showUserInfoDetail
+        },
+        // 登录状态
+        userLoginStatus() {
+            return this.$store.getters.loginStatus
+        },
+        uid() {
+            return this.$store.getters.uid
+        },
+        followSum() {
+            return this.$store.getters.followList.length
+        },
+        followerSum() {
+            return this.$store.getters.followerList.length
+        },
+        eventSum() {
+            return this.$store.getters.eventList.length
         }
     },
     methods: {
+        // 关闭用户详情页
         closeUserDetail() {
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
         },
+        // 点击其他项
+        noViews() {
+            window.event.stopPropagation()  // 解决父元素点击事件的问题，阻止事件冒泡即可
+            this.$toast('暂未开放，敬请期待~~~')
+        },
+        // 获取用户详情，需登录
+        async getUserDetail() {
+            let res = await this.$store.dispatch('user/getUserDetail')
+            this.signStatus = res.mobileSign
+        },
+        // 用户签到
         async sign() {
-            window.event.stopPropagation() // 解决父元素点击事件的问题，阻止事件冒泡即可
+            window.event.stopPropagation()
             let res = await this.$store.dispatch('user/sign')
-            console.log(res)
+            this.$toast(res)
+            this.getUserDetail()
+        },
+        clickFollowList() {
+            window.event.stopPropagation()
+            // this.getUserFollow()
+        },
+        
+        clickFollowerList() {
+            window.event.stopPropagation()
+            // this.getUserFollower()
         },
         // 退出登录
-        userSignOut() {
-            window.event.stopPropagation() // 解决父元素点击事件的问题，阻止事件冒泡即可
-            this.$store.dispatch('user/logout').then(res => {
-                this.$toast(res)
-                this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
-            })
+        async userSignOut() {
+            window.event.stopPropagation()
+            let res = await this.$store.dispatch('user/logout')
+            this.$toast(res)
+            this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
         }
     }
 }
@@ -148,105 +187,109 @@ export default {
 @import "@/assets/style/mixin.scss";
 
 .user-detail-wrapper {
-  @include position(fixed, 0, 0, 0, 0);
-  z-index: 30;
-  .user-info-detail {
-    @include position(absolute, 70px, auto, auto, 184px, 300px);
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-    z-index: 33;
-    .user-info-count {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 30px 30px 0px;
-      .follow {
-        border: 1px solid $color-border;
-        border-top: 0;
-        border-bottom: 0;
-      }
-      div {
+    @include position(fixed, 0, 0, 0, 0);
+    z-index: 30;
+    .user-info-detail {
+        @include position(absolute, 70px, auto, auto, 184px, 300px);
         display: flex;
         flex-direction: column;
-        padding: 0 21px;
-        & > span:last-child {
-          font-size: 13px;
-          color: $color-base-grey;
-        }
-        span {
-          text-align: center;
-          width: 40px;
-          &.count {
-            font-size: 32px;
-            font-weight: 400;
-            margin-bottom: 2px;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-    .user-info-sign {
-        text-align: center;
-        border-bottom: 1px solid $color-border;
-
-        .sign {
-            padding: 10px;
-            span {
-                display: inline-block;
-                padding: 4px 24px;
-                border-radius: 18px;
-                border: 1px solid $color-border;
-                color: $color-simple-black;
-                cursor: pointer;
-                &:hover {
-                    color: $color-base-black;
-                    background: $background-active;
-                }
-                i {
-                    font-style: normal;
-                }
-            }
-        }
-    }
-    #user-signout {
-        border-bottom: 0;
-    }
-    .user-info-list {
-        display: flex;
-        flex-direction: column;
-        padding: 5px 0;
-        border-bottom: 1px solid $color-border;
-        
-        .user-info-item {
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+        z-index: 33;
+        .user-info-count {
             display: flex;
             flex-direction: row;
-            align-items: center;
-            height: 35px;
-            padding: 0 5px;
-            &:hover {
-                background: $background-active;
+            justify-content: space-between;
+            padding: 30px 30px 0px;
+            .follow {
+                border: 1px solid $color-border;
+                border-top: 0;
+                border-bottom: 0;
             }
-            .item-style {
-                height: 100%;
-                line-height: 35px;
-                font-size: $font-size-baseText;
-                color: $color-simple-black;
+            div {
+                display: flex;
+                flex-direction: column;
+                padding: 0 21px;
+                & > span:last-child {
+                    font-size: 13px;
+                    color: $color-base-grey;
+                }
+                span {
+                    text-align: center;
+                    width: 40px;
+                    &.count {
+                        font-size: 32px;
+                        font-weight: 400;
+                        margin-bottom: 2px;
+                        cursor: pointer;
+                    }
+                }
             }
-            .icon {
-                width: 35px;
-                text-align: center;
+        }
+        .user-info-sign {
+            text-align: center;
+            border-bottom: 1px solid $color-border;
+
+            .sign {
+                padding: 10px;
+                span {
+                    display: inline-block;
+                    padding: 4px 24px;
+                    border-radius: 18px;
+                    border: 1px solid $color-border;
+                    color: $color-simple-black;
+                    &.noSign:hover {
+                        color: $color-base-black;
+                        background: $background-active;
+                        cursor: pointer;
+                    }
+                    &.isSign {
+                        color: $color-base-grey;
+                        background: $background-active;
+                    }
+                    i {
+                        font-style: normal;
+                    }
+                }
             }
-            .name {
-                flex: 1;
-            }
-            .mark {
-                text-align: right;
-                width: 100px;
+        }
+        #user-signout {
+            border-bottom: 0;
+        }
+        .user-info-list {
+            display: flex;
+            flex-direction: column;
+            padding: 5px 0;
+            border-bottom: 1px solid $color-border;
+
+            .user-info-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                height: 35px;
+                padding: 0 5px;
+                &:hover {
+                    background: $background-active;
+                }
+                .item-style {
+                    height: 100%;
+                    line-height: 35px;
+                    font-size: $font-size-baseText;
+                    color: $color-simple-black;
+                }
+                .icon {
+                    width: 35px;
+                    text-align: center;
+                }
+                .name {
+                    flex: 1;
+                }
+                .mark {
+                    text-align: right;
+                    width: 100px;
+                }
             }
         }
     }
-  }
 }
 </style>

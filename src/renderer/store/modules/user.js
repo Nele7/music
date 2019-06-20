@@ -3,6 +3,7 @@ import { neteaseApi } from '@/api';
 import to from '@/utils/await-to.js'
 import local from '@/utils/storage.js'
 import * as types from '../mutation_types'
+import { stat } from 'fs';
 // const obj = {}
 // try {
 //   if(local.getItem('userInfo')){
@@ -12,37 +13,57 @@ import * as types from '../mutation_types'
 
 const state = {
   // userInfo: obj,
+  userLoginStatus:localStorage.getItem('loginStatus') || false,
   userInfo: local.getItem('userInfo') || {},
   userPlayList: local.getItem('userPlayList') || {},
+  userFollowList:[],    // 用户关注列表
+  userFollowerList:[],  // 用户粉丝列表
+  userEvent:[],         // 用户动态列表
 }
 
 const mutations = {
+  // 用户登录
   [types.USER_SINGIN](state, user) {
     try {
       state.userInfo = user
+      state.userLoginStatus = true
       local.setItem('userInfo', user)
+      localStorage.setItem('loginStatus',true)
     } catch (e) { }
   },
+  // 用户退出
   [types.USER_SINGOUT](state) {
     try {
       state.userInfo = {}
       state.userPlayList = {}
+      state.userLoginStatus = false
       local.removeItem('userInfo')
       local.removeItem('userPlayList')
+      localStorage.removeItem('loginStatus')
     } catch (e) { }
   },
+  // 用户歌单
   [types.USER_PALYLIST](state, res) {
     try {
       state.userPlayList = res
       local.setItem('userPlayList', res)
     } catch (e) { }
-  }
+  },
+  [types.USER_FOLLOW](state,list) {
+    state.userFollowList = list
+  },
+  [types.USER_FOLLOWER](state,list) {
+    state.userFollowerList = list
+  },
+  [types.USER_EVENT](state,list) {
+    state.userEvent = list
+  },
 }
 
 const actions = {
   // 手机登录
   dologinPhone({ commit }, from) {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve,reject) => {
       let [res] = await to(neteaseApi.phoneLogin(from))
       commit(types.USER_SINGIN, res.profile)
       resolve('登录成功')
@@ -50,7 +71,7 @@ const actions = {
   },
   // 邮箱登录
   dologinEmail({ commit }, from) {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve,reject) => {
       let [res] = await to(neteaseApi.emailLogin(from))
       commit(types.USER_SINGIN, res.profile)
       resolve('登录成功')
@@ -64,9 +85,39 @@ const actions = {
       resolve('退出成功')
     })
   },
-  // 获取用户歌单
+  // 获取用户--关注列表
+  async getUserFollow({commit}){
+    let [res] = await to(neteaseApi.userFollows({
+      uid: state.userInfo.userId
+    }))
+    commit(types.USER_FOLLOW,res.follow)
+  },
+  // 获取用户--粉丝列表
+  async getUserFollower({commit,state}){
+    let [res] = await to(neteaseApi.userFollowed({
+       uid: state.userInfo.userId
+    }))
+    commit(types.USER_FOLLOWER,res.followeds)
+  },
+  // 获取用户--动态列表
+  async getUserEvent({commit,state}){
+    let [res] = await to(neteaseApi.userEvent({
+      uid: state.userInfo.userId
+    }))
+    commit(types.USER_EVENT,res.events)
+  },
+  // 获取用户--详情
+  getUserDetail({ state }){
+    return new Promise(async (resolve,reject) => {
+      let [res] = await to(neteaseApi.userDetail({
+        uid: state.userInfo.userId
+      }))
+      resolve(res)
+    })
+  },
+  // 获取用户--歌单
   getUserPlayList({ commit, state }) {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve,reject) => {
       let [res] = await to(neteaseApi.userPlayList({
         uid: state.userInfo.userId
       }))
@@ -75,42 +126,12 @@ const actions = {
     })
   },
   // 用户签到
-  sign({commit}) {
-    return new Promise(async (resolve) => {
+  sign() {
+    return new Promise(async (resolve,reject) => {
       let [res] = await to(neteaseApi.sign())
       resolve(res)
     })
   }
-  // dologinPhone({commit}, from) {
-  //   // let [res] = await to(neteaseApi.phoneLogin(from))
-  //   // console.log(Vue.prototype.$store)
-  //   console.log(123)
-  //   Vue.prototype.$toast('登录成功')
-  //   // commit(types.USER_SINGIN,res.profile)
-  //   commit(types.TOGGLE_LOGIN_DIALOG, false,{ root: true })
-  // },
-  // async dologinPhone({commit}, from) {
-  //   let [res] = await to(neteaseApi.phoneLogin(from))
-  //   // console.log(Vue.prototype.$store)
-  //   console.log(res)
-  //   Vue.prototype.$toast('登录成功')
-  //   // commit(types.USER_SINGIN,res.profile)
-  //   // commit(types.TOGGLE_LOGIN_DIALOG, false,{ root: true })
-  // },
-  // async dologinEmail({ commit }, from) {
-  //   let [res] = await to(neteaseApi.emailLogin(from))
-  //   console.log(res)
-  //   Vue.prototype.$toast('登录成功')
-  //   commit(types.USER_SINGIN,res.profile)
-  //   commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`)
-  // },
-  // async logout({commit}){
-  //   let [res] = await to(neteaseApi.logout())
-  //   console.log(commit)
-  //   Vue.prototype.$toast('退出成功')
-  //   commit(types.USER_SINGOUT)
-  //   commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
-  // }
 }
 
 export default {

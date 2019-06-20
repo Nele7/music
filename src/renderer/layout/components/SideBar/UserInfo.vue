@@ -24,10 +24,10 @@ export default {
   mounted() { },
   computed: {
     userStatus() {
-      return JSON.stringify(this.userInfo) != "{}"
+      return this.$store.getters.loginStatus
     },
     userInfo() {
-      return this.$store.state.user.userInfo
+      return this.$store.getters.userInfo
     }
   },
   methods: {
@@ -36,6 +36,9 @@ export default {
         this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, true)
       } else {
         this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, true)
+        this.$store.dispatch('user/getUserFollow')
+        this.$store.dispatch('user/getUserFollower')
+        this.$store.dispatch('user/getUserEvent')
       }
     },
   },

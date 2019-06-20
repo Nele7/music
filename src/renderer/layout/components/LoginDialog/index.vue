@@ -82,9 +82,7 @@ export default {
             let res = await this.$store.dispatch(url, params)
             this.$toast(res)
             this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
-            // 等待上一个的请求结果
             await this.$store.dispatch('user/getUserPlayList')
-            // console.log(playlist)
         }
     }
 };

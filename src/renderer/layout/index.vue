@@ -37,7 +37,7 @@ export default {
     computed:{
         // 登录模态框状态
         loginVisible(){
-            return this.$store.state.toggle.showLoginDialog
+            return this.$store.getters.showLoginDialog
         }
     },
     methods: {

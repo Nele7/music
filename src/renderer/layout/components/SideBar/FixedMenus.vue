@@ -18,16 +18,16 @@
                     <i class="iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
                 </router-link>
-                <div class="menu-item" v-if="userStatus">
+                <div class="menu-item" v-if="userStatus && normalPlayList.createPlayList.length > 0">
                     <div class="menu-title">创建的歌单</div>
-                    <div class="menu-text" v-for="(item,index) in normalPlayList.create" :key="index">
+                    <div class="menu-text" v-for="(item,index) in normalPlayList.createPlayList" :key="index">
                         <i class="iconfont " :class="[item.name === userInfo.nickname + '喜欢的音乐' ? 'icon-xin':'icon-yinyue']"></i>
                         <span>{{ item.name === userInfo.nickname + '喜欢的音乐' ? '我喜欢的歌单': item.name }}</span>
                     </div>
                 </div>
-                <div class="menu-item" v-if="userStatus">
+                <div class="menu-item" v-if="userStatus && normalPlayList.collectPlayList.length > 0">
                     <div class="menu-title">收藏歌单</div>
-                    <div class="menu-text" v-for="(item,index) in normalPlayList.collect" :key="index">
+                    <div class="menu-text"  v-for="(item,index) in normalPlayList.collectPlayList" :key="index">
                         <i class="iconfont icon-yinyue"></i>
                         <span>{{ item.name }}</span>
                     </div>
@@ -52,33 +52,32 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.$store.state.user.userPlayList)
     },
     computed: {
         userStatus() {
-            return JSON.stringify(this.userInfo) != "{}"
+            return this.$store.getters.loginStatus
         },
         userInfo(){
-            return this.$store.state.user.userInfo
+            return this.$store.getters.userInfo
         },
         uid() {
             return this.$store.getters.uid
         },
         playList(){
-            return this.$store.state.user.userPlayList.playlist
+            return this.$store.getters.playList
         },
         normalPlayList() {
+            let res = { createPlayList: [], collectPlayList: [] }
+            // 判断是否登录，playlist是否有值
             if(this.userStatus && this.playList) {
-                let res = { create: [], collect: [] }
-                let _playlist = this.playList
-                res.create = _playlist.filter(item => item.subscribed === false)
-                res.collect = _playlist.filter(item => item.subscribed === true)
-                return res
+                res.createPlayList = this.playList.filter(item => item.subscribed === false)
+                res.collectPlayList = this.playList.filter(item => item.subscribed === true)
             }
-        }
+            return res
+        },
     },
     methods: {
-
+        
     },
 }
 </script>

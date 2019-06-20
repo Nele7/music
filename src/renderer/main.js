@@ -15,8 +15,7 @@ Vue.use(ElementUI)
 import 'vue2-toast/lib/toast.css'
 import Toast from 'vue2-toast'
 Vue.use(Toast, {
-    type: 'center',
-    width: '150px'
+    type: 'center'
 });
 
 
