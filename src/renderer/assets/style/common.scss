@@ -32,3 +32,13 @@ html {
 input:focus::-webkit-input-placeholder {
     color: transparent;
 }
+ul,li,p{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}

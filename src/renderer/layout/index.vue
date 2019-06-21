@@ -7,9 +7,15 @@
             <navbar/>
         </div>
         <div class="main-container">
-            <transition name="fade-transform" mode="out-in">
-                <router-view></router-view>
-            </transition>
+            <el-scrollbar
+                wrap-class="scrollbar-wrapper"
+                style="height:100%;"
+                ref="myScrollbar"
+            >
+                <transition name="fade-transform" mode="out-in">
+                    <router-view></router-view>
+                </transition>
+            </el-scrollbar>
             <!-- <app-main/> -->
         </div>
         <div class="player-container">
@@ -78,8 +84,8 @@ export default {
         calc(100% - #{$sideBarWidth}),
         calc(100% - #{$navplayHeight})
     );
-    padding: 20px;
-    box-sizing: border-box;
+    // padding: 10px 0 10px 10px;
+    // box-sizing: border-box;
     // background: green;
 }
 .navbar-container {

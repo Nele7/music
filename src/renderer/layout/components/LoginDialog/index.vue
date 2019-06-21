@@ -83,9 +83,10 @@ export default {
             this.$toast(res)
             this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
             await this.$store.dispatch('user/getUserPlayList')
+            await this.$store.dispatch('user/getUserDetail')
         }
     }
-};
+}
 </script>
 
 <style lang="scss" scoped>

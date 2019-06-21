@@ -1,6 +1,6 @@
 // layout width height 
 $sideBarWidth: 200px;
-$navBarHeight: 45px;
+$navBarHeight: 50px;
 $playerHeight: 45px;
 $navplayHeight: $navBarHeight + $playerHeight;
 
@@ -19,6 +19,7 @@ $color-base-black:#000;
 // background
 $background-grey: rgba(233, 233, 233, 0.575);
 $background-active:rgba(223, 223, 223, 0.555);
+$background-undertintgrey:rgba(230, 230, 230, 0.377);
 $background-nav-arrows:rgba(243, 243, 243, 0.26);
 
 // base font-size

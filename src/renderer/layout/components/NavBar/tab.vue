@@ -96,6 +96,7 @@
     padding: 0 20px;
     font-size: 14px;
     color: $color-base-grey;
+    -webkit-app-region: no-drag;
     &.nav-text-start{
       justify-content:start;
     }

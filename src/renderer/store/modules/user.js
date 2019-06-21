@@ -3,7 +3,6 @@ import { neteaseApi } from '@/api';
 import to from '@/utils/await-to.js'
 import local from '@/utils/storage.js'
 import * as types from '../mutation_types'
-import { stat } from 'fs';
 // const obj = {}
 // try {
 //   if(local.getItem('userInfo')){
@@ -13,12 +12,13 @@ import { stat } from 'fs';
 
 const state = {
   // userInfo: obj,
-  userLoginStatus:localStorage.getItem('loginStatus') || false,
-  userInfo: local.getItem('userInfo') || {},
-  userPlayList: local.getItem('userPlayList') || {},
-  userFollowList:[],    // 用户关注列表
-  userFollowerList:[],  // 用户粉丝列表
-  userEvent:[],         // 用户动态列表
+  userLoginStatus:localStorage.getItem('loginStatus') || false,  // 用户登录状态
+  userInfo: local.getItem('userInfo') || {},                     // 用户登录信息       
+  userPlayList: local.getItem('userPlayList') || {},             // 用户创建收藏歌单
+  userSignStatus: false,                                         // 用户签到状态
+  userFollowList:[],                                             // 用户关注列表
+  userFollowerList:[],                                           // 用户粉丝列表
+  userEvent:[],                                                  // 用户动态列表
 }
 
 const mutations = {
@@ -58,6 +58,15 @@ const mutations = {
   [types.USER_EVENT](state,list) {
     state.userEvent = list
   },
+  [types.USER_SIGN](state,flag) {
+    state.userSignStatus = flag
+  },
+  // 操作粉丝数组
+  [types.CHANGE_FOLLOWER](state,{index,user}){
+    // console.log(payload)
+    state.userFollowerList.splice(index,1,user)
+    console.log(state.userFollowerList)
+  }
 }
 
 const actions = {
@@ -107,11 +116,12 @@ const actions = {
     commit(types.USER_EVENT,res.events)
   },
   // 获取用户--详情
-  getUserDetail({ state }){
+  getUserDetail({ state,commit }){
     return new Promise(async (resolve,reject) => {
       let [res] = await to(neteaseApi.userDetail({
         uid: state.userInfo.userId
       }))
+      commit(types.USER_SIGN,res.mobileSign)
       resolve(res)
     })
   },
@@ -126,9 +136,11 @@ const actions = {
     })
   },
   // 用户签到
-  sign() {
+  sign({commit,dispatch}) {
     return new Promise(async (resolve,reject) => {
       let [res] = await to(neteaseApi.sign())
+      let {mobileSign} = await dispatch('getUserDetail')
+      commit(types.USER_SIGN,mobileSign)
       resolve(res)
     })
   }

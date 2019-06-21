@@ -65,8 +65,7 @@ export default {
   height: 100%;
   display: flex;
   box-shadow: 0 0 3px rgba(0,0,0,.25);
-  // z-index: 999;
-  // -webkit-app-region: drag;
+  -webkit-app-region: drag;
 }
 .nav-arrows-area {
   position: relative;
@@ -75,13 +74,14 @@ export default {
   display: flex;
   align-items: center;
   background: $background-nav-arrows;
-
+  
   .nav-arrows-icon {
     position: absolute;
     right: 0;
     display: flex;
-    justify-content: space-between;
     width: 50px;
+    justify-content: space-between;
+    -webkit-app-region: no-drag;
     i {
       flex: 1;
       height: 50px;
@@ -97,7 +97,7 @@ export default {
 .nav-search-area {
   flex: 0 0 180px;
   width: 180px;
-
+  -webkit-app-region: no-drag;
   .nav-search {
     display: flex;
     align-items: center;
@@ -127,6 +127,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   cursor: pointer;
+  -webkit-app-region: no-drag;
   i {
     flex: 1;
     height: 50px;

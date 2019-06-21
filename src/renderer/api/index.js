@@ -21,5 +21,6 @@ export const neteaseApi = {
   userEvent: apiData('user/event'),            // 获取用户动态
   userPlayList: apiData('/user/playlist'),     // 获取用户--歌单
   userDetail: apiData('/user/detail'),         // 获取用户--详情
-  userDJ: apiData('/user/dj'),                 // 获取用户--电台
+  // userDJ: apiData('/user/dj'),                 // 获取用户--电台
+  follow: apiData('/follow'),                  // 关注用户和取消用户
 }

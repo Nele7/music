@@ -18,20 +18,21 @@
                     <i class="iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
                 </router-link>
-                <div class="menu-item" v-if="userStatus && normalPlayList.createPlayList.length > 0">
-                    <div class="menu-title">创建的歌单</div>
-                    <div class="menu-text" v-for="(item,index) in normalPlayList.createPlayList" :key="index">
-                        <i class="iconfont " :class="[item.name === userInfo.nickname + '喜欢的音乐' ? 'icon-xin':'icon-yinyue']"></i>
-                        <span>{{ item.name === userInfo.nickname + '喜欢的音乐' ? '我喜欢的歌单': item.name }}</span>
+                <!-- 动态加载的 -->
+                <div class="menu-item" v-if="userStatus && item.playList.length > 0" v-for="(item,index) in normalPlayList">
+                    <div class="menu-title">{{item.title}}</div>
+                    <div class="menu-text" v-for="(playlist,i) in item.playList">
+                        <i class="iconfont " :class="[playlist.name === userInfo.nickname + '喜欢的音乐' ? 'icon-xin':'icon-yinyue']"></i>
+                        <span>{{ playlist.name === userInfo.nickname + '喜欢的音乐' ? '我喜欢的歌单': playlist.name }}</span>
                     </div>
                 </div>
-                <div class="menu-item" v-if="userStatus && normalPlayList.collectPlayList.length > 0">
-                    <div class="menu-title">收藏歌单</div>
+                <!-- <div class="menu-item" v-if="userStatus && normalPlayList.collectPlayList.length > 0">
+                    <div class="menu-title">收藏的歌单</div>
                     <div class="menu-text"  v-for="(item,index) in normalPlayList.collectPlayList" :key="index">
                         <i class="iconfont icon-yinyue"></i>
                         <span>{{ item.name }}</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </el-scrollbar>
@@ -52,11 +53,6 @@ export default {
         }
     },
     mounted() {
-        neteaseApi.userDJ({
-            uid:this.uid
-        }).then(res => {
-            console.log(res)
-        })
     },
     computed: {
         userStatus() {
@@ -72,11 +68,23 @@ export default {
             return this.$store.getters.playList
         },
         normalPlayList() {
-            let res = { createPlayList: [], collectPlayList: [] }
+            let res = [
+                {
+                    title: '创建的歌单',
+                    playList:[]
+                },
+                {
+                    title: '收藏的歌单',
+                    playList:[]
+                }
+            ]
+            // let res = { createPlayList: [], collectPlayList: [] }
             // 判断是否登录，playlist是否有值
             if(this.userStatus && this.playList) {
-                res.createPlayList = this.playList.filter(item => item.subscribed === false)
-                res.collectPlayList = this.playList.filter(item => item.subscribed === true)
+                res[0].playList = this.playList.filter(item => item.subscribed === false)
+                res[1].playList = this.playList.filter(item => item.subscribed === true)
+                // res.createPlayList = this.playList.filter(item => item.subscribed === false)
+                // res.collectPlayList = this.playList.filter(item => item.subscribed === true)
             }
             return res
         },

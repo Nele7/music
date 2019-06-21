@@ -4,15 +4,15 @@
             <div class="user-info-detail">
                 <div class="user-info-count">
                     <div class="dynamic" @click="clickEventList">
-                        <span href class="count">{{eventSum}}</span>
+                        <span href class="count">{{eventSum > 99 ? '99+' : eventSum }}</span>
                         <span>动态</span>
                     </div>
                     <div class="follow" @click="clickFollowList">
-                        <span href class="count">{{ followSum }}</span>
+                        <span href class="count">{{ followSum > 99 ? '99+' : followSum }}</span>
                         <span>关注</span>
                     </div>
                     <div class="fans" @click="clickFollowerList">
-                        <span href class="count">{{ followerSum }}</span>
+                        <span href class="count">{{ followerSum > 99 ? '99+' : followerSum }}</span>
                         <span>粉丝</span>
                     </div>
                 </div>
@@ -108,7 +108,6 @@ export default {
                     ]
                 }
             ],
-            signStatus: false,
         }
     },
     mounted() {
@@ -136,6 +135,9 @@ export default {
         },
         eventSum() {
             return this.$store.getters.eventList.length
+        },
+        signStatus() {
+            return this.$store.getters.signStatus
         }
     },
     methods: {
@@ -150,15 +152,16 @@ export default {
         },
         // 获取用户详情，需登录
         async getUserDetail() {
-            let res = await this.$store.dispatch('user/getUserDetail')
-            this.signStatus = res.mobileSign
+            await this.$store.dispatch('user/getUserDetail')
         },
         // 用户签到
         async sign() {
             window.event.stopPropagation()
             let res = await this.$store.dispatch('user/sign')
-            this.$toast(res)
-            this.getUserDetail()
+            this.$toast('签到成功积分+'+res.point)
+            // 更新签到状态
+            this.$store.commit(types.USER_SIGN,true)
+            // await this.$store.dispatch('user/getUserDetail')
         },
         // 点击动态进入动态列表
         clickEventList() {
@@ -184,6 +187,7 @@ export default {
             let res = await this.$store.dispatch('user/logout')
             this.$toast(res)
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
+            this.$router.push('/')
         }
     }
 }
@@ -217,6 +221,7 @@ export default {
                 display: flex;
                 flex-direction: column;
                 padding: 0 21px;
+                cursor: pointer;
                 & > span:last-child {
                     font-size: 13px;
                     color: $color-base-grey;
@@ -228,7 +233,6 @@ export default {
                         font-size: 32px;
                         font-weight: 400;
                         margin-bottom: 2px;
-                        cursor: pointer;
                     }
                 }
             }

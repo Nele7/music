@@ -3,6 +3,7 @@ const getters = {
     uid: state => state.user.userInfo.userId,
     userInfo: state => state.user.userInfo,
     loginStatus: state => state.user.userLoginStatus,
+    signStatus: state => state.user.userSignStatus,
     playList: state => state.user.userPlayList.playlist,
     followList: state => state.user.userFollowList,
     followerList: state => state.user.userFollowerList,
