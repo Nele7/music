@@ -21,16 +21,16 @@
                         </p>
                     </div>
                     <div class="follow-cancel">
-                        <span v-if="item.followed && item.mutual">
-                            <i class="el-icon-plus"></i>
+                        <span v-if="item.followed && item.mutual" class="followed">
+                            <i class="el-icon-check"></i>
                             互相关注
                         </span>
-                        <span @click='follow(item,index)' v-if="!item.followed">
+                        <span @click='follow(item,index)' v-if="!item.followed" class="follow">
                             <i class="el-icon-plus"></i>
                             关注
                         </span>
-                        <span v-if="item.followed && !item.mutual">
-                            <i class="el-icon-plus"></i>
+                        <span v-if="item.followed && !item.mutual" class="followed">
+                            <i class="el-icon-check"></i>
                             已关注
                         </span>
                     </div>
@@ -152,14 +152,24 @@
             }
 
             .follow-cancel {
-                width: 89px;
+                width: 95px;
                 height: 100%;
                 font-size: 14px;
                 span {
                     display: inline-block;
                     height: 30px;
                     line-height: 30px;
-                    cursor: pointer;
+                    font-size: $font-size-text-small;
+                    border-radius: 4px;
+                    padding: 0 7px;
+                    background: $background-grey;
+                    &.follow {
+                        color: $color-base-red;
+                        cursor: pointer;
+                    }
+                    &.followed {
+                        color: $color-base-grey;
+                    }
                 }
             }
         }

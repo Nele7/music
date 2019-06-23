@@ -160,7 +160,7 @@ export default {
             let res = await this.$store.dispatch('user/sign')
             this.$toast('签到成功积分+'+res.point)
             // 更新签到状态
-            this.$store.commit(types.USER_SIGN,true)
+            this.$store.commit(`user/${types.USER_SIGN}`,true)
             // await this.$store.dispatch('user/getUserDetail')
         },
         // 点击动态进入动态列表

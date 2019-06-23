@@ -75,7 +75,7 @@ export default {
             this.phone = ''
             this.password = ''
         },
-        // 登录提交请求 第一个参数为什么类型登录，第二个为参数
+        // 登录提交请求 arguments type: 登录类型 params: 登录参数
         async subLogin(type,params) {
             let url = ''
             type === 'phone' ? url = 'user/dologinPhone': (type === 'email' ? url = 'user/dologinEmail' : url = '')
@@ -98,6 +98,7 @@ export default {
     flex-direction: column;
     z-index: 999;
     margin: auto;
+    background: $color-white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
     .login-header {
         display: flex;
