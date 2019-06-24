@@ -14,6 +14,7 @@ export const neteaseApi = {
   // loginRefresh: apiData('/login/refresh'),     // 刷新登录状态
   // loginStatus: apiData('/login/status'),       // 登录状态
   // end
+
   // s 用户 api
   sign: apiData('/daily_signin'),              // 用户签到 
   userFollows: apiData('/user/follows'),       // 获取用户--关注列表
@@ -25,5 +26,12 @@ export const neteaseApi = {
   follow: apiData('/follow'),                  // 关注用户和取消用户
   // e
   
-  banner: apiData('/banner'),                  // 首页轮播图
+  banner: apiData('/banner'),                         // 首页轮播图
+  personalized: apiData('/personalized'),             // 推荐歌单
+  exclusive: apiData('/personalized/privatecontent'), // 独家放送
+  newsong: apiData('/personalized/newsong'),          // 推荐新音乐
+  personalizedmv: apiData('/personalized/mv'),        // 推荐mv
+  djprogram: apiData('/personalized/djprogram'),      // 主播电台
+  everydaySongs:apiData('/recommend/songs'),          // 每日推荐歌曲
+  everydayResource:apiData('/recommend/resource'),    // 每日推荐歌单
 }
