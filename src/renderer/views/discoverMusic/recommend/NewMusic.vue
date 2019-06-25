@@ -97,15 +97,22 @@
                 p{
                     margin-top: 8px;
                     .sq {
+                        display: inline-block;
+                        height: 12px;
                         border-radius: 4px;
-                        padding: 0 1px;
+                        line-height: 12px;
+                        // padding: 0 1px;
                         border:1px solid $color-base-red;
                         color:$color-base-red;
-                        font-size: $font-size-text-small;
+                        font-size: 12px;
                     }
-                }
-                p:last-child{
-                    font-size: 13px;
+                    &:first-child {
+                        font-size: 14px;
+                    }
+                    &:last-child {
+                        color: $color-base-grey;
+                        font-size: 13px;
+                    }
                 }
             }
         }
