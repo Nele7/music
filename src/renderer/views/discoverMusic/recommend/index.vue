@@ -1,10 +1,15 @@
 <template>
     <div class="recommend-wrapper">
+        <adjust></adjust>
+
         <div class="carousel-wrapper">
             <banner :bannerList="bannerList" v-if="bannerList.length > 0"></banner>
         </div>
-
-        <div class="recommend-songlist">
+        <div v-for="item in listFilters">
+            <component :is="item.title" :t="item.t"></component>
+            <component :is="item.type" :listType="item.listType" :list="item.list" :screenSize="item.screenSize" :newMusicList="item.list"></component>
+        </div>
+        <!-- <div class="recommend-songlist">
             <v-title t="推荐歌单"></v-title>
             <recommend-list
                 :list="recommendSongsList"
@@ -39,7 +44,7 @@
                 v-if="privateContent.length > 0"
                 @selectId="selectId"
             ></recommend-list>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -49,6 +54,7 @@ import to from "@/utils/await-to.js"
 import { pad } from "@/utils/util.js"
 import Banner from './Banner'
 import NewMusic from './NewMusic'
+import Adjust from './Adjust'
 import RecommendList from '@/components/RecommendList/'
 import Title from '@/components/Title/'
 export default {
@@ -56,6 +62,50 @@ export default {
     data() {
         return {
             bannerList: [],
+            listFilters: [
+                {
+                    title:'v-title',
+                    t:'推荐歌单',
+                    type:'recommend-list',
+                    listType:'Song',
+                    screenSize:{
+                        md:6,
+                        lg:4,
+                        xl:3
+                    },
+                    list:[]
+                },
+                {
+                    title:'v-title',
+                    t:'推荐MV',
+                    type:'recommend-list',
+                    listType:'Mv',
+                    screenSize:{
+                        md:6,
+                        lg:6,
+                        xl:6
+                    },
+                    list:[]
+                },
+                {
+                    title:'v-title',
+                    t:'最新音乐',
+                    type:'new-music',
+                    list:[]
+                },
+                {
+                    title:'v-title',
+                    t:'独家放送',
+                    type:'recommend-list',
+                    listType:'Private',
+                    screenSize:{
+                        md:8,
+                        lg:8,
+                        xl:8
+                    },
+                    list:[]
+                },
+            ],
             recommendSongsList: [],
             recommendMV: [],
             privateContent: [],
@@ -81,22 +131,27 @@ export default {
         // 获取推荐歌单
         async getPersonalized() {
             let [res] = await to(neteaseApi.personalized())
-            this.recommendSongsList = res.result
+            // this.recommendSongsList = res.result
+            this.listFilters[0].list = res.result
         },
         // 获取推荐mv
         async getPersonalizedmv() {
             let [res] = await to(neteaseApi.personalizedmv())
-            this.recommendMV = res.result
+            // this.recommendMV = res.result
+            this.listFilters[1].list = res.result
+
         },
         // 获取独家放送
         async getPrivateContent() {
             let [res] = await to(neteaseApi.exclusive())
-            this.privateContent = res.result
+            this.listFilters[3].list = res.result
+            // this.privateContent = res.result
         },
         // 获取最新音乐
         async getNewMusic() {
             let [res] = await to(neteaseApi.newsong())
-            this.newMusic = this._normalizeNewMusic(res.result)
+            // this.newMusic = this._normalizeNewMusic(res.result)
+            this.listFilters[2].list = this._normalizeNewMusic(res.result)
         },
         _normalizeNewMusic(data) {
             let res = []
@@ -114,7 +169,8 @@ export default {
         Banner,
         RecommendList,
         'v-title': Title,
-        NewMusic
+        NewMusic,
+        Adjust
     }
 }
 </script>

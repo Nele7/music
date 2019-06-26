@@ -12,7 +12,7 @@
                 <div class="item-text">
                     <p>
                         <span>{{list.name}}</span>
-                        <span v-if="list.song.alias.length>0">{{list.song.alias[0]}}</span>
+                        <span v-if="list.song.alias.length>0" class="alias">{{list.song.alias[0]}}</span>
                     </p>
                     <p>
                         <span class="sq" v-if="list.song.copyright === 0">SQ</span>
@@ -101,10 +101,12 @@
                         height: 12px;
                         border-radius: 4px;
                         line-height: 12px;
-                        // padding: 0 1px;
                         border:1px solid $color-base-red;
                         color:$color-base-red;
                         font-size: 12px;
+                    }
+                    .alias {
+                        color: $color-base-grey;
                     }
                     &:first-child {
                         font-size: 14px;

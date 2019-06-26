@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="10" class="list-wrapper">
-        <el-col :md="md" :lg="lg" :xl="xl" v-for="(item,index) in list" :key="index" class="list-item">
+        <el-col :md="screenSize.md" :lg="screenSize.lg" :xl="screenSize.xl" v-for="(item,index) in list" :key="index" class="list-item">
             <div class="item" :class="{'song-item':listType=='Song','mv-item':listType=='Mv','private-item':listType=='Private'}" @click="selectItem(item.id)">
                 <img :src="item.picUrl" alt="">
                 <div class="hover-from" v-if="listType!='Private'">
@@ -36,23 +36,8 @@
                     return []
                 }
             },
-            md: {
-                type:Number,
-                default() {
-                    return 6
-                }
-            },
-            lg: {
-                type:Number,
-                default() {
-                    return 4
-                }
-            },
-            xl: {
-                type:Number,
-                default() {
-                    return 3
-                }
+            screenSize: {
+                type: Object
             },
             listType: {
                 type: String,
