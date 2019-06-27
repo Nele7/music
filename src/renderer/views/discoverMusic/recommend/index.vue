@@ -1,7 +1,5 @@
 <template>
     <div class="recommend-wrapper">
-        <adjust></adjust>
-
         <div class="carousel-wrapper">
             <banner :bannerList="bannerList" v-if="bannerList.length > 0"></banner>
         </div>
@@ -9,46 +7,13 @@
             <component :is="item.title" :t="item.t"></component>
             <component :is="item.type" :listType="item.listType" :list="item.list" :screenSize="item.screenSize" :newMusicList="item.list"></component>
         </div>
-        <!-- <div class="recommend-songlist">
-            <v-title t="推荐歌单"></v-title>
-            <recommend-list
-                :list="recommendSongsList"
-                v-if="recommendSongsList.length > 0"
-                @selectId="selectId"
-            ></recommend-list>
-        </div>
-        <div class="recommend-mv">
-            <v-title t="推荐MV"></v-title>
-            <recommend-list
-                :list="recommendMV"
-                :md="6"
-                :lg="6"
-                :xl="6"
-                listType="Mv"
-                v-if="recommendMV.length > 0"
-                @selectId="selectId"
-            ></recommend-list>
-        </div>
-        <div class="newmusic">
-            <v-title t="最新音乐"></v-title>
-            <new-music :newMusicList="newMusic" v-if="newMusic.length > 0"></new-music>
-        </div>
-        <div class="privatecontent">
-            <v-title t="独家放送"></v-title>
-            <recommend-list
-                :list="privateContent"
-                :md="8"
-                :lg="8"
-                :xl="8"
-                listType="Private"
-                v-if="privateContent.length > 0"
-                @selectId="selectId"
-            ></recommend-list>
-        </div> -->
+        <adjust></adjust>
     </div>
 </template>
 
 <script>
+import { SlickList, SlickItem } from 'vue-slicksort'
+
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
 import { pad } from "@/utils/util.js"
@@ -57,67 +22,29 @@ import NewMusic from './NewMusic'
 import Adjust from './Adjust'
 import RecommendList from '@/components/RecommendList/'
 import Title from '@/components/Title/'
+import * as types from '@/store/mutation_types'
 export default {
     name: 'recommend',
     data() {
         return {
             bannerList: [],
-            listFilters: [
-                {
-                    title:'v-title',
-                    t:'推荐歌单',
-                    type:'recommend-list',
-                    listType:'Song',
-                    screenSize:{
-                        md:6,
-                        lg:4,
-                        xl:3
-                    },
-                    list:[]
-                },
-                {
-                    title:'v-title',
-                    t:'推荐MV',
-                    type:'recommend-list',
-                    listType:'Mv',
-                    screenSize:{
-                        md:6,
-                        lg:6,
-                        xl:6
-                    },
-                    list:[]
-                },
-                {
-                    title:'v-title',
-                    t:'最新音乐',
-                    type:'new-music',
-                    list:[]
-                },
-                {
-                    title:'v-title',
-                    t:'独家放送',
-                    type:'recommend-list',
-                    listType:'Private',
-                    screenSize:{
-                        md:8,
-                        lg:8,
-                        xl:8
-                    },
-                    list:[]
-                },
-            ],
             recommendSongsList: [],
             recommendMV: [],
             privateContent: [],
-            newMusic: []
+            newMusic: [],
         }
     },
     created() {
         this.getBanner()
-        this.getPersonalized()
-        this.getPersonalizedmv()
-        this.getPrivateContent()
-        this.getNewMusic()
+        this.$store.dispatch(`personalize/getPersonalized`)
+        this.$store.dispatch(`personalize/getPersonalizedmv`)
+        this.$store.dispatch(`personalize/getNewMusic`)
+        this.$store.dispatch(`personalize/getPrivateContent`)
+    },
+    computed: {
+        listFilters() {
+            return this.$store.state.personalize.recommendListFilters
+        }  
     },
     methods: {
         selectId(id) {
@@ -128,49 +55,13 @@ export default {
             let [res] = await to(neteaseApi.banner())
             this.bannerList = res.banners
         },
-        // 获取推荐歌单
-        async getPersonalized() {
-            let [res] = await to(neteaseApi.personalized())
-            // this.recommendSongsList = res.result
-            this.listFilters[0].list = res.result
-        },
-        // 获取推荐mv
-        async getPersonalizedmv() {
-            let [res] = await to(neteaseApi.personalizedmv())
-            // this.recommendMV = res.result
-            this.listFilters[1].list = res.result
-
-        },
-        // 获取独家放送
-        async getPrivateContent() {
-            let [res] = await to(neteaseApi.exclusive())
-            this.listFilters[3].list = res.result
-            // this.privateContent = res.result
-        },
-        // 获取最新音乐
-        async getNewMusic() {
-            let [res] = await to(neteaseApi.newsong())
-            // this.newMusic = this._normalizeNewMusic(res.result)
-            this.listFilters[2].list = this._normalizeNewMusic(res.result)
-        },
-        _normalizeNewMusic(data) {
-            let res = []
-            let len = data.length
-            for (let i = 0; i < len; i++) {
-                data[i].index = pad(i + 1)
-            }
-            for (let i = 0; i < len; i += 5) {
-                res.push(data.slice(i, i + 5))
-            }
-            return res
-        }
     },
     components: {
         Banner,
         RecommendList,
         'v-title': Title,
         NewMusic,
-        Adjust
+        Adjust,SlickList, SlickItem
     }
 }
 </script>

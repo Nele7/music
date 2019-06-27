@@ -1,4 +1,4 @@
-import Vue from 'vue'
+
 import { neteaseApi } from '@/api';
 import to from '@/utils/await-to.js'
 import local from '@/utils/storage.js'

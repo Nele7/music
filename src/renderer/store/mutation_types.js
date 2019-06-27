@@ -11,3 +11,8 @@ export const CHANGE_FOLLOWER = 'CHANGE_FOLLOWER'                 // 操作用户
 // toggle.js
 export const TOGGLE_LOGIN_DIALOG = 'TOGGLE_LOGIN_DIALOG'         // 登录模态框显示状态
 export const TOGGLE_USERINFO_DETAIL = 'TOGGLE_USERINFO_DETAIL'   // 用户详细信息显示状态
+
+
+// personalize.js
+export const SET_RECOMMEND = 'SET_RECOMMEND'                     // 设置个性推荐数据
+export const UPDATE_RECOMMEND = 'UPDATE_RECOMMEND'               // 更新个性推荐数据
