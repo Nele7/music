@@ -76,7 +76,9 @@ const actions = {
   // 获取推荐歌单
   async getPersonalized({commit}) {
     let [res] = await to(neteaseApi.personalized())
-    commit(types.SET_RECOMMEND,{arr:res.result,index:0})
+    setInterval(()=>{
+      commit(types.SET_RECOMMEND,{arr:res.result,index:0})
+    },2000)
   },
   // 获取推荐mv
   async getPersonalizedmv({commit}) {

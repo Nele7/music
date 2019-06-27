@@ -60,7 +60,6 @@ export default {
 @import "@/assets/style/transition.scss";
 .app-wrapper {
     @include position(relative, 0, 0, 0, 0, 100%, 100%);
-    // -webkit-app-region: drag;
 }
 .sidebar-container {
     @include position(
@@ -72,7 +71,6 @@ export default {
         $sideBarWidth,
         calc(100% - #{$navplayHeight})
     );
-    // background: red;
 }
 .main-container {
     @include position(
@@ -84,9 +82,6 @@ export default {
         calc(100% - #{$sideBarWidth}),
         calc(100% - #{$navplayHeight})
     );
-    // padding: 10px 0 10px 10px;
-    // box-sizing: border-box;
-    // background: green;
 }
 .navbar-container {
     @include position(absolute, 0, 0, auto, auto, 100%, $navBarHeight);

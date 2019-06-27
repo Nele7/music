@@ -34,4 +34,6 @@ export const neteaseApi = {
   djprogram: apiData('/personalized/djprogram'),      // 主播电台
   everydaySongs:apiData('/recommend/songs'),          // 每日推荐歌曲
   everydayResource:apiData('/recommend/resource'),    // 每日推荐歌单
+
+  playlistDetail:apiData('/playlist/detail'),         // 获取歌单详情
 }

@@ -42,10 +42,20 @@ li{
 a {
     text-decoration: none;
 }
-// .el-carousel__item:nth-child(2n) {
-//     background-color: #99a9bf;
-// }
-  
-// .el-carousel__item:nth-child(2n+1) {
-//     background-color: #d3dce6;
-// }
+.el-dialog--center .el-dialog__body {
+    padding: 0;
+}
+.el-dialog__body {
+    padding: 0;
+}
+.el-dialog__title {
+    font-size: 16px;
+}
+.el-dialog__footer{
+    padding:10px ;
+}
+.el-button.is-plain:focus, .el-button.is-plain:hover {
+    background: #FFF;
+    border-color: #b31212;
+    color: #b31212;
+}

@@ -16,6 +16,9 @@ const video = () => import('@/views/video/index')
 
 const pal = () => import('@/views/pal/index')
 const follow = () => import('@/views/follow/index')
+
+const songListDetail = () => import('@/views/songListDetail/index')
+
 Vue.use(Router)
 
 export default new Router({
@@ -145,6 +148,19 @@ export default new Router({
           path: 'index',
           component: follow,
           name: 'follow'
+        },
+      ]
+    },
+    {
+      path: '/songlistdetail',
+      name: 'songlistdetail',
+      component: Layout,
+      redirect: '/userDetail/index/:id',
+      children:[
+        {
+          path: 'index/:id',
+          component: songListDetail,
+          name: 'songlistdetail'
         },
       ]
     },

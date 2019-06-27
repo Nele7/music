@@ -9,7 +9,8 @@
             </p>
         </div>
         <p class="footer">---------------我是有底线的---------------</p>
-        <el-dialog title="调整栏目顺序" :visible.sync="dialogVisible" width="500px" center :modal="false">
+        <el-dialog title="调整栏目顺序" :visible.sync="dialogVisible" width="330px" center :modal="false">
+            <p class="tips">想调整首页栏目的顺序？按住右边的按钮拖动即可</p>
             <SlickList 
             :lockToContainerEdges="true"
             :hideSortableGhost="false"
@@ -22,12 +23,12 @@
             v-model="listFilters">
                 <SlickItem class="list-item" v-for="(item, index) in listFilters" :index="index" :key="index">
                     {{ item.t }}
-                    <i class="el-icon-finished"></i>
+                    <i class="el-icon-s-unfold"></i>
                 </SlickItem>
             </SlickList>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false" plain>取 消</el-button>
-                <el-button @click="updateRecommendArr" plain>确 定</el-button>
+                <el-button size="mini" @click="dialogVisible = false" plain>取 消</el-button>
+                <el-button size="mini" @click="updateRecommendArr" plain>确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -78,8 +79,9 @@ import * as types from '@/store/mutation_types'
     color: #333;
     font-weight: 400;
     z-index:99999;
+    font-size: 15px;
     i{
-        cursor: pointer;
+        cursor: move;
         font-size: 22px;
     }
 }
@@ -112,30 +114,38 @@ import * as types from '@/store/mutation_types'
             }
         }
     }
-
+    .tips {
+        text-align: center;
+        color: $color-base-grey;
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
     .list {
         max-height: 80vh;
         margin: 0 auto;
         padding: 0;
         overflow: auto;
-        background-color: #f3f3f3;
-        border: 1px solid #efefef;
+        padding: 0 10px;
         .list-item {
             display: flex;
             align-items: center;
             flex-direction: row;
             justify-content: space-between;
             width: 100%;
-            padding: 20px;
+            padding: 7px 12px;
             background-color: #fff;
             border-bottom: 1px solid #efefef;
             box-sizing: border-box;
             user-select: none;
             color: #333;
             font-weight: 400;
-            font-size: 15px;
+            font-size: 13px;
+            &:hover {
+                background-color: #f3f3f3;
+
+            }
             i {
-                cursor: pointer;
+                cursor: move;
                 font-size: 22px;
             } 
         }
@@ -149,24 +159,4 @@ import * as types from '@/store/mutation_types'
     }
 }
 
-</style>
-<style>
-.el-dialog--center .el-dialog__body {
-    padding: 0;
-}
-.el-dialog__body {
-    padding: 0;
-}
-.el-dialog__title {
-    font-size: 16px;
-    color: #969696;
-}
-.el-dialog__footer{
-    padding:10px ;
-}
-.el-button.is-plain:focus, .el-button.is-plain:hover {
-    background: #FFF;
-    border-color: #b31212;
-    color: #b31212;
-}
 </style>

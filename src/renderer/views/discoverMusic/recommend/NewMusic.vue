@@ -1,6 +1,6 @@
 <template>
     <ul class="new-music-wrapper">
-        <li class="new-muisc-list" v-for="(item,index) in newMusicList">
+        <li class="new-muisc-list" v-for="(item,index) in list">
             <div class="new-muisc-item" v-for="(list,index) in item">
                 <div class="item-img">
                     <img :src="list.song.album.blurPicUrl" alt="">
@@ -27,7 +27,7 @@
 <script>
     export default {
         props:{
-            newMusicList: {
+            list: {
                 type: Array,
                 default() {
                     return []
