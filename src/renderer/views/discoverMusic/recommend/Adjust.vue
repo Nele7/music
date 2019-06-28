@@ -49,6 +49,7 @@ import * as types from '@/store/mutation_types'
         methods: {
             // 监听数组顺序
             changeRecommendArr(v) {
+                console.log(v)
                 this.tempArr = v
             },
             // 更新数组
@@ -66,6 +67,7 @@ import * as types from '@/store/mutation_types'
 
 <style lang="scss" scoped>
 @import "@/assets/style/variables.scss";
+@import "@/assets/style/mixin.scss";
 .actives{
     box-shadow:0 0 10px rgb(187, 187, 187);
     display: flex;
@@ -159,4 +161,23 @@ import * as types from '@/store/mutation_types'
     }
 }
 
+</style>
+<style>
+.el-dialog--center .el-dialog__body {
+    padding: 0;
+}
+.el-dialog__body {
+    padding: 0;
+}
+.el-dialog__title {
+    font-size: 16px;
+}
+.el-dialog__footer{
+    padding:10px ;
+}
+.el-button.is-plain:focus, .el-button.is-plain:hover {
+    background: #FFF;
+    border-color: #b31212;
+    color: #b31212;
+}
 </style>

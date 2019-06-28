@@ -32,6 +32,7 @@ import RecommendList from '@/components/RecommendList/'
 import Title from '@/components/Title/'
 import * as types from '@/store/mutation_types'
 import Spinner from 'vue-spinkit'
+const TIME = 1000;
 export default {
     name: 'recommend',
     data() {
@@ -60,7 +61,7 @@ export default {
             let [res] = await to(neteaseApi.banner())
             setInterval(()=>{
                 this.bannerList = res.banners
-            },2000)
+            },TIME)
         },
     },
     components: {
@@ -75,16 +76,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/mixin.scss";
 .recommend-wrapper {
     position: relative;
     padding: 20px;
 }
 .loading {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    @include position(absolute,0,0,0,0);
     background: #fff;
     z-index: 99999;
     div {
