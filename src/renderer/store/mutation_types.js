@@ -7,6 +7,7 @@ export const USER_EVENT = 'USER_EVENT'                           // 用户动态
 export const USER_FOLLOW = 'USER_FOLLOW'                         // 用户关注列表
 export const USER_FOLLOWER = 'USER_FOLLOWER'                     // 用户粉丝列表
 export const CHANGE_FOLLOWER = 'CHANGE_FOLLOWER'                 // 操作用户粉丝数组
+export const USER_LIKE_LIST = 'USER_LIKE_LIST'                   // 用户喜欢列表
 
 // toggle.js
 export const TOGGLE_LOGIN_DIALOG = 'TOGGLE_LOGIN_DIALOG'         // 登录模态框显示状态

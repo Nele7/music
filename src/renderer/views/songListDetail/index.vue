@@ -15,7 +15,7 @@
           <div class="songlist-avatar">
             <img :src="indexList.creator && indexList.creator.avatarUrl" alt="" width="30px">
             <span>{{indexList.creator && indexList.creator.nickname}}</span>
-            <span>{{indexList.createTime}} 创建</span>
+            <span>{{indexList.createTime | formatDateTime}} 创建</span>
           </div>
           <div class="btn-group">
             <div class="btn-mini active">
@@ -25,11 +25,11 @@
             </div>
             <div class="btn-mini ">
               <i class="el-icon-plus"></i>
-              收藏 ({{indexList.subscribedCount}})
+              收藏 ({{indexList.subscribedCount | covertUnit}})
             </div>
             <div class="btn-mini ">
               <i class="iconfont icon-fenxiang"></i>
-              分享 ({{indexList.shareCount}})
+              分享 ({{indexList.shareCount | covertUnit}})
             </div>
           </div>
           <div class="tags name">
@@ -40,13 +40,13 @@
             <span>歌曲数</span>：
             <em>{{indexList.tracks && indexList.tracks.length}}</em>
             <span class="play-num">播放数：</span>
-            <em>{{indexList.playCount}}</em>
+            <em>{{indexList.playCount | covertUnit}}</em>
           </div>
           <div class="brief name">
             <span>
               简介
             </span>：
-            {{indexList.description}}
+            <pre>{{indexList.description}}</pre>
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
           </li>
         </ul>
         <keep-alive>
-          <component :is="showTabsComponent" :musiclist="musiclist"></component>
+          <component :is="showTabsComponent" :musiclist="indexList.tracks"></component>
         </keep-alive>
       </div>
   </div>
@@ -66,6 +66,7 @@
 <script>
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
+import {covertUnit,formatDateTime} from "@/utils/util.js"
 import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
@@ -80,7 +81,7 @@ import Subscribers from './Subscribers'
         ],
         tempIndex:0,
         showTabsComponent:'music-list',
-        musiclist:[],
+        // musiclist:[],
         indexList: []
 
       }
@@ -100,18 +101,29 @@ import Subscribers from './Subscribers'
           id: this.songId
         }))
         this.indexList = res.playlist
-        this.musiclist = res.playlist.tracks
-        console.log(this.indexList)
+        // this.musiclist = res.playlist.tracks
       },
       showTabs(item,index) {
         this.showTabsComponent = item.v
         this.tempIndex = index
       }
     },
+    watch: {
+      songId:{
+        deep:true,
+        handler() {
+          this.getPlayListDetail()
+        }
+      }
+    },
     components:{
       MusicList,
       Comment,
       Subscribers
+    },
+    filters:{
+      covertUnit,
+      formatDateTime
     }
   }
 </script>
@@ -119,8 +131,7 @@ import Subscribers from './Subscribers'
 <style lang="scss" scoped>
 @import "@/assets/style/variables.scss";
 @import "@/assets/style/mixin.scss";
-
-$song-cover-width:290px;
+$song-cover-width:240px;
 
 .songlistdetail-title-wrapper {
   display: flex;

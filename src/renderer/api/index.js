@@ -36,4 +36,6 @@ export const neteaseApi = {
   everydayResource:apiData('/recommend/resource'),    // 每日推荐歌单
 
   playlistDetail:apiData('/playlist/detail'),         // 获取歌单详情
+  likelist: apiData('/likelist'),                     // 获取喜欢的音乐列表
+  like: apiData('/like'),                             // 喜欢音乐
 }

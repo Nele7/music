@@ -39,6 +39,7 @@ export default {
         LoginDialog
     },
     mounted(){
+        this.$store.dispatch('user/getUserLikelist')
     },
     computed:{
         // 登录模态框状态

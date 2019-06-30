@@ -19,6 +19,7 @@ const state = {
   userFollowList:[],                                             // 用户关注列表
   userFollowerList:[],                                           // 用户粉丝列表
   userEvent:[],                                                  // 用户动态列表
+  userlikelist: [],                                              // 用户喜欢列表
 }
 
 const mutations = {
@@ -63,10 +64,11 @@ const mutations = {
   },
   // 操作粉丝数组
   [types.CHANGE_FOLLOWER](state,{index,user}){
-    // console.log(payload)
     state.userFollowerList.splice(index,1,user)
-    console.log(state.userFollowerList)
-  }
+  },
+  [types.USER_LIKE_LIST](state,arr) {
+    state.userlikelist = arr
+  },
 }
 
 const actions = {
@@ -135,6 +137,13 @@ const actions = {
       resolve(state.userPlayList)
     })
   },
+  // 获取用户--喜欢列表
+  async getUserLikelist({commit,state}) {
+    let [res] = await to(neteaseApi.likelist({
+      uid: state.userInfo.userId
+    }))
+    commit(types.USER_LIKE_LIST, res.ids)
+  },
   // 用户签到
   sign({commit,dispatch}) {
     return new Promise(async (resolve,reject) => {
@@ -143,6 +152,22 @@ const actions = {
       commit(types.USER_SIGN,mobileSign)
       resolve(res)
     })
+  },
+  insertUserLikelist({commit,state},id) {
+    let userlist = [...state.userlikelist]
+    let index = userlist.findIndex(item => item === id)
+    if(index === -1){
+      userlist.unshift(id)
+    }
+    commit(types.USER_LIKE_LIST,userlist)
+  },
+  deleteUserLikelist({commit,state},id) {
+    let userlist = [...state.userlikelist]
+    let index = userlist.findIndex(item => item === id)
+    if(index > -1){
+      userlist.splice(index,1)
+    }
+    commit(types.USER_LIKE_LIST,userlist)
   }
 }
 

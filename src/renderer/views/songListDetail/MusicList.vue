@@ -10,9 +10,9 @@
             </li>
             <li class="song-item" v-for="(item,index) in musiclist" :key="index">
                 <div class="blank">
-                    <span>{{index+1}}</span>
-                    <!-- <i class="iconfont icon-xin"></i> -->
-                    <i class="iconfont icon-hongxin liked"></i>
+                    <span>{{index+1 | pad}}</span>
+                    <i class="iconfont" :class="likedIcon(item.id)" @click="toggleLike(item.id)"></i>
+                    <!-- <i class="iconfont icon-hongxin liked"></i> -->
                 </div>
                 <div class="music-title">
                     <p>
@@ -25,13 +25,18 @@
                 </div>
                 <div class="songs">{{item.ar[0].name}}</div>
                 <div class="album">{{item.al.name}}</div>
-                <div class="duration">{{item.dt || item.duration }}</div>
+                <div class="duration">{{item.dt || item.duration | formatTime}}</div>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import { neteaseApi } from "@/api/"
+import to from "@/utils/await-to.js"
+import {formatTime,formatDateTime,pad} from "@/utils/util"
+import {mapActions} from 'vuex'
+
     export default {
         name: 'MusicList',
         props:{
@@ -46,9 +51,38 @@
             return {
             }
         },
-        methods: {
-            
+        computed: {
+            userlikelist() {
+                return this.$store.state.user.userlikelist
+            }
         },
+        methods: {
+            likedIcon(id) {
+                let liked = this.userlikelist.includes(id)
+                return liked ? 'icon-hongxin liked':'icon-xin'
+            },
+            // 喜欢与取消喜欢--音乐
+            toggleLike(id) {
+                let liked = this.userlikelist.includes(id)
+                console.log(liked)
+                this.like(id,liked)
+            },
+            async like(id,type) {
+                let [res] = await to(neteaseApi.like({
+                    id,
+                    like:!type
+                }))
+                !type?this.insertUserLikelist(id):this.deleteUserLikelist(id)
+                !type?this.$toast('已添加到我喜欢的音乐'):this.$toast('取消喜欢成功')
+            },
+            ...mapActions('user',['insertUserLikelist','deleteUserLikelist'])
+        },
+        filters:{
+            formatTime,
+            // covertUnit,
+            pad,
+            formatDateTime
+        }
     }
 </script>
 
