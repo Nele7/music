@@ -23,10 +23,11 @@
               播放全部
               <i class="el-icon-plus"></i>
             </div>
-            <div class="btn-mini ">
+            <div class="btn-mini" @click="toggleSubscribe(indexList.subscribed)" >
               <i class="el-icon-plus"></i>
-              收藏 ({{indexList.subscribedCount | covertUnit}})
+              {{indexList.subscribed?'已收藏':'收藏'}} ({{indexList.subscribedCount | covertUnit}})
             </div>
+            
             <div class="btn-mini ">
               <i class="iconfont icon-fenxiang"></i>
               分享 ({{indexList.shareCount | covertUnit}})
@@ -67,6 +68,7 @@
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
 import {covertUnit,formatDateTime} from "@/utils/util.js"
+import {mapActions} from 'vuex'
 import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
@@ -81,9 +83,7 @@ import Subscribers from './Subscribers'
         ],
         tempIndex:0,
         showTabsComponent:'music-list',
-        // musiclist:[],
-        indexList: []
-
+        indexList: {},
       }
     },
     created() {
@@ -101,12 +101,32 @@ import Subscribers from './Subscribers'
           id: this.songId
         }))
         this.indexList = res.playlist
-        // this.musiclist = res.playlist.tracks
       },
+      // 点击tab条
       showTabs(item,index) {
         this.showTabsComponent = item.v
         this.tempIndex = index
-      }
+      },
+      // 点击收藏歌单
+      toggleSubscribe(status) {
+        //  2: 取消收藏 1：收藏
+        let t = status?2:1
+        this.subscribePlaylist(t)
+      },
+      // 收藏歌单
+      async subscribePlaylist(t) {
+        let [res] = await to(neteaseApi.subscribePlaylist({
+          t,
+          id: this.indexList.id
+        }))
+        this.indexList.subscribed = !this.indexList.subscribed
+        this.indexList.subscribed ? this.$toast('收藏成功') : this.$toast('取消收藏成功')
+        // 如果为收藏--把indexList对象插入到playlist数组
+        // 如果为取消收藏--把indexList对象从playlist数组删除
+        let _obj = Object.assign({},this.indexList)
+        this.indexList.subscribed ? this.insertUserPlayList(_obj) : this.deleteUserPlayList(this.indexList.id)
+      },
+      ...mapActions('user',['insertUserPlayList','deleteUserPlayList'])
     },
     watch: {
       songId:{

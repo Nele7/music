@@ -22,7 +22,6 @@
                 <div class="menu-item" 
                 v-if="userStatus && item.playList.length > 0" 
                 v-for="(item,index) in normalPlayList"
-                :key="index"
                 >
                     <div class="menu-title">{{item.title}}</div>
                     <!-- <div class="menu-text" v-for="(playlist,i) in item.playList">
@@ -32,7 +31,6 @@
                     :to="`/songlistdetail/index/${playlist.id}`"
                     class="menu-text"
                     tag="div"
-                    :key="playlist.id"
                     >
                         <i class="iconfont " :class="[playlist.name === userInfo.nickname + '喜欢的音乐' ? 'icon-xin':'icon-yinyue']"></i>
                         <span>{{ playlist.name === userInfo.nickname + '喜欢的音乐' ? '我喜欢的歌单': playlist.name }}</span>
@@ -65,6 +63,9 @@ export default {
         }
     },
     mounted() {
+        if(this.userStatus) {
+            this.$store.dispatch('user/getUserPlayList')
+        }
     },
     computed: {
         userStatus() {

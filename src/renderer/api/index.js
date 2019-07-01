@@ -7,7 +7,7 @@ const apiData = (url, type = 'get') => (params) => apiServer[type](url, params)
 //   }
 // }
 export const neteaseApi = {
-  // start   登录Api
+  // start   登录 api
   phoneLogin: apiData('/login/cellphone'),     // 手机登录
   emailLogin: apiData('/login'),               // 邮箱登录
   logout: apiData('/logout'),                  // 退出登录
@@ -26,16 +26,21 @@ export const neteaseApi = {
   follow: apiData('/follow'),                  // 关注用户和取消用户
   // e
   
-  banner: apiData('/banner'),                         // 首页轮播图
-  personalized: apiData('/personalized'),             // 推荐歌单
-  exclusive: apiData('/personalized/privatecontent'), // 独家放送
-  newsong: apiData('/personalized/newsong'),          // 推荐新音乐
-  personalizedmv: apiData('/personalized/mv'),        // 推荐mv
-  djprogram: apiData('/personalized/djprogram'),      // 主播电台
-  everydaySongs:apiData('/recommend/songs'),          // 每日推荐歌曲
-  everydayResource:apiData('/recommend/resource'),    // 每日推荐歌单
+  // s 个性推荐 api
+  banner: apiData('/banner'),                          // 首页轮播图
+  personalized: apiData('/personalized'),              // 推荐歌单
+  exclusive: apiData('/personalized/privatecontent'),  // 独家放送
+  newsong: apiData('/personalized/newsong'),           // 推荐新音乐
+  personalizedmv: apiData('/personalized/mv'),         // 推荐mv
+  djprogram: apiData('/personalized/djprogram'),       // 主播电台
+  everydaySongs: apiData('/recommend/songs'),          // 每日推荐歌曲
+  everydayResource: apiData('/recommend/resource'),    // 每日推荐歌单
+  // e
 
-  playlistDetail:apiData('/playlist/detail'),         // 获取歌单详情
+  // s 歌单详情 api
+  playlistDetail: apiData('/playlist/detail'),        // 获取歌单详情
   likelist: apiData('/likelist'),                     // 获取喜欢的音乐列表
   like: apiData('/like'),                             // 喜欢音乐
+  subscribePlaylist: apiData('/playlist/subscribe'),  // 收藏歌单
+  // e 
 }

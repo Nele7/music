@@ -14,7 +14,7 @@ const state = {
   // userInfo: obj,
   userLoginStatus:localStorage.getItem('loginStatus') || false,  // 用户登录状态
   userInfo: local.getItem('userInfo') || {},                     // 用户登录信息       
-  userPlayList: local.getItem('userPlayList') || {},             // 用户创建收藏歌单
+  userPlayList: [],             // 用户创建收藏歌单
   userSignStatus: false,                                         // 用户签到状态
   userFollowList:[],                                             // 用户关注列表
   userFollowerList:[],                                           // 用户粉丝列表
@@ -36,19 +36,19 @@ const mutations = {
   [types.USER_SINGOUT](state) {
     try {
       state.userInfo = {}
-      state.userPlayList = {}
+      // state.userPlayList = {}
       state.userLoginStatus = false
       local.removeItem('userInfo')
-      local.removeItem('userPlayList')
+      // local.removeItem('userPlayList')
       localStorage.removeItem('loginStatus')
     } catch (e) { }
   },
   // 用户歌单
   [types.USER_PALYLIST](state, res) {
-    try {
+    // try {
       state.userPlayList = res
-      local.setItem('userPlayList', res)
-    } catch (e) { }
+      // local.setItem('userPlayList', res)
+    // } catch (e) { }
   },
   [types.USER_FOLLOW](state,list) {
     state.userFollowList = list
@@ -68,6 +68,9 @@ const mutations = {
   },
   [types.USER_LIKE_LIST](state,arr) {
     state.userlikelist = arr
+  },
+  [types.USER_PLAY_LIST](state,arr) {
+    state.userPlayList = arr
   },
 }
 
@@ -133,7 +136,8 @@ const actions = {
       let [res] = await to(neteaseApi.userPlayList({
         uid: state.userInfo.userId
       }))
-      commit(types.USER_PALYLIST, res)
+      console.log(res)
+      commit(types.USER_PALYLIST, res.playlist)
       resolve(state.userPlayList)
     })
   },
@@ -153,6 +157,7 @@ const actions = {
       resolve(res)
     })
   },
+  // s 操作我的喜欢--id列表
   insertUserLikelist({commit,state},id) {
     let userlist = [...state.userlikelist]
     let index = userlist.findIndex(item => item === id)
@@ -168,7 +173,28 @@ const actions = {
       userlist.splice(index,1)
     }
     commit(types.USER_LIKE_LIST,userlist)
-  }
+  },
+  // e
+
+  // s 操作用户歌单列表
+  insertUserPlayList({commit,state},obj) {
+    let playlist = [...state.userPlayList]
+    let index = playlist.findIndex(item => item.id === obj.id)
+    if(index === -1){
+      playlist.unshift(obj)
+    }
+    commit(types.USER_PALYLIST,playlist)
+  },
+  deleteUserPlayList({commit,state},id) {
+    let playlist = [...state.userPlayList]
+    let index = playlist.findIndex(item => item.id === id)
+    if(index > -1){
+      playlist.splice(index,1)
+    }
+    console.log(playlist)
+    commit(types.USER_PALYLIST,playlist)
+  },
+  // e
 }
 
 export default {
