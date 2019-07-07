@@ -1,157 +1,164 @@
 <template>
   <div>
-      <div class="songlistdetail-title-wrapper">
-        <div class="song-cover">
-          <div class="song-list-img">
-            <img :src="indexList.coverImgUrl" alt="">
+    <div class="songlistdetail-title-wrapper">
+      <div class="song-cover">
+        <div class="song-list-img">
+          <img :src="indexList.coverImgUrl" alt />
+        </div>
+      </div>
+
+      <div class="song-list-text">
+        <div class="title">
+          <span>歌单</span>
+          <h2>{{indexList.name}}</h2>
+        </div>
+        <div class="songlist-avatar">
+          <img :src="indexList.creator && indexList.creator.avatarUrl" alt width="30px" />
+          <span>{{indexList.creator && indexList.creator.nickname}}</span>
+          <span>{{indexList.createTime | formatDateTime}} 创建</span>
+        </div>
+        <div class="btn-group">
+          <div class="btn-mini active">
+            <i class="iconfont icon-bofang"></i>
+            播放全部
+            <i class="el-icon-plus"></i>
+          </div>
+          <div class="btn-mini" @click="toggleSubscribe(indexList.subscribed)">
+            <i class="el-icon-folder-add"></i>
+            {{indexList.subscribed?'已收藏':'收藏'}} ({{indexList.subscribedCount | covertUnit}})
+          </div>
+
+          <div class="btn-mini">
+            <i class="iconfont icon-fenxiang"></i>
+            分享 ({{indexList.shareCount | covertUnit}})
+          </div>
+        </div>
+        <div class="tags name">
+          <span>标签：</span>
+          <span class="active">{{indexList.tags && indexList.tags.join(',')}}</span>
+        </div>
+        <div class="play-count name">
+          <span>歌曲数：</span>
+          <em>{{indexList.tracks && indexList.tracks.length}}</em>
+          <span class="play-num">播放数：</span>
+          <em>{{indexList.playCount | covertUnit}}</em>
+        </div>
+        <div class="brief">
+          <div class="name">
+            <span>简介：</span>
+            <pre>{{indexList.description || '暂无'}}</pre>
+          </div>
+          <div class="brief-more">
+            <i class="el-icon-caret-bottom"></i>
           </div>
         </div>
         
-        <div class="song-list-text">
-          <div class="title">
-            <span>歌单</span>
-            <h2>{{indexList.name}}</h2>
-          </div>
-          <div class="songlist-avatar">
-            <img :src="indexList.creator && indexList.creator.avatarUrl" alt="" width="30px">
-            <span>{{indexList.creator && indexList.creator.nickname}}</span>
-            <span>{{indexList.createTime | formatDateTime}} 创建</span>
-          </div>
-          <div class="btn-group">
-            <div class="btn-mini active">
-              <i class="iconfont icon-bofang"></i>
-              播放全部
-              <i class="el-icon-plus"></i>
-            </div>
-            <div class="btn-mini" @click="toggleSubscribe(indexList.subscribed)" >
-              <i class="el-icon-plus"></i>
-              {{indexList.subscribed?'已收藏':'收藏'}} ({{indexList.subscribedCount | covertUnit}})
-            </div>
-            
-            <div class="btn-mini ">
-              <i class="iconfont icon-fenxiang"></i>
-              分享 ({{indexList.shareCount | covertUnit}})
-            </div>
-          </div>
-          <div class="tags name">
-            <span>标签</span>：
-            <span class="active">{{indexList.tags && indexList.tags.join(',')}}</span>
-          </div>
-          <div class="play-count name">
-            <span>歌曲数</span>：
-            <em>{{indexList.tracks && indexList.tracks.length}}</em>
-            <span class="play-num">播放数：</span>
-            <em>{{indexList.playCount | covertUnit}}</em>
-          </div>
-          <div class="brief name">
-            <span>
-              简介
-            </span>：
-            <pre>{{indexList.description}}</pre>
-          </div>
-        </div>
       </div>
-      <div class="tab">
-        <ul>
-          <li v-for="(item,index) in tab" :class="{'active':index===tempIndex}" :key="index" @click="showTabs(item,index)">
-            {{item.name}}
-          </li>
-        </ul>
-        <keep-alive>
-          <component :is="showTabsComponent" :musiclist="indexList.tracks"></component>
-        </keep-alive>
-      </div>
+    </div>
+    <div class="tab">
+      <ul>
+        <li
+          v-for="(item,index) in tab"
+          :class="{'active':index===tempIndex}"
+          :key="index"
+          @click="showTabs(item,index)"
+        >{{item.name}}</li>
+      </ul>
+      <keep-alive>
+        <component :is="showTabsComponent" :musiclist="indexList.tracks"></component>
+      </keep-alive>
+    </div>
   </div>
 </template>
 
 <script>
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
-import {covertUnit,formatDateTime} from "@/utils/util.js"
-import {mapActions} from 'vuex'
+import { covertUnit, formatDateTime } from "@/utils/util.js"
+import { mapActions } from 'vuex'
 import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
-  export default {
-    name: 'songlistdetail',
-    data() {
-      return {
-        tab:[
-          {name:'歌曲列表',v:'music-list'},
-          {name:'评论',v:'comment'},
-          {name:'收藏者',v:'subscribers'},
-        ],
-        tempIndex:0,
-        showTabsComponent:'music-list',
-        indexList: {},
-      }
-    },
-    created() {
-      this.getPlayListDetail()
-    },
-    computed: {
-      songId() {
-        return parseInt(this.$route.params.id)
-      },
-    },
-    methods: {
-      // 获取歌单详情
-      async getPlayListDetail() {
-        let [res] = await to(neteaseApi.playlistDetail({
-          id: this.songId
-        }))
-        this.indexList = res.playlist
-      },
-      // 点击tab条
-      showTabs(item,index) {
-        this.showTabsComponent = item.v
-        this.tempIndex = index
-      },
-      // 点击收藏歌单
-      toggleSubscribe(status) {
-        //  2: 取消收藏 1：收藏
-        let t = status?2:1
-        this.subscribePlaylist(t)
-      },
-      // 收藏歌单
-      async subscribePlaylist(t) {
-        let [res] = await to(neteaseApi.subscribePlaylist({
-          t,
-          id: this.indexList.id
-        }))
-        this.indexList.subscribed = !this.indexList.subscribed
-        this.indexList.subscribed ? this.$toast('收藏成功') : this.$toast('取消收藏成功')
-        // 如果为收藏--把indexList对象插入到playlist数组
-        // 如果为取消收藏--把indexList对象从playlist数组删除
-        let _obj = Object.assign({},this.indexList)
-        this.indexList.subscribed ? this.insertUserPlayList(_obj) : this.deleteUserPlayList(this.indexList.id)
-      },
-      ...mapActions('user',['insertUserPlayList','deleteUserPlayList'])
-    },
-    watch: {
-      songId:{
-        deep:true,
-        handler() {
-          this.getPlayListDetail()
-        }
-      }
-    },
-    components:{
-      MusicList,
-      Comment,
-      Subscribers
-    },
-    filters:{
-      covertUnit,
-      formatDateTime
+export default {
+  name: 'songlistdetail',
+  data() {
+    return {
+      tab: [
+        { name: '歌曲列表', v: 'music-list' },
+        { name: '评论', v: 'comment' },
+        { name: '收藏者', v: 'subscribers' },
+      ],
+      tempIndex: 0,
+      showTabsComponent: 'music-list',
+      indexList: {},
     }
+  },
+  created() {
+    this.getPlayListDetail()
+  },
+  computed: {
+    songId() {
+      return parseInt(this.$route.params.id)
+    },
+  },
+  methods: {
+    // 获取歌单详情
+    async getPlayListDetail() {
+      let [res] = await to(neteaseApi.playlistDetail({
+        id: this.songId
+      }))
+      this.indexList = res.playlist
+    },
+    // 点击tab条
+    showTabs(item, index) {
+      this.showTabsComponent = item.v
+      this.tempIndex = index
+    },
+    // 点击收藏歌单
+    toggleSubscribe(status) {
+      //  2: 取消收藏 1：收藏
+      let t = status ? 2 : 1
+      this.subscribePlaylist(t)
+    },
+    // 收藏歌单
+    async subscribePlaylist(t) {
+      let [res] = await to(neteaseApi.subscribePlaylist({
+        t,
+        id: this.indexList.id
+      }))
+      this.indexList.subscribed = !this.indexList.subscribed
+      this.indexList.subscribed ? this.$toast('收藏成功') : this.$toast('取消收藏成功')
+      // 如果为收藏--把indexList对象插入到playlist数组
+      // 如果为取消收藏--把indexList对象从playlist数组删除
+      let _obj = Object.assign({}, this.indexList)
+      this.indexList.subscribed ? this.insertUserPlayList(_obj) : this.deleteUserPlayList(this.indexList.id)
+    },
+    ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList'])
+  },
+  watch: {
+    songId: {
+      deep: true,
+      handler() {
+        this.getPlayListDetail()
+      }
+    }
+  },
+  components: {
+    MusicList,
+    Comment,
+    Subscribers
+  },
+  filters: {
+    covertUnit,
+    formatDateTime
   }
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/style/variables.scss";
 @import "@/assets/style/mixin.scss";
-$song-cover-width:240px;
+$song-cover-width: 240px;
 
 .songlistdetail-title-wrapper {
   display: flex;
@@ -167,11 +174,11 @@ $song-cover-width:240px;
       overflow: hidden;
       border-radius: 10px;
       img {
-        @include position(absolute,0,0,0,0,100%);
+        @include position(absolute, 0, 0, 0, 0, 100%);
       }
     }
   }
-  
+
   .song-list-text {
     flex: 1;
     padding: 20px;
@@ -188,8 +195,8 @@ $song-cover-width:240px;
       flex-direction: row;
       align-items: center;
       span {
-        border:1px solid $color-base-red;
-        color:$color-base-red;
+        border: 1px solid $color-base-red;
+        color: $color-base-red;
         border-radius: 4px;
         padding: 2px 5px;
         font-size: 19px;
@@ -211,17 +218,15 @@ $song-cover-width:240px;
       }
       span {
         margin-left: 10px;
-        
       }
-      &>span:nth-child(2) {
-        color:$color-base-red;
+      & > span:nth-child(2) {
+        color: $color-base-red;
         cursor: pointer;
       }
-      &>span:nth-child(3) {
+      & > span:nth-child(3) {
         font-size: 15px;
         line-height: 15px;
       }
-      
     }
 
     .btn-group {
@@ -234,37 +239,52 @@ $song-cover-width:240px;
         border: 1px solid $color-border;
         font-size: 15px;
         margin-right: 10px;
-        i{
-            font-size: 15px;
+        i {
+          font-size: 15px;
         }
         &.active {
-          background: #E55C4B;
+          background: #e55c4b;
           color: $color-white;
-          i{
+          i {
             font-size: 15px;
           }
         }
       }
     }
 
-
     .tags {
       .active {
-          color:$color-base-red;
-          cursor: pointer;
+        color: $color-base-red;
+        cursor: pointer;
       }
     }
     .play-count {
       .play-num {
         margin-left: 10px;
-         
       }
       em {
         font-style: normal;
-       
       }
     }
-    .name >span {
+    .brief {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      height: 36px;
+      overflow: hidden;
+      div{
+        display: flex;
+        flex-direction: row;
+        pre {
+          height: 100%;
+          font-size: 14px;
+          margin: 0;
+          white-space: pre-wrap;
+        }
+      }
+      
+    }
+    .name > span {
       &:first-child {
         display: inline-block;
         width: 65px;
@@ -281,7 +301,7 @@ $song-cover-width:240px;
     display: flex;
     flex-direction: row;
     width: 100%;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;   
     li {
       line-height: 40px;
       text-align: center;
@@ -293,7 +313,7 @@ $song-cover-width:240px;
       cursor: pointer;
       &.active {
         border-bottom: 2px solid $color-base-red;
-        color:  $color-base-red;
+        color: $color-base-red;
       }
     }
   }
