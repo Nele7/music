@@ -7,13 +7,13 @@ const apiData = (url, type = 'get') => (params) => apiServer[type](url, params)
 //   }
 // }
 export const neteaseApi = {
-  // start   登录 api
+  // s   登录 api
   phoneLogin: apiData('/login/cellphone'),     // 手机登录
   emailLogin: apiData('/login'),               // 邮箱登录
   logout: apiData('/logout'),                  // 退出登录
   // loginRefresh: apiData('/login/refresh'),     // 刷新登录状态
   // loginStatus: apiData('/login/status'),       // 登录状态
-  // end
+  // e
 
   // s 用户 api
   sign: apiData('/daily_signin'),              // 用户签到 
@@ -43,4 +43,10 @@ export const neteaseApi = {
   like: apiData('/like'),                             // 喜欢音乐
   subscribePlaylist: apiData('/playlist/subscribe'),  // 收藏歌单
   // e 
+
+  // s 评论 api
+  comment: apiData('/comment'),                       // 发送/删除评论
+  commentPlaylist:apiData('/comment/playlist'),       // 歌单评论
+  commentLike: apiData('comment/like'),               // 给评论点赞
+  // e
 }

@@ -28,7 +28,7 @@
             {{indexList.subscribed?'已收藏':'收藏'}} ({{indexList.subscribedCount | covertUnit}})
           </div>
 
-          <div class="btn-mini">
+          <div class="btn-mini" @click="$toast('暂未开放,敬请期待！！！')">
             <i class="iconfont icon-fenxiang"></i>
             分享 ({{indexList.shareCount | covertUnit}})
           </div>
@@ -43,16 +43,12 @@
           <span class="play-num">播放数：</span>
           <em>{{indexList.playCount | covertUnit}}</em>
         </div>
-        <div class="brief">
-          <div class="name">
-            <span>简介：</span>
-            <pre>{{indexList.description || '暂无'}}</pre>
-          </div>
-          <div class="brief-more">
-            <i class="el-icon-caret-bottom"></i>
-          </div>
+        <div class="brief name" ref="briefMoreWrapper">
+            <pre ref="briefMore">简介： {{indexList.description || '暂无'}}</pre>
         </div>
-        
+        <div class="brief-more" @click="toggleMore">
+            <i :class="showBriefMoreIcon?'el-icon-caret-top':'el-icon-caret-bottom'"></i>
+          </div>
       </div>
     </div>
     <div class="tab">
@@ -65,7 +61,7 @@
         >{{item.name}}</li>
       </ul>
       <keep-alive>
-        <component :is="showTabsComponent" :musiclist="indexList.tracks"></component>
+        <component :is="showTabsComponent" :musiclist="indexList.tracks" :id="indexList.id"></component>
       </keep-alive>
     </div>
   </div>
@@ -79,18 +75,20 @@ import { mapActions } from 'vuex'
 import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
+const briefWrapperHeight = 32;
 export default {
   name: 'songlistdetail',
   data() {
     return {
       tab: [
-        { name: '歌曲列表', v: 'music-list' },
         { name: '评论', v: 'comment' },
+        { name: '歌曲列表', v: 'music-list' },
         { name: '收藏者', v: 'subscribers' },
       ],
       tempIndex: 0,
-      showTabsComponent: 'music-list',
+      showTabsComponent: 'comment',
       indexList: {},
+      showBriefMoreIcon:false
     }
   },
   created() {
@@ -133,6 +131,20 @@ export default {
       let _obj = Object.assign({}, this.indexList)
       this.indexList.subscribed ? this.insertUserPlayList(_obj) : this.deleteUserPlayList(this.indexList.id)
     },
+    // 简介显示更多
+    toggleMore() {
+      // 思路：根据显示状态，来控制是否展开
+      // 计算pre的高度，根据显示状态，设置pre元素的高度
+      this.showBriefMoreIcon = !this.showBriefMoreIcon
+      if(this.showBriefMoreIcon) {
+        // 判断pre元素如果小于父元素高度，则父元素设置为固定高度，反之设置成pre高度
+        let briefMoreHeight = this.$refs.briefMore.offsetHeight
+        briefMoreHeight = briefMoreHeight < briefWrapperHeight ? briefWrapperHeight : briefMoreHeight
+        this.$refs.briefMoreWrapper.style.height = `${briefMoreHeight}px`
+      }else {
+        this.$refs.briefMoreWrapper.style.height = `${briefWrapperHeight}px`
+      }
+    },
     ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList'])
   },
   watch: {
@@ -163,6 +175,7 @@ $song-cover-width: 240px;
 .songlistdetail-title-wrapper {
   display: flex;
   flex-direction: row;
+  position: relative;
   .song-cover {
     width: $song-cover-width;
     padding: 20px;
@@ -182,12 +195,9 @@ $song-cover-width: 240px;
   .song-list-text {
     flex: 1;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 
     & > div {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .title {
@@ -239,6 +249,7 @@ $song-cover-width: 240px;
         border: 1px solid $color-border;
         font-size: 15px;
         margin-right: 10px;
+        cursor: pointer;
         i {
           font-size: 15px;
         }
@@ -267,23 +278,22 @@ $song-cover-width: 240px;
       }
     }
     .brief {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      height: 36px;
+      height: 32px;
       overflow: hidden;
-      div{
-        display: flex;
-        flex-direction: row;
         pre {
-          height: 100%;
           font-size: 14px;
           margin: 0;
+          padding: 0 40px 0 0;
           white-space: pre-wrap;
+          word-wrap: break-word;
         }
-      }
-      
     }
+    .brief-more {
+      position: absolute;
+      right: 20px;
+      top: 216px;
+      cursor: pointer;
+     } 
     .name > span {
       &:first-child {
         display: inline-block;

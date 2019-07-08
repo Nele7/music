@@ -44,8 +44,6 @@
                 }))
                 // 关注成功以后，操作数组，
                 this.$toast('关注成功')
-                // this.$store.dispatch('user/getUserFollower')
-                // this.$store.commit(`user/${types.CHANGE_FOLLOWER}`,{user:{followed:true,mutual:false},index})
                 this.$store.commit(`user/${types.CHANGE_FOLLOWER}`,{user:res.user,index})
             }
         },

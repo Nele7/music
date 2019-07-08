@@ -136,7 +136,6 @@ const actions = {
       let [res] = await to(neteaseApi.userPlayList({
         uid: state.userInfo.userId
       }))
-      console.log(res)
       commit(types.USER_PALYLIST, res.playlist)
       resolve(state.userPlayList)
     })

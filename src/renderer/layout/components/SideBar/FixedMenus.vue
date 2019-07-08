@@ -24,17 +24,18 @@
                 v-for="(item,index) in normalPlayList"
                 >
                     <div class="menu-title">{{item.title}}</div>
-                    <!-- <div class="menu-text" v-for="(playlist,i) in item.playList">
-                    </div> -->
+                    <!-- <div class="menu-text" v-for="(playlist,i) in item.playList" @click="toSongListDetail(playlist.id)"> -->
                     <router-link 
                     v-for="playlist in item.playList"
                     :to="`/songlistdetail/index/${playlist.id}`"
                     class="menu-text"
                     tag="div"
+                    :key="playlist.id"
                     >
                         <i class="iconfont " :class="[playlist.name === userInfo.nickname + '喜欢的音乐' ? 'icon-xin':'icon-yinyue']"></i>
                         <span>{{ playlist.name === userInfo.nickname + '喜欢的音乐' ? '我喜欢的歌单': playlist.name }}</span>
                     </router-link>
+                    </div>
                 </div>
                 <!-- <div class="menu-item" v-if="userStatus && normalPlayList.collectPlayList.length > 0">
                     <div class="menu-title">收藏的歌单</div>
@@ -103,6 +104,9 @@ export default {
         },
     },
     methods: {
+        // toSongListDetail(id) {
+        //     this.$router.push(`/songlistdetail/index/${id}`)
+        // }
     },
 }
 </script>

@@ -97,7 +97,7 @@ export default new Router({
         {
           path: 'index',
           component: fm,
-          name: 'fm'
+          name: '_fm'
         },
       ]
     },
@@ -118,7 +118,7 @@ export default new Router({
         {
           path: 'index',
           component: mv,
-          name: 'mv',
+          name: '_mv',
           meta:{
             show:true
           }
@@ -134,7 +134,7 @@ export default new Router({
         {
           path: 'index',
           component: pal,
-          name: 'pal'
+          name: '_pal'
         },
       ]
     },
@@ -160,7 +160,7 @@ export default new Router({
         {
           path: 'index/:id',
           component: songListDetail,
-          name: 'songlistdetail'
+          name: '_songlistdetail'
         },
       ]
     },
