@@ -55,10 +55,9 @@
       <ul>
         <li
           v-for="(item,index) in tab"
-          :class="{'active':index===tempIndex}"
           :key="index"
-          @click="showTabs(item,index)"
-        >{{item.name}}</li>
+        >
+        <span :class="{'active':index===tempIndex}" @click="showTabs(item,index)">{{item.name}}</span></li>
       </ul>
       <keep-alive>
         <component :is="showTabsComponent" :musiclist="indexList.tracks" :id="indexList.id"></component>
@@ -313,17 +312,22 @@ $song-cover-width: 240px;
     width: 100%;
     border-bottom: 1px solid $color-border;   
     li {
-      line-height: 40px;
-      text-align: center;
-      font-size: 16px;
-      border-bottom: 2px solid transparent;
-      width: 100px;
+      font-size: 14px;
       height: 40px;
+      line-height: 40px;
+      padding: 0 20px;
+      text-align: center;
       letter-spacing: 2px;
-      cursor: pointer;
-      &.active {
-        border-bottom: 2px solid $color-base-red;
-        color: $color-base-red;
+      box-sizing: border-box;
+      span {
+        display: block;
+        height: 100%;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        &.active {
+          border-bottom: 2px solid $color-base-red;
+          color: $color-base-red;
+        }
       }
     }
   }

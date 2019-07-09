@@ -100,7 +100,7 @@ export default {
       transition: all 0.3s;
       &.title {
         div {
-          font-size: 16px;
+          font-size: 14px;
         }
         color: $color-base-grey;
       }

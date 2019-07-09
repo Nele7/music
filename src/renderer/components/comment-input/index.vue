@@ -48,17 +48,23 @@
         flex-direction: row-reverse;
         padding: 10px 0;
         .btn {
-            background: #e55c4b;
-            border: 1px solid #e55c4b;
+            background: #fff;
+            border: 1px solid #e9e9e9;
+            border-radius: 15px;
+            color: #666;
+            &:hover {
+                background: rgba(223, 223, 223, 0.555);
+            }
         }
     }
 }
 </style>
 <style>
 .el-textarea__inner {
+    border:1px solid #e9e9e9;
     height: 80px;
 }
 .el-textarea__inner:focus {
-    border-color:#e55c4b;
+    border-color:#DCDFE6;
 }
 </style>
