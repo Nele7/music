@@ -1,6 +1,7 @@
 <template>
     <div class="comment-wrapper">
        <comment-input @sendComment="changeComment" ref="commentInput"></comment-input>
+       <comment-list></comment-list>
     </div>
 </template>
 
@@ -9,6 +10,7 @@
     import to from "@/utils/await-to.js"
     import {commentMixin} from '@/utils/mixin'
     import CommentInput from '@/components/comment-input'
+    import CommentList from '@/components/comment-list'
     export default {
         mixins:[commentMixin],
         data() {
@@ -28,7 +30,8 @@
             },
         },
         components: {
-            CommentInput
+            CommentInput,
+            CommentList
         }
     }
 </script>
