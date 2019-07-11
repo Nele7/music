@@ -13,87 +13,9 @@
           <div class="meta">
             <span class="time">03:32</span>
             <div class="tools">
-              <div class="praise">
-                <i class="el-icon-view"></i>
+              <div class="praise active">
+                <i class="iconfont icon-icon"></i>
                 1234324
-              </div>
-              <div class="block">
-                <i class="iconfont icon-fenxiang"></i>
-              </div>
-              <div class="block">
-                <i class="el-icon-chat-line-square"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="comment-tiem">
-        <div class="avatar">
-          <img src="https://p3.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg" alt="">
-        </div>
-        <div class="content">
-          <div class="text">
-              <span class="name">FreezeMee:</span>
-              据说，做这个歌单的员工在做完这个歌单以后神秘失踪了，现场十分诡异，只留下了一个篮球。。。
-          </div>
-          <div class="meta">
-            <span class="time">03:32</span>
-            <div class="tools">
-              <div class="praise">
-                <i class="el-icon-view"></i>
-                12
-              </div>
-              <div class="block">
-                <i class="iconfont icon-fenxiang"></i>
-              </div>
-              <div class="block">
-                <i class="el-icon-chat-line-square"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="comment-tiem">
-        <div class="avatar">
-          <img src="https://p3.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg" alt="">
-        </div>
-        <div class="content">
-          <div class="text">
-              <span class="name">FreezeMee:</span>
-              据说，做这个歌单的员工在做完这个歌单以后神秘失踪了，现场十分诡异，只留下了一个篮球。。。
-          </div>
-          <div class="meta">
-            <span class="time">03:32</span>
-            <div class="tools">
-              <div class="praise">
-                <i class="el-icon-view"></i>
-                
-              </div>
-              <div class="block">
-                <i class="iconfont icon-fenxiang"></i>
-              </div>
-              <div class="block">
-                <i class="el-icon-chat-line-square"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="comment-tiem">
-        <div class="avatar">
-          <img src="https://p3.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg" alt="">
-        </div>
-        <div class="content">
-          <div class="text">
-              <span class="name">FreezeMee:</span>
-              据说，做这个歌单的员工在做完这个歌单以后神秘失踪了，现场十分诡异，只留下了一个篮球。。。
-          </div>
-          <div class="meta">
-            <span class="time">03:32</span>
-            <div class="tools">
-              <div class="praise">
-                <i class="el-icon-view"></i>
-                1
               </div>
               <div class="block">
                 <i class="iconfont icon-fenxiang"></i>
@@ -122,7 +44,7 @@
             <span class="time">03:32</span>
             <div class="tools">
               <div class="praise">
-                <i class="el-icon-view"></i>
+                <i class="iconfont icon-icon"></i>
                 1
               </div>
               <div class="block">
@@ -197,6 +119,9 @@
               font-size: 13px;
               line-height: 18px;
               margin-right: 10px;
+              &.active {
+                color:#b31212;
+              }
             }
             .block{
               width: 50px;

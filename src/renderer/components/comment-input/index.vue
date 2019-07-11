@@ -2,7 +2,7 @@
     <div class="comment-input-wrapper">
         <el-input
             type="textarea"
-            placeholder="请输入内容"
+            :placeholder="placeholder"
             v-model="textareaVal"
             maxlength="140"
             show-word-limit
@@ -21,7 +21,8 @@
     export default {
         data() {
             return {
-               textareaVal:''
+               textareaVal:'',
+               placeholder:'期待你的评论！！！'
             }
         },
         created() {
