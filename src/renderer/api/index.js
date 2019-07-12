@@ -46,6 +46,7 @@ export const neteaseApi = {
 
   // s 评论 api
   comment: apiData('/comment'),                       // 发送/删除评论
+  commentHot: apiData('/comment/hot'),                // 热门评论
   commentPlaylist:apiData('/comment/playlist'),       // 歌单评论
   commentLike: apiData('comment/like'),               // 给评论点赞
   // e

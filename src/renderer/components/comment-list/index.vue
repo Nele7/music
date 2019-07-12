@@ -1,51 +1,26 @@
 <template>
   <div class="comment-list-wrapper">
     <div class="comment-list">
-      <div class="comment-tiem">
+      <h4>{{title}}</h4>
+      <div class="comment-item" v-for="(item,index) in commentlist" :key="index">
         <div class="avatar">
-          <img src="https://p3.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg" alt="">
+          <img :src="item.user.avatarUrl" :alt="item.user.nickname">
         </div>
         <div class="content">
           <div class="text">
-              <span class="name">FreezeMee:</span>
-              据说，做这个歌单的员工在做完这个歌单以后神秘失踪了，现场十分诡异，只留下了一个篮球。。。
+              <span class="name">{{item.user.nickname}}：</span>
+              {{item.content}}
+          </div>
+          <div class="other-reply text" v-if="item.beReplied && item.beReplied.length">
+            <span class="name">@{{item.beReplied[0].user.nickname}}：</span>
+            {{item.beReplied[0].content}}
           </div>
           <div class="meta">
-            <span class="time">03:32</span>
+            <span class="time">{{item.time | formatterTime}}</span>
             <div class="tools">
               <div class="praise active">
                 <i class="iconfont icon-icon"></i>
-                1234324
-              </div>
-              <div class="block">
-                <i class="iconfont icon-fenxiang"></i>
-              </div>
-              <div class="block">
-                <i class="el-icon-chat-line-square"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="comment-tiem">
-        <div class="avatar">
-          <img src="https://p3.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg" alt="">
-        </div>
-        <div class="content">
-          <div class="text">
-              <span class="name">FreezeMee:</span>
-              据说，做这个歌单的员工在做完这个歌单以后神秘失踪了，现场十分诡异，只留下了一个篮球。。。
-          </div>
-          <div class="other-reply text">
-            <span class="name">@Message:</span>
-            四级？？？初中生感觉不难啊。。。
-          </div>
-          <div class="meta">
-            <span class="time">03:32</span>
-            <div class="tools">
-              <div class="praise">
-                <i class="iconfont icon-icon"></i>
-                1
+                {{item.likedCount}}
               </div>
               <div class="block">
                 <i class="iconfont icon-fenxiang"></i>
@@ -62,15 +37,31 @@
 </template>
 
 <script>
+  import {formatterTime} from '@/utils/util'
   export default {
-    
+    props: {
+      title:{
+        type:String,
+        default(){
+          return ''
+        }
+      },
+      commentlist: {
+        type:Array,
+      }
+    },
+    created(){
+    },
+    filters: {
+      formatterTime
+    }
   }
 </script>
 
 <style lang="scss" scoped>
 .comment-list-wrapper {
   .comment-list {
-    .comment-tiem {
+    .comment-item {
       display: flex;
       flex-direction: row;
       .avatar {
@@ -101,6 +92,7 @@
           margin-top: 10px;
           padding: 5px;
           background: rgba(233, 233, 233, 0.575);
+           line-height: 20px;
         }
         .meta {
           display: flex;

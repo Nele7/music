@@ -15,10 +15,11 @@ Vue.use(ElementUI)
 import 'vue2-toast/lib/toast.css'
 import Toast from 'vue2-toast'
 Vue.use(Toast, {
-    type: 'center'
+  type: 'center'
 });
-
-
+// import moment from 'moment'
+// Vue.moment = Vue.prototype.$moment = moment;//赋值使用
+// moment.locale('zh-cn');
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 // Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false

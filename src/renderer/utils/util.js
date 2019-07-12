@@ -1,3 +1,5 @@
+import moment from 'moment'
+moment.locale('zh-cn')
 export function covertUnit(val) {
     if(!val) return 0
     if(val > 10000) {
@@ -21,4 +23,8 @@ export function formatDateTime(time) {
     var mouth = date.getMonth() + 1
     var day = date.getDate()
     return `${year}-${pad(mouth)}-${pad(day)}`
+}
+
+export function formatterTime(time) {
+    return moment(time).startOf('minute').fromNow()
 }

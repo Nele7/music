@@ -35,7 +35,7 @@
         </div>
         <div class="tags name">
           <span>标签：</span>
-          <span class="active">{{indexList.tags && indexList.tags.join(',')}}</span>
+          <span class="active">{{indexList.tags && indexList.tags.join(',') || '暂无！！'}}</span>
         </div>
         <div class="play-count name">
           <span>歌曲数：</span>
@@ -60,7 +60,13 @@
         <span :class="{'active':index===tempIndex}" @click="showTabs(item,index)">{{item.name}}</span></li>
       </ul>
       <keep-alive>
-        <component :is="showTabsComponent" :musiclist="indexList.tracks" :id="indexList.id"></component>
+        <component 
+        :is="showTabsComponent" 
+        :musiclist="indexList.tracks" 
+        :id="indexList.id" 
+        @addComment="addComment"
+        v-if="indexList.tracks && indexList.id">
+        </component>
       </keep-alive>
     </div>
   </div>
@@ -68,26 +74,29 @@
 
 <script>
 import { neteaseApi } from "@/api/"
-import to from "@/utils/await-to.js"
 import { covertUnit, formatDateTime } from "@/utils/util.js"
 import { mapActions } from 'vuex'
+
+import to from "@/utils/await-to.js"
 import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
+
 const briefWrapperHeight = 32;
 export default {
   name: 'songlistdetail',
   data() {
     return {
+      commentName:'',
       tab: [
-        { name: '评论', v: 'comment' },
         { name: '歌曲列表', v: 'music-list' },
+        { name: '', v: 'comment' },
         { name: '收藏者', v: 'subscribers' },
       ],
       tempIndex: 0,
-      showTabsComponent: 'comment',
+      showTabsComponent: 'music-list',
       indexList: {},
-      showBriefMoreIcon:false
+      showBriefMoreIcon:false,
     }
   },
   created() {
@@ -105,6 +114,8 @@ export default {
         id: this.songId
       }))
       this.indexList = res.playlist
+      // this.tab[1].name = `评论(${this.indexList.commentCount})`
+      this.$set(this.tab[1],'name',`评论(${this.indexList.commentCount})`)
     },
     // 点击tab条
     showTabs(item, index) {
@@ -144,11 +155,15 @@ export default {
         this.$refs.briefMoreWrapper.style.height = `${briefWrapperHeight}px`
       }
     },
+    // 更新回复数量
+    addComment() {
+      this.$set(this.tab[1],'name',`评论(${this.indexList.commentCount += 1})`)
+    },
     ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList'])
   },
   watch: {
     songId: {
-      deep: true,
+      deep: true, // 确认是否深入监听。deep的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上这个监听器
       handler() {
         this.getPlayListDetail()
       }
