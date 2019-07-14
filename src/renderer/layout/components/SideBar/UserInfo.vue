@@ -2,7 +2,7 @@
   <div>
     <div class="user-info">
       <div class="head-photo">
-        <img :src="userInfo.backgroundUrl" width="40" height="40" v-if="userStatus">
+        <img :src="userInfo.avatarUrl" width="40" height="40" v-if="userStatus">
         <i class="iconfont icon-touxiang" v-else></i>
       </div>
       <div class="name" :class="{nickName:userStatus}" @click="openLogin">

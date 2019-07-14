@@ -65,6 +65,25 @@ export const commentMixin = {
             this.isMore = res.hasMore
             this.hotComments = [...this.hotComments, ...res.hotComments]    // 拼接
         },
+        // 热门评论点赞
+        toggleHotCommentLike(index) {
+            this.toggleCommentLike(index,'hotComments')
+        },
+        // 评论点赞
+        async toggleCommentLike(index,commentName = 'comments') {
+            let comment = this[commentName][index]
+            await to(neteaseApi.commentLike({
+                id: this.id,
+                cid: comment.commentId,
+                t: comment.liked ? 0 : 1,
+                type: this.hotType
+            }))
+            let result = comment.liked ? '取消点赞成功' : '点赞成功' 
+            this.$toast(result)
+            comment.liked = !comment.liked
+            let add = comment.liked ? 1 : -1
+            comment.likedCount += add
+        },
         // 改变分页时
         currentChange(pages) {
             this.currentPage = pages

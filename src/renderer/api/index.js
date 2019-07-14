@@ -42,6 +42,7 @@ export const neteaseApi = {
   likelist: apiData('/likelist'),                     // 获取喜欢的音乐列表
   like: apiData('/like'),                             // 喜欢音乐
   subscribePlaylist: apiData('/playlist/subscribe'),  // 收藏歌单
+  plSubscribers: apiData('/playlist/subscribers'),    // 歌单收藏者
   // e 
 
   // s 评论 api
@@ -50,4 +51,5 @@ export const neteaseApi = {
   commentPlaylist:apiData('/comment/playlist'),       // 歌单评论
   commentLike: apiData('comment/like'),               // 给评论点赞
   // e
+
 }

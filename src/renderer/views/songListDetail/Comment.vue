@@ -4,19 +4,27 @@
         <p class="noComment" v-if="hotComments.length === 0 && comments.length === 0">
             <span>暂时还没有评论，快来抢沙发~~</span>
         </p>
-        <comment-list :commentlist="hotComments" title="精彩评论" v-if="hotComments.length"></comment-list>
+        <comment-list 
+        title="精彩评论" 
+        :commentlist="hotComments"
+        @toggleCommentLike="toggleHotCommentLike"
+        v-if="hotComments.length"></comment-list>
         <h4 v-if="isMore" @click="loadHotMore" class="comment-hot-more">
             <a href="#">
                 加载更多精彩评论
             <i class="el-icon-arrow-down"></i>
             </a>
         </h4>
-        <comment-list :commentlist="comments" title="最新评论" v-if="comments.length"></comment-list>
+        <comment-list 
+        title="最新评论"
+        :commentlist="comments" 
+        @toggleCommentLike="toggleCommentLike"
+        v-if="comments.length"></comment-list>
         <div class="pages-container" v-if="total > pagesize">
             <el-pagination
                 :page-size="pagesize"
                 :total="total"
-                layout="prev, pager, next, jumper"
+                layout="prev, pager, next"
                 @current-change="currentChange"
             ></el-pagination>
         </div>
@@ -51,8 +59,7 @@
             loadHotMore() {
                 this.currentPageHot += 1
                 this.getCommentHotList(this.id)
-            },
-            
+            }
         },
         components: {
             CommentInput,
@@ -97,4 +104,26 @@
     margin: 20px 0;
     text-align: center;
 }
+</style>
+<style>
+    .el-pager .number.active {
+        background: rgb(198,36,38);
+        color: white;
+    }
+    .el-pager .number {
+        border:1px solid rgb(224,224,224);
+        border-radius: 10px;
+        padding: 0px;
+        margin-right: 4px;
+        min-width: 29px;
+        color: rgb(83,83,83);
+        font-weight: 400;
+    }
+    .el-pager li.active+li {
+        border:1px solid rgb(224,224,224);
+    }
+    .el-pager li:hover {
+        color: rgb(37,37,37);
+        background: rgb(242,242,242)
+    }
 </style>

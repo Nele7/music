@@ -90,6 +90,5 @@ export default {
 
 .player-container {
     @include position(absolute, auto, 0, 0, 0, 100%, $playerHeight);
-    background: #999;
 }
 </style>

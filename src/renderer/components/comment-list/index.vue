@@ -18,8 +18,8 @@
           <div class="meta">
             <span class="time">{{item.time | formatterTime}}</span>
             <div class="tools">
-              <div class="praise active">
-                <i class="iconfont icon-icon"></i>
+              <div class="praise" :class="{'active':item.liked}" @click="toggleCommentLike(index)">
+                <i class="iconfont" :class="item.liked?'icon-icon':'icon-zan1'"></i>
                 {{item.likedCount}}
               </div>
               <div class="block">
@@ -51,6 +51,11 @@
       }
     },
     created(){
+    },
+    methods: {
+      toggleCommentLike(index) {
+        this.$emit('toggleCommentLike',index)
+      }
     },
     filters: {
       formatterTime
