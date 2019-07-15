@@ -8,8 +8,8 @@ export function covertUnit(val) {
     return val.toFixed()
 }
 export function pad(num) {
-    // return num < 10 ? '0' + num : num
-    return `00${num}`.slice(-2)
+    return num < 10 ? '0' + num : num
+    // return `00${num}`.slice(-2)
 }
 export function formatTime(time) {
     time = (time / 1000) | 0

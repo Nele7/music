@@ -1,6 +1,6 @@
 <template>
     <el-row class="music-player-wrapper">
-        <el-col :span="6" style="height:100%">
+        <el-col :span="8" style="height:100%">
             <div class="music-wrapper">
                 <div class="muisc-avatar">
                     <img src="http://p3.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg" alt="">
@@ -11,8 +11,8 @@
                 </div>
                 <div class="muisc-desc">
                     <p class="name">
-                        <span href="#">Last Night</span> - 
-                        <span href="#">EXILE TAKAHIRO</span>
+                        <span>Last Night</span> - 
+                        <span>EXILE TAKAHIRO</span>
                     </p>
                     <p class="duration">
                         <span>00:02</span> / 
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :span="12" style="height:100%">
+        <el-col :span="8" style="height:100%">
             <div class="muisc-contorl-wrapper">
                 <div class="music-contorl">
                     <div>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :span="6" style="height:100%">
+        <el-col :span="8" style="height:100%">
             <div class="music-tools-wrapper">
                 <div class="music-tools">
                     <div>
@@ -60,12 +60,20 @@
                 </div>
             </div>
         </el-col>
+        <div class="progress">
+            <el-progress :percentage="percentage" :color="customColors" :stroke-width="3" :text-inside="true"></el-progress>
+        </div>
     </el-row>
 </template>
 
 <script>
     export default {
-        
+        data() {
+            return {
+                customColors: '#f56c6c',
+                percentage:50
+            }
+        },
     }
 </script>
 
@@ -74,6 +82,7 @@
 .music-player-wrapper {
     height: 100%;
     box-shadow: 0 0 6px 0 rgba(0,0,0,0.3);
+    position: relative;
     .music-wrapper {
         display: flex;
         flex-direction: row;
@@ -117,9 +126,13 @@
             }
         }
         .muisc-desc {
+            flex: 1;
             padding: 0 10px;
+            min-width: 200px;
+            box-sizing: border-box;
             p {
                 margin-top: 5px;
+                @include ellipsized;
             }
             .name {
                 font-size: 14px;
@@ -176,15 +189,17 @@
         justify-content: flex-end;
         .music-tools {
             height: 100%;
-            width: 150px;
+            width: 160px;
             display: flex;
             flex-direction: row;
             align-items: center;
+            padding: 0 10px;
             div {
                 flex: 1;
                 height: 100%;
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 i {
                     font-size: 23px;
                     color: #666;
@@ -194,6 +209,31 @@
             }
         }
     }
+    .progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 100%;
+    }
 }
 
+</style>
+<style>
+.el-progress-bar {
+    vertical-align: top;
+}
+.el-progress-bar__inner::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #f56c6c;
+    right: -12px;
+    top: -4px;
+}
+.el-progress-bar__outer {
+    overflow: visible;
+}
 </style>
