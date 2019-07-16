@@ -1,12 +1,15 @@
 <template>
   <div>
-    主播电台123
+    <player-progress></player-progress>
   </div>
 </template>
 
 <script>
+  import PlayerProgress from '@/components/PlayerProgress'
   export default {
-    
+    components: {
+      PlayerProgress
+    }
   }
 </script>
 

@@ -1,5 +1,13 @@
 <template>
     <el-row class="music-player-wrapper">
+        <el-col :span="24">
+            <player-progress 
+            :percent="percentage"
+            @pbar-drag="dragProgress"
+            @pbar-seek="clickProgress"
+            >
+            </player-progress>
+        </el-col>
         <el-col :span="8" style="height:100%">
             <div class="music-wrapper">
                 <div class="muisc-avatar">
@@ -60,18 +68,35 @@
                 </div>
             </div>
         </el-col>
-        <div class="progress">
-            <el-progress :percentage="percentage" :color="customColors" :stroke-width="3" :text-inside="true"></el-progress>
-        </div>
+       
+            <!-- <el-progress :percentage="percentage" :color="customColors" :stroke-width="3" :text-inside="true"></el-progress> -->
     </el-row>
 </template>
 
 <script>
+import PlayerProgress from '@/components/PlayerProgress'
     export default {
         data() {
             return {
                 customColors: '#f56c6c',
-                percentage:50
+                percentage:0
+            }
+        },
+        components: {
+            PlayerProgress
+        },
+        created() {
+            setInterval(()=>{
+                this.percentage++ 
+                console.log(this.percentage)
+            },1000)
+        },
+        methods: {
+            // 进度条拖拽时
+            dragProgress(e) {
+            },
+            clickProgress(e) {
+                 console.log(e)
             }
         },
     }
@@ -81,7 +106,7 @@
 @import '@/assets/style/mixin.scss';
 .music-player-wrapper {
     height: 100%;
-    box-shadow: 0 0 6px 0 rgba(0,0,0,0.3);
+    // box-shadow: 0 0 6px 0 rgba(0,0,0,0.3);
     position: relative;
     .music-wrapper {
         display: flex;
