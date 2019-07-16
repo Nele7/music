@@ -135,11 +135,14 @@ export default {
         id: this.indexList.id
       }))
       this.indexList.subscribed = !this.indexList.subscribed
-      this.indexList.subscribed ? this.$toast('收藏成功') : this.$toast('取消收藏成功')
-      // 如果为收藏--把indexList对象插入到playlist数组
-      // 如果为取消收藏--把indexList对象从playlist数组删除
-      let _obj = Object.assign({}, this.indexList)
-      this.indexList.subscribed ? this.insertUserPlayList(_obj) : this.deleteUserPlayList(this.indexList.id)
+      let hint = this.indexList.subscribed ? '收藏成功' : '取消收藏成功'
+      let add = this.indexList.subscribed ? 1 : -1 
+      let obj = Object.assign({}, this.indexList)
+      this.$toast(hint)
+      this.indexList.subscribedCount += add
+      this.indexList.subscribed ? this.insertUserPlayList(obj) : this.deleteUserPlayList(this.indexList.id)
+      // 如果为收藏把indexList对象插入到playlist数组，更新页面数据
+      // 如果为取消收藏--把indexList对象从playlist数组删除，更新页面数据
     },
     // 简介显示更多
     toggleMore() {

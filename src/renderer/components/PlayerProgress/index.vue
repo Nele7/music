@@ -27,7 +27,7 @@
             return {
                 innerStyle: {
                     'width':`${this.percent}%`,
-                    'height':'4px'
+                    'height':'2px'
                 },
                 progressStyle: {
                     'height':'4px'
@@ -143,12 +143,12 @@
         z-index: 999;
         width: 100%;
         height: 2px;
-        background: #EBEEF5;
         .progress_inner {
             position: relative;
             height: 100%;
             width: 100%;
             background: #f56c6c;
+            // transition: width 0.4s linear;
             .progress_ball {
                 position: absolute;
                 height: 12px;

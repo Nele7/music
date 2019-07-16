@@ -12,7 +12,7 @@
             <div class="music-wrapper">
                 <div class="muisc-avatar">
                     <img src="http://p3.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg" alt="">
-                    <div class="mask-layer">
+                    <div class="mask-layer" @click="isShowPlayerDetail = true">
                         <i class="el-icon-top"></i>
                         <i class="el-icon-bottom"></i>
                     </div>
@@ -36,13 +36,13 @@
                         <i class="iconfont icon-xin"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-shangyishou"></i>
+                        <i class="iconfont icon-ai10"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-bofang"></i>
+                        <i class="iconfont icon-bofang2"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-xiayishou"></i>
+                        <i class="iconfont icon-ai09"></i>
                     </div>
                     <div>
                         <i class="iconfont icon-fenxiang"></i>
@@ -57,48 +57,63 @@
                         <i class="iconfont icon-xindong"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-plist"></i>
+                        <i class="iconfont icon-liebiao" style="font-size:14px"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-xindong"></i>
+                        <a>词</a>
                     </div>
                     <div>
-                        <i class="iconfont icon-jingyin"></i>
+                        <!-- <i class="iconfont icon-jingyin"></i> -->
+                        <i class="iconfont icon-icon--"></i>
                     </div>
                 </div>
             </div>
         </el-col>
-       
-            <!-- <el-progress :percentage="percentage" :color="customColors" :stroke-width="3" :text-inside="true"></el-progress> -->
+        <transition name="bottom-collapse">
+            <player-detail v-if="isShowPlayerDetail"></player-detail>
+        </transition>
+
     </el-row>
+    
 </template>
 
 <script>
-import PlayerProgress from '@/components/PlayerProgress'
+    import PlayerProgress from '@/components/PlayerProgress'
+    import PlayerDetail from './player-detail'
     export default {
         data() {
             return {
                 customColors: '#f56c6c',
-                percentage:0
+                percentage:20,
+                isShowPlayerDetail:false
             }
         },
         components: {
-            PlayerProgress
+            PlayerProgress,
+            PlayerDetail
         },
         created() {
-            setInterval(()=>{
-                this.percentage++ 
-                console.log(this.percentage)
-            },1000)
+            // setInterval(()=>{
+            //     this.percentage++ 
+            //     console.log(this.percentage)
+            // },1000)
         },
+        
         methods: {
             // 进度条拖拽时
             dragProgress(e) {
             },
             clickProgress(e) {
-                 console.log(e)
+                console.log(e)
             }
         },
+        watch: {
+            percentage(cur,old) {
+                if(old === 100) {
+                    clearInterval()
+                }
+            }
+        }
     }
 </script>
 
@@ -192,12 +207,12 @@ import PlayerProgress from '@/components/PlayerProgress'
                 justify-content: center;
                 height: 100%;
                 &:nth-child(even) > i {
-                    color:#b31212;
-                    font-size: 23px;
+                    color:#f56c6c;
+                    font-size: 21px;
                 }
                 &:nth-child(3) > i {
-                    color:#b31212;
-                    font-size: 35px;
+                    color:#f56c6c;
+                    font-size: 48px;
                 }
                 i {
                     font-size: 18px;
@@ -242,23 +257,20 @@ import PlayerProgress from '@/components/PlayerProgress'
         width: 100%;
     }
 }
-
-</style>
-<style>
-.el-progress-bar {
-    vertical-align: top;
+.bottom-collapse-enter-active,
+.bottom-collapse-leave-active {
+    transition: all 0.3s linear;
 }
-.el-progress-bar__inner::before {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #f56c6c;
-    right: -12px;
-    top: -4px;
+.bottom-collapse-enter,
+.bottom-collapse-leave-to {
+    transform: translateY(100vh);
 }
-.el-progress-bar__outer {
-    overflow: visible;
+.top-collapse-enter-active,
+.top-collapse-leave-active {
+    transition: all 0.3s linear;
+}
+.top-collapse-enter,
+.top-collapse-leave-to {
+    transform: translateY(100vh);
 }
 </style>
