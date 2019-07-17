@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .a {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #999;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url(http://p1.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg) no-repeat;
+            background-size: 120% 120%;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: beige;
+            transform: scale(1.2);
+            filter: blur(20px);
+            transition: background 5s;
+        }
+        .c {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 20px 0;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .h {
+            display: flex;
+        }
+        .qqq i{
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="a">
+        <div class="bg"></div>
+        <div class="c">
+            <div class="h">
+                <div class="qqq">
+                    <i>1</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,7 +6,6 @@
         @mousemove.stop="mousemoveHandler"
         @mouseup.stop="mouseupHandler"
         @mouseout.stop="mouseoutHandler"
-        :style="progressStyle"
         >
             <div class="progress_inner" :style="innerStyle">
                 <div class="progress_ball"></div>
@@ -143,6 +142,7 @@
         z-index: 999;
         width: 100%;
         height: 2px;
+        // background: #e9e9e9;
         .progress_inner {
             position: relative;
             height: 100%;

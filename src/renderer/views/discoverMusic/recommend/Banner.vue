@@ -2,7 +2,7 @@
     <el-carousel :interval="40000" type="card" height="200px" indicator-position="none">
         <el-carousel-item v-for="(item,index) in bannerList" :key="index">
             <div class="banner-area">
-                <img :src="item.imageUrl" class="banner-img">
+                <img :src="item.imageUrl" class="banner-img" ref="imgHeight">
                 <span class="banner-category" :style="'background:'+item.titleColor">{{item.typeTitle}}</span>
             </div>
         </el-carousel-item>
