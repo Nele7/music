@@ -78,15 +78,59 @@
                     </a>
                 </div>
                 <div class="main">
-                    <div class="cover-lyric">
-                        <div class="music-cover">
-                            <div class="cd">
-                                <img src="http://p1.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg" alt="">
+                    <div class="music-cover">
+                        <div class="cd">
+                            <img src="http://p1.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg" alt="">
+                        </div>
+                        <div class="tools">
+                            <div class="like">
+                                <i class="iconfont icon-xin"></i>
+                            </div>
+                            <div>
+                                <i class="el-icon-folder-add"></i>
+                            </div>
+                            <div>
+                                <i class="el-icon-download"></i>
+                            </div>
+                            <div>
+                                <i class="iconfont icon-fenxiang"></i>
                             </div>
                         </div>
-                        <div class="music-lyric">
-
+                    </div>
+                    <div class="music-lyric">
+                        <p class="name">
+                            Cheap Thrills
+                        </p>
+                        <div class="mark">
+                            <div class="album">
+                                <span>专辑：</span> <span>Cheap Thrills (fe</span>
+                            </div>
+                            <div class="singer">
+                                <span>歌手：</span><span>Sia / Sean Paul</span>
+                            </div>
+                            <div class="source">
+                                <span>来源：</span><span>我喜欢的音乐</span>
+                            </div>
                         </div>
+                        <el-scrollbar
+                            wrap-class="scrollbar-wrapper"
+                            style="height:100%;"
+                            ref="myScrollbar">
+                            <div class="lyric">
+                                <ul>
+                                    <li class="active">让生活充满音乐</li>
+                                    <li v-for="item in 80" :key="item">让生活充满音乐</li>
+                                </ul>
+                                <div class="no-lyriv">
+                                    <p>让生活充满音乐</p>
+                                </div>
+                            </div>
+                        </el-scrollbar>
+                    </div>
+                </div>
+                <div class="player">
+                    <div class="player-">
+
                     </div>
                 </div>
             </div>
@@ -292,7 +336,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: url(http://p1.music.126.net/2fdyC-Gix6v72i7MkU4OyQ==/109951162933281005.jpg) no-repeat;
+            background: url(http://p1.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg) no-repeat;
             background-size: 120% 120%;
             background-position: center center;
             background-attachment: fixed;
@@ -307,13 +351,13 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.3);
-            padding: 0 20px ;
-            box-sizing: border-box;
             position: relative;
             .header {
                 display: flex;
                 height: 50px;
-                -webkit-app-region: no-drag;
+                -webkit-app-region: drag;
+                padding: 20px 20px 0;
+                box-sizing: border-box;
                 .hide {
                     width: 30px;
                     height: 100%;
@@ -322,44 +366,104 @@
                     align-items: center;
                     font-size: 21px;
                     color: #969696;
-                    i{
-                        &:hover {
-                            color: #b31212;
-                        }
+                    -webkit-app-region: no-drag;
+                    i {
+                        font-size: 30px;
                     }
                 }
             }
             .main {
                 flex: 1;
-                .cover-lyric {
+                display: flex;
+                flex-direction: row;
+                height: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;
+                > div {
+                    flex: 1;
+                }
+                .music-cover {
                     display: flex;
-                    flex-direction: row;
-                    height: 100%;
-                    > div {
-                        flex: 1;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    .cd {
+                        width: 350px;
+                        height: 350px;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 50%;
+                            box-sizing: border-box;
+                            border: 10px solid hsla(0,0%,100%,.1);
+                            // animation: rotate 20s linear infinite;
+                            // animation-play-state: paused;
+                        }
                     }
-                    .music-cover {
+                    .tools {
                         display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        .cd {
-                            width: 350px;
-                            height: 350px;
-                            img {
-                                width: 100%;
-                                height: 100%;
-                                border-radius: 50%;
-                                box-sizing: border-box;
-                                border: 10px solid hsla(0,0%,100%,.1);
+                        flex-direction: row;
+                        width: 350px;
+                        justify-content: space-around;
+                        div {
+                            width: 50px;
+                            height: 50px;
+                            line-height: 50px;
+                            text-align: center;
+                            border-radius: 50%;
+                            color:#fff;
+                            background: rgba(0,0,0,0.1);
+                            i {
+                                font-size: 22px;
+                            }
+                            &:hover {
+                                background: rgba(0,0,0,0.2);
                             }
                         }
                     }
-                    .music-lyric {
-
+                }
+                .music-lyric {
+                    display: flex;
+                    flex-direction: column;
+                    color: #fff;
+                    .name {
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    .mark {
+                        display: flex;
+                        flex-direction: row;
+                        font-size: 13px;
+                        margin: 20px 0;
+                        div > span:last-child {
+                            color: #f56c6c;
+                        }
+                    }
+                    .lyric {
+                        flex: 1;
+                        ul{
+                            li {
+                                line-height: 30px;
+                                &.active {
+                                    color: #f56c6c;
+                                }
+                            }
+                        }
                     }
                 }
             }
+            .player {
+                height: 150px;
+            }
         }
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0)
+    }
+    100% {
+        transform: rotate(1turn)
     }
 }
 .bottom-collapse-enter-active,
@@ -368,6 +472,7 @@
 }
 .bottom-collapse-enter,
 .bottom-collapse-leave-to {
+    opacity: 0;
     transform: translateY(100vh);
 }
 </style>
