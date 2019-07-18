@@ -12,7 +12,6 @@
         <div class="blank">
           <span>{{index+1 | pad}}</span>
           <i class="iconfont" :class="likedIcon(item.id)" @click="toggleLike(item.id)"></i>
-          <!-- <i class="iconfont icon-hongxin liked"></i> -->
         </div>
         <div class="music-title">
           <p>
@@ -21,7 +20,7 @@
             <span class="alias" v-if="item.alia && item.alia.length > 0">{{item.alia[0]}}</span>
             <span class="alias" v-if="item.tns && item.tns.length > 0">{{item.tns[0]}}</span>
           </p>
-          <i class="iconfont icon-bofang1"></i>
+          <i @click="clickItem(item,index)" class="iconfont icon-bofang1"></i>
         </div>
         <div class="songs">{{item.ar[0].name}}</div>
         <div class="album">{{item.al.name}}</div>
@@ -64,7 +63,6 @@ export default {
     // 喜欢与取消喜欢--音乐
     toggleLike(id) {
       let liked = this.userlikelist.includes(id)
-      console.log(liked)
       this.like(id, liked)
     },
     // 喜欢
@@ -75,6 +73,10 @@ export default {
       }))
       !type ? this.insertUserLikelist(id) : this.deleteUserLikelist(id)
       !type ? this.$toast('已添加到我喜欢的音乐') : this.$toast('取消喜欢成功')
+    },
+    // 点击播放
+    clickItem(item,index) {
+      this.$emit('select',item,index)
     },
     ...mapActions('user', ['insertUserLikelist', 'deleteUserLikelist'])
   },

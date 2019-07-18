@@ -65,6 +65,7 @@
         :musiclist="indexList.tracks" 
         :id="indexList.id" 
         @addComment="addComment"
+        @select="selectItem"
         v-if="indexList.tracks && indexList.id">
         </component>
       </keep-alive>
@@ -161,6 +162,31 @@ export default {
     // 更新回复数量
     addComment() {
       this.$set(this.tab[1],'name',`评论(${this.indexList.commentCount += 1})`)
+    },
+    // 选择当前歌曲项
+    selectItem(item,index) {
+      this.checkMusic(item.id)
+    },
+    // 检测歌曲是否有版权
+    async checkMusic(id) {
+      // return new Promise(async(resolve,reject) => {
+      //   try {
+      //     let [res] = await neteaseApi.checkMusic({
+      //       id
+      //     })
+      //     if(res.success) {
+      //       console.log(111)
+      //     }
+           
+      //     resolve(res)
+      //   } catch (error) {
+      //     // reject(error)
+      //   }
+      // })
+      let [res] = await neteaseApi.checkMusic({
+            id
+        })
+         console.log(res)
     },
     ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList'])
   },

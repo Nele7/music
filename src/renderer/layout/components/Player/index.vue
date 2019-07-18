@@ -14,7 +14,7 @@
             <div class="left">
                 <div class="muisc-avatar">
                     <img src="http://p3.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg" alt="">
-                    <div class="mask-layer" @click="isShowPlayerDetail = !isShowPlayerDetail">
+                    <div class="mask-layer" @click="isShowFullPlayer = true">
                         <i class="el-icon-top"></i>
                         <i class="el-icon-bottom"></i>
                     </div>
@@ -51,29 +51,39 @@
             </div>
             <div class="right">
                 <div class="music-tools">
-                    <div>
-                        <i class="iconfont icon-xindong"></i>
-                    </div>
+                    <player-mode></player-mode>
                     <div>
                         <i class="iconfont icon-liebiao" style="font-size:14px"></i>
                     </div>
                     <div>
                         <a>词</a>
                     </div>
-                    <div>
-                        <i class="iconfont icon-icon--"></i>
-                    </div>
+                    <el-popover
+                    placement="top"
+                    :visible-arrow="false"
+                    popper-class="play-sound"
+                    height="100px"
+                    >
+                        <el-slider
+                        v-model="soundPercent"
+                        vertical
+                        height="100px">
+                        </el-slider>
+                        <div slot="reference">
+                            <i class="iconfont icon-icon--"></i>
+                        </div>
+                    </el-popover>
                 </div>
             </div>
         </div>
     </div>
     <!-- 全屏播放 -->
     <transition name="bottom-collapse" appear>
-        <div class="full-player-box" v-if="isShowPlayerDetail">
+        <div class="full-player-box" v-if="isShowFullPlayer">
             <div class="bg"></div>
             <div class="content">
                 <div class="header">
-                    <a href="#" class="hide" @click="isShowPlayerDetail = false">
+                    <a href="#" class="hide" @click="isShowFullPlayer = false">
                         <i class="el-icon-arrow-down"></i>
                     </a>
                 </div>
@@ -128,9 +138,56 @@
                         </el-scrollbar>
                     </div>
                 </div>
-                <div class="player">
-                    <div class="player-">
-
+                <div class="footer">
+                    <div class="player">
+                        <div class="duration">
+                            <div>00:02</div>
+                            <div>03:58</div>
+                        </div>
+                        <div class="progress">
+                            <el-slider v-model="percentage" :show-tooltip="false"></el-slider>
+                        </div>
+                        <div class="control">
+                            <div class="left">
+                                <div>
+                                    <i class="iconfont icon-icon--"></i>
+                                </div>
+                            </div>
+                            <div class="center">
+                                <div class="music-contorl">
+                                    <div>
+                                        <i class="iconfont icon-shangyishou"></i>
+                                    </div>
+                                    <div>
+                                        <i class="iconfont icon-zanting"></i>
+                                    </div>
+                                    <div>
+                                        <i class="iconfont icon-xiayishou"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <el-popover
+                                placement="top"
+                                :visible-arrow="false"
+                                popper-class="play-full-sound"
+                                height="100px"
+                                >
+                                    <el-slider
+                                    v-model="soundPercent"
+                                    vertical
+                                    height="100px">
+                                    </el-slider>
+                                    <div slot="reference">
+                                        <i class="iconfont icon-icon--"></i>
+                                    </div>
+                                </el-popover>
+                                <div style="margin-left:10px">
+                                    <i class="iconfont icon-liebiao" style="font-size:15px"></i>
+                                </div>
+                                <player-mode></player-mode>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,24 +198,22 @@
 
 <script>
     import PlayerProgress from '@/components/PlayerProgress'
-    import PlayerDetail from './player-detail'
+    import PlayerMode from './PlayerMode'
     export default {
         data() {
             return {
                 customColors: '#f56c6c',
-                percentage:20,
-                isShowPlayerDetail:false
+                percentage:20, // 歌曲进度条
+                isShowFullPlayer:false,
+                soundPercent:13 // 调节声音
             }
         },
         components: {
             PlayerProgress,
-            PlayerDetail
+            PlayerMode
         },
         created() {
-            // setInterval(()=>{
-            //     this.percentage++ 
-            //     console.log(this.percentage)
-            // },1000)
+            
         },
         methods: {
             // 进度条拖拽时
@@ -166,23 +221,21 @@
             },
             clickProgress(e) {
                 console.log(e)
-            },
-            cla() {
-                console.log(123)
             }
         },
         watch: {
-            percentage(cur,old) {
-                if(old === 100) {
-                    clearInterval()
-                }
-            }
+            
         }
     }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/style/mixin.scss';
+$color: rgba(255,255,255,0.5);
+$color-hover: rgba(255,255,255,0.8);
+$color-bg:rgba(255,255,255,0.1);
+$bg:rgba(0, 0, 0, 0.5);
+$tools-bg:rgba(0, 0, 0, 0.1);
 .music-player-wrapper {
     height: 100%;
     position: relative;
@@ -318,7 +371,6 @@
                             font-size: 23px;
                             color: #666;
                             cursor: pointer;
-
                         }
                     }
                 }
@@ -328,9 +380,8 @@
     // 全屏播放器样式
     .full-player-box {
         @include position(fixed,0,0,0,0,100%,100%);
-        background: #999;
-        // height: calc(100% - 60px);
-        z-index: 1000;
+        background: $bg;
+        z-index: 1500;
         overflow: hidden;
         .bg {
             position: absolute;
@@ -350,7 +401,7 @@
             flex-direction: column;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: $bg;
             position: relative;
             .header {
                 display: flex;
@@ -365,7 +416,7 @@
                     justify-content: center;
                     align-items: center;
                     font-size: 21px;
-                    color: #969696;
+                    color: $color;
                     -webkit-app-region: no-drag;
                     i {
                         font-size: 30px;
@@ -395,7 +446,7 @@
                             height: 100%;
                             border-radius: 50%;
                             box-sizing: border-box;
-                            border: 10px solid hsla(0,0%,100%,.1);
+                            border: 10px solid $color-bg;
                             // animation: rotate 20s linear infinite;
                             // animation-play-state: paused;
                         }
@@ -411,13 +462,15 @@
                             line-height: 50px;
                             text-align: center;
                             border-radius: 50%;
-                            color:#fff;
-                            background: rgba(0,0,0,0.1);
+                            color:$color;
+                            background: $tools-bg;
+                            cursor: pointer;
                             i {
                                 font-size: 22px;
                             }
                             &:hover {
-                                background: rgba(0,0,0,0.2);
+                                background: $color-bg;
+                                color:$color-hover;
                             }
                         }
                     }
@@ -425,7 +478,7 @@
                 .music-lyric {
                     display: flex;
                     flex-direction: column;
-                    color: #fff;
+                    color: rgba(255,255,255,0.8);
                     .name {
                         font-size: 20px;
                         font-weight: bold;
@@ -452,12 +505,88 @@
                     }
                 }
             }
-            .player {
+            .footer {
+                display: flex;
+                flex-direction: column-reverse;
+                padding: 0 20px;
                 height: 150px;
+                .player {
+                    display: flex;
+                    flex-direction: column;
+                    height: 71px;
+                    width: 100%;
+                    
+                    .duration {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        color: $color;
+                        font-size: 11px;
+                        line-height: 11px;
+                    }
+                    .progress {
+                        margin-top: 5px;
+                    }
+                    .control {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: row;
+                        .left {
+                            width: 30%;
+                            display: flex;
+                            align-items: center;
+                            color: $color;
+                            .iconfont {
+                                font-size: 22px;
+                            }
+                        }
+                        .center {
+                            flex: 1;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            .music-contorl {
+                                width: 200px;
+                                display: flex;
+                                justify-content: space-around;
+                                align-items: center;
+                                height: 100%;
+                                color: $color;
+                                div:nth-child(odd) i{
+                                    font-size: 18px;
+                                }
+                                i {
+                                    font-size: 35px;
+                                }
+                            }
+                        }
+                        .right {
+                            width: 30%;
+                            display: flex;
+                            flex-direction: row-reverse;
+                            align-items: center;
+                            color: $color;
+                            padding-right: 30px;
+                            box-sizing: border-box;
+                            div {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                height: 100%;
+                                i {
+                                    width: 40px;
+                                    font-size: 22px;
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
+
 @keyframes rotate {
     0% {
         transform: rotate(0)
@@ -474,5 +603,68 @@
 .bottom-collapse-leave-to {
     opacity: 0;
     transform: translateY(100vh);
+}
+
+</style>
+<style>
+/* 全屏滚动条样式 */
+.player .el-slider .el-slider__runway {
+    margin: 0;
+    height: 2px;
+    background-color:rgba(0,0,0,0.1);
+}
+.player .el-slider .el-slider__runway .el-slider__bar {
+    height: 2px;
+    background-color:rgba(255,255,255,0.5);
+}
+.player .el-slider .el-slider__runway .el-slider__button-wrapper{
+    top: -16px;
+}
+.player .el-slider .el-slider__runway .el-slider__button-wrapper .el-slider__button {
+    width:12px;
+    height:12px;
+    background-color:rgb(196, 196, 196);
+    border:none;
+}
+/* mini声音弹出层 */
+.play-sound.el-popover.el-popper,.play-full-sound.el-popover.el-popper {
+    min-width: 0;
+    padding: 0;
+    border-radius: 1px;
+    width: 30px;
+    height: 130px;
+}
+.play-full-sound.el-popover.el-popper {
+    background: rgba(0, 0, 0,0.5);
+    border: none;
+}
+/* mini声音弹出层滚动条 */
+.play-sound .el-slider,.play-full-sound .el-slider {
+    margin-top: 13px;
+}
+.play-sound  .el-slider .el-slider__runway,.play-full-sound .el-slider .el-slider__runway {
+    margin: 0 auto;
+    height: 2px;
+    background-color:rgba(0,0,0,0.1);
+}
+.play-sound .el-slider .el-slider__runway .el-slider__bar {
+    height: 2px;
+    background-color:#f56c6c;
+} 
+.play-full-sound .el-slider .el-slider__runway .el-slider__bar {
+    height: 2px;
+    background-color:rgba(255,255,255,0.5);
+} 
+.play-sound .el-slider .el-slider__runway .el-slider__button-wrapper .el-slider__button {
+    width:12px;
+    height:12px;
+    background-color:#f56c6c;
+    border:none;
+}
+.play-full-sound .el-slider .el-slider__runway .el-slider__button-wrapper .el-slider__button {
+    width:12px;
+    height:12px;
+    background-color:rgb(196, 196, 196);
+    border:none;
 }
 </style>

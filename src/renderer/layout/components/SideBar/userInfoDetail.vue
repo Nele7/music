@@ -199,14 +199,14 @@ export default {
 
 .user-detail-wrapper {
     @include position(fixed, 0, 0, 0, 0);
-    z-index: 30;
+    z-index: 201;
     .user-info-detail {
         @include position(absolute, 70px, auto, auto, 184px, 300px);
         display: flex;
         flex-direction: column;
         background: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-        z-index: 33;
+        z-index: 201;
         .user-info-count {
             display: flex;
             flex-direction: row;

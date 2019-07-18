@@ -142,7 +142,7 @@
         z-index: 999;
         width: 100%;
         height: 2px;
-        // background: #e9e9e9;
+        background: rgba(0,0,0,0.1);
         .progress_inner {
             position: relative;
             height: 100%;

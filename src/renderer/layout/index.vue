@@ -83,6 +83,7 @@ export default {
         calc(100% - #{$sideBarWidth}),
         calc(100% - #{$navplayHeight})
     );
+    z-index: 200;
 }
 .navbar-container {
     @include position(absolute, 0, 0, auto, auto, 100%, $navBarHeight);

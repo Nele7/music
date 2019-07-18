@@ -52,4 +52,7 @@ export const neteaseApi = {
   commentLike: apiData('comment/like'),               // 给评论点赞
   // e
 
+  // s 播放器
+  checkMusic: apiData('/check/music')                 // 检测音乐是否可用
+  // e
 }
