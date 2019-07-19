@@ -42,3 +42,14 @@
   opacity: 0;
 
 }
+// open player transition
+
+.bottom-collapse-enter-active,
+.bottom-collapse-leave-active {
+    transition: all 0.3s linear;
+}
+.bottom-collapse-enter,
+.bottom-collapse-leave-to {
+    opacity: 0;
+    transform: translateY(100vh);
+}

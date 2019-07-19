@@ -13,7 +13,7 @@
         <div class="mini-player-content">
             <div class="left">
                 <div class="muisc-avatar">
-                    <img src="http://p3.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg" alt="">
+                    <img :src="currentMusicItem && currentMusicItem.album.picUrl" alt="">
                     <div class="mask-layer" @click="isShowFullPlayer = true">
                         <i class="el-icon-top"></i>
                         <i class="el-icon-bottom"></i>
@@ -21,8 +21,11 @@
                 </div>
                 <div class="muisc-desc">
                     <p class="name">
-                        <span>Last Night</span> - 
-                        <span>EXILE TAKAHIRO</span>
+                        <span>{{currentMusicItem && currentMusicItem.name}}</span> - 
+                        <span 
+                        v-for="(singer,index) in currentMusicItem && currentMusicItem.artists"
+                        :key="index"
+                        >{{singer.name}}</span>
                     </p>
                     <p class="duration">
                         <span>00:02</span> / 
@@ -39,7 +42,7 @@
                         <i class="iconfont icon-ai10"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-bofang2"></i>
+                        <i class="iconfont" :class="toggleIconPlay" @click="togglePlaying"></i>
                     </div>
                     <div>
                         <i class="iconfont icon-ai09"></i>
@@ -80,7 +83,7 @@
     <!-- 全屏播放 -->
     <transition name="bottom-collapse" appear>
         <div class="full-player-box" v-if="isShowFullPlayer">
-            <div class="bg"></div>
+            <div class="bg" :style="{background:`url(${currentMusicItem.album.picUrl})`}"></div>
             <div class="content">
                 <div class="header">
                     <a href="#" class="hide" @click="isShowFullPlayer = false">
@@ -90,7 +93,7 @@
                 <div class="main">
                     <div class="music-cover">
                         <div class="cd">
-                            <img src="http://p1.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg" alt="">
+                            <img :src="currentMusicItem.album.picUrl" alt="">
                         </div>
                         <div class="tools">
                             <div class="like">
@@ -108,34 +111,49 @@
                         </div>
                     </div>
                     <div class="music-lyric">
-                        <p class="name">
-                            Cheap Thrills
-                        </p>
-                        <div class="mark">
-                            <div class="album">
-                                <span>专辑：</span> <span>Cheap Thrills (fe</span>
-                            </div>
-                            <div class="singer">
-                                <span>歌手：</span><span>Sia / Sean Paul</span>
-                            </div>
-                            <div class="source">
-                                <span>来源：</span><span>我喜欢的音乐</span>
-                            </div>
-                        </div>
-                        <el-scrollbar
-                            wrap-class="scrollbar-wrapper"
-                            style="height:100%;"
-                            ref="myScrollbar">
-                            <div class="lyric">
-                                <ul>
-                                    <li class="active">让生活充满音乐</li>
-                                    <li v-for="item in 80" :key="item">让生活充满音乐</li>
-                                </ul>
-                                <div class="no-lyriv">
-                                    <p>让生活充满音乐</p>
+                        <div class="music-lyric-box">
+                            <p class="name">
+                                {{currentMusicItem.name}}
+                            </p>
+                            <div class="mark">
+                                <div class="album">
+                                    <p>
+                                        <span>专辑：</span> 
+                                        <span class="active">{{currentMusicItem.album.name}}</span>
+                                    </p>
+                                </div>
+                                <div class="singer">
+                                    <p>
+                                        <span>歌手：</span>
+                                    <span 
+                            v-for="(singer,index) in currentMusicItem && currentMusicItem.artists"
+                            :key="index"
+                            class="active"
+                            >{{singer.name}}</span>
+                                    </p>
+                                </div>
+                                <div class="source">
+                                    <p>
+                                        <span>来源：</span><span class="active">我喜欢的音乐</span>
+                                    </p>
+                                    
                                 </div>
                             </div>
-                        </el-scrollbar>
+                            <el-scrollbar
+                                wrap-class="scrollbar-wrapper"
+                                style="height:100%;"
+                                ref="myScrollbar">
+                                <div class="lyric">
+                                    <ul>
+                                        <li class="active">让生活充满音乐</li>
+                                        <li v-for="item in 80" :key="item">让生活充满音乐</li>
+                                    </ul>
+                                    <div class="no-lyriv">
+                                        <p>让生活充满音乐</p>
+                                    </div>
+                                </div>
+                            </el-scrollbar>
+                        </div>
                     </div>
                 </div>
                 <div class="footer">
@@ -197,6 +215,7 @@
 </template>
 
 <script>
+    import * as types from '@/store/mutation_types'
     import PlayerProgress from '@/components/PlayerProgress'
     import PlayerMode from './PlayerMode'
     export default {
@@ -208,12 +227,19 @@
                 soundPercent:13 // 调节声音
             }
         },
-        components: {
-            PlayerProgress,
-            PlayerMode
-        },
         created() {
             
+        },
+        computed: {
+            currentMusicItem() {
+                return this.$store.getters.currentMusic
+            },
+            playStatus() {
+                return this.$store.getters.playerStatus
+            },
+            toggleIconPlay() {
+                return this.playStatus ? 'icon-zanting1': 'icon-bofang2'
+            },
         },
         methods: {
             // 进度条拖拽时
@@ -221,10 +247,19 @@
             },
             clickProgress(e) {
                 console.log(e)
-            }
+            },
+            // 播放暂停按钮
+            togglePlaying() {
+                this.$store.commit(`player/${types.SET_PLAY_STATUS}`,!this.playStatus)
+            },
+            
         },
         watch: {
             
+        },
+        components: {
+            PlayerProgress,
+            PlayerMode
         }
     }
 </script>
@@ -477,26 +512,52 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                 }
                 .music-lyric {
                     display: flex;
-                    flex-direction: column;
-                    color: rgba(255,255,255,0.8);
+                    width: 50%;
+                    .music-lyric-box {
+                        display: flex;
+                        flex-direction: column;
+                        width: 500px;
+                        height: 100%;
+                        color: rgba(255, 255, 255, 0.8);
+                    }
                     .name {
                         font-size: 20px;
                         font-weight: bold;
                     }
                     .mark {
                         display: flex;
-                        flex-direction: row;
+                        min-width: 450px;
                         font-size: 13px;
                         margin: 20px 0;
-                        div > span:last-child {
-                            color: #f56c6c;
+                        .album {
+                            width: 170px;
+                        }
+                        .singer {
+                            width: 150px;
+                        }
+                        .source {
+                            width: 150px;
+                        }
+                        div {
+                            padding: 0 10px;
+                            box-sizing: border-box;
+                            p {
+                                @include ellipsized;    
+                            }
+                            .active {
+                                color: #f56c6c;
+                                cursor: pointer;
+                            }
                         }
                     }
                     .lyric {
                         flex: 1;
                         ul{
+                            padding: 0 10px;
+                            box-sizing: border-box;
                             li {
                                 line-height: 30px;
+                                text-align: center;
                                 &.active {
                                     color: #f56c6c;
                                 }
@@ -586,85 +647,12 @@ $tools-bg:rgba(0, 0, 0, 0.1);
         }
     }
 }
-
 @keyframes rotate {
-    0% {
-        transform: rotate(0)
-    }
-    100% {
-        transform: rotate(1turn)
-    }
-}
-.bottom-collapse-enter-active,
-.bottom-collapse-leave-active {
-    transition: all 0.3s linear;
-}
-.bottom-collapse-enter,
-.bottom-collapse-leave-to {
-    opacity: 0;
-    transform: translateY(100vh);
-}
-
-</style>
-<style>
-/* 全屏滚动条样式 */
-.player .el-slider .el-slider__runway {
-    margin: 0;
-    height: 2px;
-    background-color:rgba(0,0,0,0.1);
-}
-.player .el-slider .el-slider__runway .el-slider__bar {
-    height: 2px;
-    background-color:rgba(255,255,255,0.5);
-}
-.player .el-slider .el-slider__runway .el-slider__button-wrapper{
-    top: -16px;
-}
-.player .el-slider .el-slider__runway .el-slider__button-wrapper .el-slider__button {
-    width:12px;
-    height:12px;
-    background-color:rgb(196, 196, 196);
-    border:none;
-}
-/* mini声音弹出层 */
-.play-sound.el-popover.el-popper,.play-full-sound.el-popover.el-popper {
-    min-width: 0;
-    padding: 0;
-    border-radius: 1px;
-    width: 30px;
-    height: 130px;
-}
-.play-full-sound.el-popover.el-popper {
-    background: rgba(0, 0, 0,0.5);
-    border: none;
-}
-/* mini声音弹出层滚动条 */
-.play-sound .el-slider,.play-full-sound .el-slider {
-    margin-top: 13px;
-}
-.play-sound  .el-slider .el-slider__runway,.play-full-sound .el-slider .el-slider__runway {
-    margin: 0 auto;
-    height: 2px;
-    background-color:rgba(0,0,0,0.1);
-}
-.play-sound .el-slider .el-slider__runway .el-slider__bar {
-    height: 2px;
-    background-color:#f56c6c;
-} 
-.play-full-sound .el-slider .el-slider__runway .el-slider__bar {
-    height: 2px;
-    background-color:rgba(255,255,255,0.5);
-} 
-.play-sound .el-slider .el-slider__runway .el-slider__button-wrapper .el-slider__button {
-    width:12px;
-    height:12px;
-    background-color:#f56c6c;
-    border:none;
-}
-.play-full-sound .el-slider .el-slider__runway .el-slider__button-wrapper .el-slider__button {
-    width:12px;
-    height:12px;
-    background-color:rgb(196, 196, 196);
-    border:none;
+  0% {
+      transform: rotate(0)
+  }
+  100% {
+      transform: rotate(1turn)
+  }
 }
 </style>

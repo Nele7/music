@@ -77,7 +77,7 @@
 import { neteaseApi } from "@/api/"
 import { covertUnit, formatDateTime } from "@/utils/util.js"
 import { mapActions } from 'vuex'
-
+import { musicMixin } from '@/utils/mixin'
 import to from "@/utils/await-to.js"
 import MusicList from './MusicList'
 import Comment from './Comment'
@@ -86,6 +86,7 @@ import Subscribers from './Subscribers'
 const briefWrapperHeight = 32;
 export default {
   name: 'songlistdetail',
+  mixins: [musicMixin ],
   data() {
     return {
       commentName:'',
@@ -164,31 +165,31 @@ export default {
       this.$set(this.tab[1],'name',`评论(${this.indexList.commentCount += 1})`)
     },
     // 选择当前歌曲项
-    selectItem(item,index) {
-      this.checkMusic(item.id)
-    },
-    // 检测歌曲是否有版权
-    async checkMusic(id) {
-      // return new Promise(async(resolve,reject) => {
-      //   try {
-      //     let [res] = await neteaseApi.checkMusic({
-      //       id
-      //     })
-      //     if(res.success) {
-      //       console.log(111)
-      //     }
-           
-      //     resolve(res)
-      //   } catch (error) {
-      //     // reject(error)
-      //   }
-      // })
-      let [res] = await neteaseApi.checkMusic({
-            id
+    async selectItem(item,index) {
+      try{
+        await this.checkMusic(item.id)
+        // let {data} = await neteaseApi.songURL({
+        //   id:item.id
+        // })
+        let list = this.indexList.tracks.map(item => {
+          let obj = {
+            id:item.id,
+            artists: item.ar,
+            album: item.al,
+            name: item.name,
+            duration: item.dt,
+            mv: item.mv
+          }
+          return obj
         })
-         console.log(res)
+        // 整个歌单放在播放列表中
+        this.insertMusicPlayList({list,index})
+      }catch (err) {
+        this.$toast(err.response.data.message)
+      }
     },
-    ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList'])
+    ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList']),
+    ...mapActions('player', ['insertMusicPlayList'])
   },
   watch: {
     songId: {

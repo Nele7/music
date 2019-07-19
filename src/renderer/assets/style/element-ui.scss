@@ -1,0 +1,92 @@
+/* 全屏滚动条样式 */
+.player {
+    .el-slider{
+        .el-slider__runway {
+            margin: 0;
+            height: 2px;
+            background-color:rgba(0,0,0,0.1);
+            .el-slider__bar {
+                height: 2px;
+                background-color:rgba(255,255,255,0.5);
+            }
+            .el-slider__button-wrapper {
+                top: -16px;
+                .el-slider__button {
+                    width:12px;
+                    height:12px;
+                    background-color:rgb(196, 196, 196);
+                    border:none;
+                }
+            }
+        }
+    }
+}
+// 公共声音弹出层
+.play-sound,.play-full-sound {
+    &.el-popover.el-popper{
+        min-width: 0;
+        padding: 0;
+        border-radius: 1px;
+        width: 30px;
+        height: 130px;
+    }
+}
+// 全屏声音弹出层
+.play-full-sound {
+    &.el-popover.el-popper {
+        background: rgba(0, 0, 0,0.5);
+        border: none;
+    }
+}
+// 公共声音弹出层滚动条
+.play-sound,.play-full-sound {
+    .el-slider {
+        margin-top: 13px;
+        &.is-vertical {
+            .el-slider__runway {
+                margin: 0 auto;
+            }
+        }
+        .el-slider__runway {
+            margin: 0 auto;
+            background-color:rgba(0,0,0,0.1);
+            .el-slider__button-wrapper {
+                .el-slider__button {
+                    width:12px;
+                    height:12px;
+                    border:none;
+                }
+            } 
+        }
+    }
+}
+// mini声音弹出层滚动条
+.play-sound {
+    .el-slider {
+        .el-slider__runway {
+            .el-slider__bar {
+                background-color:#f56c6c;
+            }
+            .el-slider__button-wrapper{
+                .el-slider__button {
+                    background-color:#f56c6c;
+                }
+            } 
+        }
+    }
+}
+// 全屏模式声音弹出层滚动条
+.play-full-sound {
+    .el-slider {
+        .el-slider__runway {
+            .el-slider__bar {
+                background-color:rgba(255,255,255,0.5);
+            } 
+        }
+        .el-slider__button-wrapper {
+            .el-slider__button {
+                background-color:rgb(196, 196, 196);
+            }
+        }
+    }
+}

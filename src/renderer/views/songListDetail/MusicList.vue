@@ -3,9 +3,9 @@
     <ul class="songs-list">
       <li class="song-item title">
         <div class="blank"></div>
-        <div class="music-title">音乐标题</div>
+        <div class="music-title song-group-item">音乐标题</div>
         <div class="songs">歌手</div>
-        <div class="album">专辑</div>
+        <div class="album song-group-item">专辑</div>
         <div class="duration">时长</div>
       </li>
       <li class="song-item" v-for="(item,index) in musiclist" :key="index">
@@ -13,7 +13,7 @@
           <span>{{index+1 | pad}}</span>
           <i class="iconfont" :class="likedIcon(item.id)" @click="toggleLike(item.id)"></i>
         </div>
-        <div class="music-title">
+        <div class="music-title song-group-item">
           <p>
             <span>{{item.name}}</span>
             <span class="sq" v-if="item.copyright ===1">SQ</span>
@@ -22,8 +22,15 @@
           </p>
           <i @click="clickItem(item,index)" class="iconfont icon-bofang1"></i>
         </div>
-        <div class="songs">{{item.ar[0].name}}</div>
-        <div class="album">{{item.al.name}}</div>
+        <div class="songs">
+          <p>
+            <span v-for="(singer,index) in item.ar"
+        :key="index">{{singer.name}}</span>
+          </p>
+        </div>
+        <div class="album song-group-item">
+          <p>{{item.al.name}}</p>
+        </div>
         <div class="duration">{{item.dt || item.duration | formatTime}}</div>
       </li>
     </ul>
@@ -129,7 +136,13 @@ export default {
         font-weight: 500;
         font-size: 13px;
       }
-
+      .song-group-item {
+        padding: 0 20px;
+        box-sizing: border-box;
+        p {
+          @include ellipsized;
+        }
+      }
       .blank {
         width: 10%;
         span {
@@ -152,13 +165,10 @@ export default {
 
       .music-title {
         width: 40%;
-        padding: 0 20px;
-        box-sizing: border-box;
+        
         display: flex;
         justify-content: space-between;
-
         p {
-          @include ellipsized;
           .sq {
             display: inline-block;
             height: 12px;
@@ -183,8 +193,12 @@ export default {
 
       .songs {
         width: 20%;
+        padding-right: 20px;
+        box-sizing: border-box;
+        p {
+          @include ellipsized;
+        }
       }
-
       .album {
         width: 20%;
       }

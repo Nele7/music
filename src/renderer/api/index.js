@@ -53,6 +53,7 @@ export const neteaseApi = {
   // e
 
   // s 播放器
-  checkMusic: apiData('/check/music')                 // 检测音乐是否可用
+  checkMusic: apiData('/check/music'),                // 检测音乐是否可用
+  songURL: apiData('/song/url'),                      // 获取音乐URL
   // e
 }

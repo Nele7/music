@@ -18,3 +18,10 @@ export const TOGGLE_USERINFO_DETAIL = 'TOGGLE_USERINFO_DETAIL'   // 用户详细
 // personalize.js
 export const SET_RECOMMEND = 'SET_RECOMMEND'                     // 设置个性推荐数据
 export const UPDATE_RECOMMEND = 'UPDATE_RECOMMEND'               // 更新个性推荐数据
+
+
+// player.js
+export const SET_PLAY_LIST = 'SET_PLAY_LIST'                     // 设置播放列表数据
+export const SET_PLAY_MODE = 'SET_PLAY_MODE'                     // 当前播放模式
+export const SET_PLAY_STATUS = 'SET_PLAY_STATUS'                 // 当前播放状态
+export const SET_PLAY_CURRENT_INDEX = 'SET_CURRENT_PLAY_INDEX'   // 当前播放的下标

@@ -91,3 +91,23 @@ export const commentMixin = {
         }
     },
 }
+
+export const musicMixin = {
+    methods: {
+        // 检测歌曲是否有版权
+        checkMusic(id) {
+            return new Promise(async(resolve,reject) => {
+                try {
+                let res = await neteaseApi.checkMusic({
+                    id
+                })
+                if(res.success) {
+                    resolve(res)
+                }
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        },
+    }
+}
