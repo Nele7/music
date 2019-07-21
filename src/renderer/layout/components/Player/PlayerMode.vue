@@ -1,4 +1,4 @@
-PlayerMode<template>
+<template>
     <div>
         <i href="#"
         class="iconfont"

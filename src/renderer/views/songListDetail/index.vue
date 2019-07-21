@@ -168,20 +168,21 @@ export default {
     async selectItem(item,index) {
       try{
         await this.checkMusic(item.id)
-        // let {data} = await neteaseApi.songURL({
-        //   id:item.id
-        // })
+        let {data:[d]} = await neteaseApi.songURL({
+          id:item.id
+        })
         let list = this.indexList.tracks.map(item => {
           let obj = {
-            id:item.id,
+            id: item.id,
             artists: item.ar,
             album: item.al,
             name: item.name,
             duration: item.dt,
-            mv: item.mv
+            mv: item.mv,
           }
           return obj
         })
+        list[index].url = d.url
         // 整个歌单放在播放列表中
         this.insertMusicPlayList({list,index})
       }catch (err) {

@@ -28,3 +28,7 @@ export function formatDateTime(time) {
 export function formatterTime(time) {
     return moment(time).startOf('minute').fromNow()
 }
+
+export function formatTimeMMSS(time) {
+    return moment(time).format('mm:ss')
+}

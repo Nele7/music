@@ -25,7 +25,7 @@
         <div class="songs">
           <p>
             <span v-for="(singer,index) in item.ar"
-        :key="index">{{singer.name}}</span>
+            :key="index">{{singer.name}}</span>
           </p>
         </div>
         <div class="album song-group-item">

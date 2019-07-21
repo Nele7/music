@@ -5,8 +5,7 @@
         <div class="progress">
             <player-progress 
             :percent="percentage"
-            @pbar-drag="dragProgress"
-            @pbar-seek="clickProgress"
+            @pbar-seek="changeCurrentTime"
             >
             </player-progress>
         </div>
@@ -21,31 +20,32 @@
                 </div>
                 <div class="muisc-desc">
                     <p class="name">
-                        <span>{{currentMusicItem && currentMusicItem.name}}</span> - 
+                        <span>{{currentMusicItem && currentMusicItem.name || '让生活充满音乐'}}</span>
+                        <span v-if="currentMusicItem"> - </span>
                         <span 
                         v-for="(singer,index) in currentMusicItem && currentMusicItem.artists"
                         :key="index"
                         >{{singer.name}}</span>
                     </p>
-                    <p class="duration">
-                        <span>00:02</span> / 
-                        <span>03:58</span>
+                    <p class="duration"  v-if="currentMusicItem">
+                        <span>{{ currentTime | formatTimeMMSS}}</span> / 
+                        <span>{{ currentMusicItem && currentMusicItem.duration | formatTimeMMSS}}</span>
                     </p>
                 </div>
             </div>
             <div class="center">
                 <div class="music-contorl">
                     <div>
-                        <i class="iconfont icon-xin"></i>
+                        <i class="iconfont" :class="likedIcon" @click="musicLiked"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-ai10"></i>
+                        <i class="iconfont icon-ai10" @click="prev"></i>
                     </div>
                     <div>
                         <i class="iconfont" :class="toggleIconPlay" @click="togglePlaying"></i>
                     </div>
                     <div>
-                        <i class="iconfont icon-ai09"></i>
+                        <i class="iconfont icon-ai09" @click="next"></i>
                     </div>
                     <div>
                         <i class="iconfont icon-fenxiang"></i>
@@ -83,7 +83,7 @@
     <!-- 全屏播放 -->
     <transition name="bottom-collapse" appear>
         <div class="full-player-box" v-if="isShowFullPlayer">
-            <div class="bg" :style="{background:`url(${currentMusicItem.album.picUrl})`}"></div>
+            <div class="bg" :style="{backgroundImage:`url(${currentMusicItem.album.picUrl})`}"></div>
             <div class="content">
                 <div class="header">
                     <a href="#" class="hide" @click="isShowFullPlayer = false">
@@ -92,12 +92,12 @@
                 </div>
                 <div class="main">
                     <div class="music-cover">
-                        <div class="cd">
+                        <div class="cd" :class="togglePlayAnimation">
                             <img :src="currentMusicItem.album.picUrl" alt="">
                         </div>
                         <div class="tools">
-                            <div class="like">
-                                <i class="iconfont icon-xin"></i>
+                            <div class="like" @click="musicLiked">
+                                <i class="iconfont" :class="likedIcon" ></i>
                             </div>
                             <div>
                                 <i class="el-icon-folder-add"></i>
@@ -158,12 +158,12 @@
                 </div>
                 <div class="footer">
                     <div class="player">
-                        <div class="duration">
-                            <div>00:02</div>
-                            <div>03:58</div>
+                        <div class="duration" v-if="currentMusicItem">
+                            <div>{{ currentTime | formatTimeMMSS}}</div>
+                            <div>{{ currentMusicItem && currentMusicItem.duration | formatTimeMMSS}}</div>
                         </div>
                         <div class="progress">
-                            <el-slider v-model="percentage" :show-tooltip="false"></el-slider>
+                            <el-slider v-model="percentage" :show-tooltip="false" @change="changeCurrentTime"></el-slider>
                         </div>
                         <div class="control">
                             <div class="left">
@@ -174,13 +174,13 @@
                             <div class="center">
                                 <div class="music-contorl">
                                     <div>
-                                        <i class="iconfont icon-shangyishou"></i>
+                                        <i class="iconfont icon-ai10" @click="prev"></i>
                                     </div>
                                     <div>
-                                        <i class="iconfont icon-zanting"></i>
+                                        <i class="iconfont" :class="toggleFullPlayIcon" @click="togglePlaying"></i>
                                     </div>
                                     <div>
-                                        <i class="iconfont icon-xiayishou"></i>
+                                        <i class="iconfont icon-ai09" @click="next"></i>
                                     </div>
                                 </div>
                             </div>
@@ -211,24 +211,43 @@
             </div>
         </div>
      </transition>
+    <audio 
+    ref="musicAudio"
+    :src="musicURL"
+    @canplay="start"
+    @ended="ended"
+    @timeupdate="updataTime"
+    @error="musicError"
+    ></audio>
 </div>
 </template>
 
 <script>
+    import { neteaseApi } from "@/api/"
+    import { NOSELECT_MUSIC_LIST } from '@/config/'
     import * as types from '@/store/mutation_types'
+    import to from "@/utils/await-to.js"
+    import { formatTimeMMSS } from '@/utils/util'
     import PlayerProgress from '@/components/PlayerProgress'
     import PlayerMode from './PlayerMode'
+    import {mapActions} from 'vuex'
     export default {
         data() {
             return {
                 customColors: '#f56c6c',
-                percentage:20, // 歌曲进度条
+                percentage:0, // 歌曲进度条
                 isShowFullPlayer:false,
-                soundPercent:13 // 调节声音
+                soundPercent:13, // 调节声音
+                musicURL: '',           // 音乐地址
+                musicStart: false,
+                currentTime: 0,     // 当前播放时间
             }
         },
-        created() {
-            
+        mounted() {
+            if(this.currentMusicItem.id) {
+                this.getSongURL()
+            }
+            // this.$store.commit(`player/${types.SET_PLAY_STATUS}`,false)
         },
         computed: {
             currentMusicItem() {
@@ -237,25 +256,149 @@
             playStatus() {
                 return this.$store.getters.playerStatus
             },
+            playCurrentIndex() {
+                return this.$store.getters.playCurrentIndex
+            },
+            playerList() {
+                return this.$store.getters.playerList
+            },
             toggleIconPlay() {
                 return this.playStatus ? 'icon-zanting1': 'icon-bofang2'
             },
+            toggleFullPlayIcon() {
+                return this.playStatus ? 'icon-zanting' : 'icon-bofang'
+            },
+            togglePlayAnimation() {
+                return this.playStatus ? 'play' : 'play pause'
+            },
+            userlike() {
+                if(this.currentMusicItem) {
+                    return this.$store.state.user.userlikelist.includes(this.currentMusicItem.id)
+                }
+            },
+            likedIcon() {
+                if(this.currentMusicItem) {
+                    return this.userlike ? 'icon-hongxin liked' : 'icon-xin'
+                }
+            }
         },
         methods: {
-            // 进度条拖拽时
-            dragProgress(e) {
-            },
-            clickProgress(e) {
-                console.log(e)
+            changeCurrentTime(e) {
+                if(this.currentMusicItem){
+                    this.$refs.musicAudio.currentTime = ((this.currentMusicItem.duration * e) / 100) / 1000
+                }
             },
             // 播放暂停按钮
             togglePlaying() {
-                this.$store.commit(`player/${types.SET_PLAY_STATUS}`,!this.playStatus)
+                if(this.currentMusicItem) {
+                    this.$store.commit(`player/${types.SET_PLAY_STATUS}`,!this.playStatus)
+                    const audio = this.$refs.musicAudio
+                    this.$nextTick(() => {
+                        this.playStatus ? audio.play() : audio.pause()
+                    })
+                }else {
+                    this.$toast(NOSELECT_MUSIC_LIST)
+                }
             },
-            
+            // 获取音乐的播放地址
+            async getSongURL() {
+                let [res] = await to(neteaseApi.songURL({
+                    id:this.currentMusicItem && this.currentMusicItem.id
+                }))
+                this.musicURL = this.currentMusicItem.url = res.data[0].url
+            },
+            start(e) {
+                this.musicStart = true
+                console.log('开始播放')
+            },
+            ended(e) {
+                console.log('播放结束')
+                this.next()
+            },
+            prev() {
+                if(!this.musicStart) return
+                let playerListlength = this.playerList.length - 1
+                let index = this.playCurrentIndex - 1 === -1 ? playerListlength :  Number(this.playCurrentIndex) - 1
+                this.$store.commit(`player/${types.SET_PLAY_CURRENT_INDEX}`,index)
+                if(!this.playStatus) {
+                    this.$store.commit(`player/${types.SET_PLAY_STATUS}`,true)
+                }
+                this.musicStart = false
+            },
+            next() {
+                if(!this.musicStart) return
+                let playerListlength = this.playerList.length - 1
+                let index = this.playCurrentIndex >= playerListlength ? 0 : Number(this.playCurrentIndex) + 1
+                this.$store.commit(`player/${types.SET_PLAY_CURRENT_INDEX}`,index)
+                if(!this.playStatus) {
+                    this.$store.commit(`player/${types.SET_PLAY_STATUS}`,true)
+                }
+                this.musicStart = false
+            },
+            musicError() {
+                // console.log(123)
+                // this.musicStart = true
+
+                // this.currentMusicItem.url = `http://music.163.com/song/media/outer/url?id=${
+                //     this.currentMusicItem.id
+                // }.mp3`
+            },
+            updataTime(e) {
+                // currentTime 秒数
+                let currentTime = this.$refs.musicAudio.currentTime
+                this.currentTime = currentTime * 1000
+            },
+            musicLiked() {
+                if(this.currentMusicItem) {
+                    this.like()
+                }else {
+                    this.$toast(NOSELECT_MUSIC_LIST)
+                }
+            },
+            async like() {
+                let id = this.currentMusicItem.id
+                let like = this.userlike
+                let [res] = await to(neteaseApi.like({
+                    id,
+                    like
+                }))
+                if(!like) {
+                    this.insertUserLikelist(id)
+                    this.$toast('已添加到我喜欢的音乐')
+                }else {
+                    this.deleteUserLikelist(id)
+                    this.$toast('取消喜欢成功')
+                }
+            },
+            ...mapActions('user', ['insertUserLikelist', 'deleteUserLikelist'])
         },
         watch: {
-            
+            musicURL(n,o) {
+                if(n !== null) {
+                    if(this.playStatus) {
+                        this.$nextTick(() => {
+                            this.$refs.musicAudio.play()
+                        })
+                    }
+                }
+            },
+            currentMusicItem(n,o) {
+                if(n) {
+                    if(n.id) {
+                        this.musicURL = n.url
+                        this.getSongURL()
+                        this.$nextTick(() => {
+                            this.$refs.musicAudio.play()
+                        })
+                    }
+                }
+            },
+            currentTime(newTime) {
+                this.percentage = (newTime / this.currentMusicItem.duration) * 100
+            }
+        },
+        filters: {
+            formatTimeMMSS 
         },
         components: {
             PlayerProgress,
@@ -381,6 +524,9 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                             font-size: 18px;
                             cursor: pointer;
                             color: #666;
+                            &.liked {
+                                color: #f56c6c;
+                            }
                         }
                     }
                 }
@@ -422,14 +568,14 @@ $tools-bg:rgba(0, 0, 0, 0.1);
             position: absolute;
             width: 100%;
             height: 100%;
-            background: url(http://p1.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg) no-repeat;
+            background-repeat: no-repeat;
             background-size: 120% 120%;
             background-position: center center;
             background-attachment: fixed;
-            background-color: beige;
+            background-color: #666;
             transform: scale(1.2);
-            filter: blur(20px);
             transition: background 5s;
+            filter: blur(20px);
         }
         .content {
             display: flex;
@@ -476,14 +622,19 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                     .cd {
                         width: 350px;
                         height: 350px;
+                        &.play {
+                            animation: rotate 20s linear infinite;
+                        }
+                        &.pause {
+                            animation-play-state: paused;
+                        }
                         img {
                             width: 100%;
                             height: 100%;
                             border-radius: 50%;
                             box-sizing: border-box;
                             border: 10px solid $color-bg;
-                            // animation: rotate 20s linear infinite;
-                            // animation-play-state: paused;
+                            
                         }
                     }
                     .tools {
@@ -502,6 +653,9 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                             cursor: pointer;
                             i {
                                 font-size: 22px;
+                                &.liked {
+                                    color:#f56c6c;
+                                }
                             }
                             &:hover {
                                 background: $color-bg;
