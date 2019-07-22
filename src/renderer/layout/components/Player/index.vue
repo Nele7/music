@@ -54,7 +54,7 @@
             </div>
             <div class="right">
                 <div class="music-tools">
-                    <player-mode></player-mode>
+                    <player-mode @playMode="changePlayMode"></player-mode>
                     <div>
                         <i class="iconfont icon-liebiao" style="font-size:14px"></i>
                     </div>
@@ -203,7 +203,7 @@
                                 <div style="margin-left:10px">
                                     <i class="iconfont icon-liebiao" style="font-size:15px"></i>
                                 </div>
-                                <player-mode></player-mode>
+                                <player-mode @playMode="changePlayMode"></player-mode>
                             </div>
                         </div>
                     </div>
@@ -244,7 +244,7 @@
             }
         },
         mounted() {
-            if(this.currentMusicItem.id) {
+            if(this.currentMusicItem&& this.currentMusicItem.id) {
                 this.getSongURL()
             }
             // this.$store.commit(`player/${types.SET_PLAY_STATUS}`,false)
@@ -369,6 +369,15 @@
                     this.deleteUserLikelist(id)
                     this.$toast('取消喜欢成功')
                 }
+            },
+            // 播放模式
+            changePlayMode(mode) {
+                // 0 列表循环 1 单曲循环  2 顺序播放 3 随机播放
+                this.$store.commit(`player/${types.SET_PLAY_MODE}`,mode)
+                if( mode === 3) {
+                    
+                }
+                console.log(mode)
             },
             ...mapActions('user', ['insertUserLikelist', 'deleteUserLikelist'])
         },
