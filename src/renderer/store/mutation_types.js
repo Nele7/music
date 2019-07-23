@@ -22,6 +22,7 @@ export const UPDATE_RECOMMEND = 'UPDATE_RECOMMEND'               // 更新个性
 
 // player.js
 export const SET_PLAY_LIST = 'SET_PLAY_LIST'                     // 设置播放列表数据
+export const SET_PLAY_SEQUENTLIST = 'SET_PLAY_SEQUENTLIST'       // 设置顺序播放数据
 export const SET_PLAY_MODE = 'SET_PLAY_MODE'                     // 当前播放模式
 export const SET_PLAY_STATUS = 'SET_PLAY_STATUS'                 // 当前播放状态
-export const SET_PLAY_CURRENT_INDEX = 'SET_CURRENT_PLAY_INDEX'   // 当前播放的下标
+export const SET_PLAY_CURRENT_INDEX = 'SET_CURRENT_PLAY_INDEX'   // 当前播放下标

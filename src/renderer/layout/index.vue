@@ -39,12 +39,17 @@ export default {
         LoginDialog
     },
     mounted(){
-        this.$store.dispatch('user/getUserLikelist')
+        if(this.loginStatus) {
+            this.$store.dispatch('user/getUserLikelist')
+        }
     },
     computed:{
         // 登录模态框状态
         loginVisible(){
             return this.$store.getters.showLoginDialog
+        },
+        loginStatus() {
+            return this.$store.getters.loginStatus
         }
     },
     methods: {

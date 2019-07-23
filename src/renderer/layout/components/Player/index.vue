@@ -97,7 +97,7 @@
                         </div>
                         <div class="tools">
                             <div class="like" @click="musicLiked">
-                                <i class="iconfont" :class="likedIcon" ></i>
+                                <i class="iconfont" :class="likedIcon"></i>
                             </div>
                             <div>
                                 <i class="el-icon-folder-add"></i>
@@ -141,14 +141,14 @@
                             </div>
                             <el-scrollbar
                                 wrap-class="scrollbar-wrapper"
-                                style="height:100%;"
+                                style="height:500px;"
                                 ref="myScrollbar">
                                 <div class="lyric">
-                                    <ul>
-                                        <li class="active">让生活充满音乐</li>
-                                        <li v-for="item in 80" :key="item">让生活充满音乐</li>
+                                    <ul v-if="lyric">
+                                        <!-- <li class="active">让生活充满音乐</li> -->
+                                        <li v-for="(item,index) in lyric.lines" :key="index" :class="{active:currentLyricIndex===index}">{{item.txt}}</li>
                                     </ul>
-                                    <div class="no-lyriv">
+                                    <div class="no-lyriv" v-if="!lyric">
                                         <p>让生活充满音乐</p>
                                     </div>
                                 </div>
@@ -227,10 +227,11 @@
     import { NOSELECT_MUSIC_LIST } from '@/config/'
     import * as types from '@/store/mutation_types'
     import to from "@/utils/await-to.js"
-    import { formatTimeMMSS } from '@/utils/util'
+    import { formatTimeMMSS,shuffle } from '@/utils/util'
     import PlayerProgress from '@/components/PlayerProgress'
     import PlayerMode from './PlayerMode'
     import {mapActions} from 'vuex'
+    import Lyric from 'lyric-parser'
     export default {
         data() {
             return {
@@ -238,20 +239,23 @@
                 percentage:0, // 歌曲进度条
                 isShowFullPlayer:false,
                 soundPercent:13, // 调节声音
-                musicURL: '',           // 音乐地址
+                musicURL: null,           // 音乐地址
                 musicStart: false,
                 currentTime: 0,     // 当前播放时间
+                lyric:null,
+                currentLyricIndex:0
             }
         },
         mounted() {
             if(this.currentMusicItem&& this.currentMusicItem.id) {
-                this.getSongURL()
+                // this.getSongURL()
+                this.getlyric()
             }
             // this.$store.commit(`player/${types.SET_PLAY_STATUS}`,false)
         },
         computed: {
             currentMusicItem() {
-                return this.$store.getters.currentMusic
+                return Object.assign({},this.$store.getters.currentMusic)
             },
             playStatus() {
                 return this.$store.getters.playerStatus
@@ -261,6 +265,12 @@
             },
             playerList() {
                 return this.$store.getters.playerList
+            },
+            playMode() {
+                return this.$store.getters.playMode
+            },
+            sequentList() {
+                return this.$store.getters.sequentList
             },
             toggleIconPlay() {
                 return this.playStatus ? 'icon-zanting1': 'icon-bofang2'
@@ -291,6 +301,10 @@
             // 播放暂停按钮
             togglePlaying() {
                 if(this.currentMusicItem) {
+                    if (this.currentMusicItem.id && this.musicURL === null) {
+                        this.getSongURL()
+                    }
+                    this.lyric.togglePlay()
                     this.$store.commit(`player/${types.SET_PLAY_STATUS}`,!this.playStatus)
                     const audio = this.$refs.musicAudio
                     this.$nextTick(() => {
@@ -313,7 +327,12 @@
             },
             ended(e) {
                 console.log('播放结束')
-                this.next()
+                if(this.playMode == 1) {
+                    this.$refs.musicAudio.currentTime = 0
+                    this.$refs.musicAudio.play()
+                }else {
+                    this.next()
+                }
             },
             prev() {
                 if(!this.musicStart) return
@@ -337,16 +356,18 @@
             },
             musicError() {
                 // console.log(123)
-                // this.musicStart = true
-
-                // this.currentMusicItem.url = `http://music.163.com/song/media/outer/url?id=${
-                //     this.currentMusicItem.id
-                // }.mp3`
+                this.musicStart = true
+                this.currentMusicItem.url = `http://music.163.com/song/media/outer/url?id=${
+                    this.currentMusicItem.id
+                }.mp3`
             },
             updataTime(e) {
                 // currentTime 秒数
                 let currentTime = this.$refs.musicAudio.currentTime
                 this.currentTime = currentTime * 1000
+                if(this.lyric) {
+                    this.lyric.seek(currentTime)
+                }
             },
             musicLiked() {
                 if(this.currentMusicItem) {
@@ -374,10 +395,39 @@
             changePlayMode(mode) {
                 // 0 列表循环 1 单曲循环  2 顺序播放 3 随机播放
                 this.$store.commit(`player/${types.SET_PLAY_MODE}`,mode)
-                if( mode === 3) {
-                    
+                let list = []
+                let index = -1
+                if(mode === 3) {
+                    // 打乱数组playlist
+                    list = shuffle(this.playerList)
+                }else {
+                    list = this.sequentList
                 }
-                console.log(mode)
+                index = list.findIndex(item => item.id === this.currentMusicItem.id)
+                this.$store.commit(`player/${types.SET_PLAY_CURRENT_INDEX}`,index)
+                this.$store.commit(`player/${types.SET_PLAY_LIST}`,list)
+            },
+            // 获取歌词
+            async getlyric() {
+                let [res] = await to(neteaseApi.lyric({
+                    id: this.currentMusicItem && this.currentMusicItem.id
+                }))
+                if(res.nolyric || (res.lrc && res.lrc.lyric === '')) {
+                    this.lyric = false
+                    this.currentMusicItem.lyric = false
+                }else {
+                    this.currentMusicItem.lyric = res.lrc.lyric
+                    this.currentLyricIndex = 0
+                    this.lyric = new Lyric(res.lrc.lyric, this.handlerLyric)
+                    // if (this.playStatus) {
+                    //     this.lyric.play()
+                    // }
+                }
+                console.log(this.lyric)
+            },
+            handlerLyric({lineNum, txt}) {
+                console.log(lineNum)
+                this.currentLyricIndex = lineNum
             },
             ...mapActions('user', ['insertUserLikelist', 'deleteUserLikelist'])
         },
@@ -392,15 +442,20 @@
                 }
             },
             currentMusicItem(n,o) {
-                if(n) {
+                // if(n) {
+                    console.log(n)
+                    if(this.lyric && this.playStatus) {
+                        this.lyric.stop()
+                    }
                     if(n.id) {
                         this.musicURL = n.url
                         this.getSongURL()
+                        this.getlyric()
                         this.$nextTick(() => {
                             this.$refs.musicAudio.play()
                         })
                     }
-                }
+                // }
             },
             currentTime(newTime) {
                 this.percentage = (newTime / this.currentMusicItem.duration) * 100

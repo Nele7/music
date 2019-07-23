@@ -17,8 +17,10 @@ const getters = {
 
     // s player.js
     playerList: state => state.player.playList,
+    sequentList: state => state.player.sequentList,
     playerStatus: state => state.player.playStatus,
     playCurrentIndex: state => state.player.playCurrentIndex,
+    playMode: state => state.player.playMode,
     currentMusic: state => state.player.playList[state.player.playCurrentIndex],
     // e
 }

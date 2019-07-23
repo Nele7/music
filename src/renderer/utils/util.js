@@ -1,9 +1,9 @@
 import moment from 'moment'
 moment.locale('zh-cn')
 export function covertUnit(val) {
-    if(!val) return 0
-    if(val > 10000) {
-        return (val/10000).toFixed() + '万'
+    if (!val) return 0
+    if (val > 10000) {
+        return (val / 10000).toFixed() + '万'
     }
     return val.toFixed()
 }
@@ -31,4 +31,26 @@ export function formatterTime(time) {
 
 export function formatTimeMMSS(time) {
     return moment(time).format('mm:ss')
+}
+// export function shuffle(arr) {
+//     for (let i = 0; i < arr.length; i++) {
+//         let j = getRandom(0,i);
+//         [arr[j],arr[i]] = [arr[i],arr[j]]
+//     }
+//     console.log(arr)
+//     // return arr
+// }
+export function shuffle(arr) {
+    let _arr = [...arr]
+    let length = _arr.length
+    while (length) {
+        let j = getRandom(0, length)
+        length--
+        [_arr[j], _arr[length]] = [_arr[length], _arr[j]]
+    }
+    return _arr
+}
+
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
