@@ -21,7 +21,12 @@ const getters = {
     playerStatus: state => state.player.playStatus,
     playCurrentIndex: state => state.player.playCurrentIndex,
     playMode: state => state.player.playMode,
-    currentMusic: state => state.player.playList[state.player.playCurrentIndex],
+    currentMusic: state => state.player.playList[state.player.playCurrentIndex] || {
+        name:'让生活充满音乐',
+        album: {
+            picUrl:'http://p3.music.126.net/n6TbquCbGzIpJS9t6VGD2A==/109951164208864013.jpg'
+        }
+    },
     // e
 }
 

@@ -13,21 +13,21 @@
             <div class="left">
                 <div class="muisc-avatar">
                     <img :src="currentMusicItem && currentMusicItem.album.picUrl" alt="">
-                    <div class="mask-layer" @click="isShowFullPlayer = true">
+                    <div class="mask-layer" @click="openFullPlayer">
                         <i class="el-icon-top"></i>
                         <i class="el-icon-bottom"></i>
                     </div>
                 </div>
                 <div class="muisc-desc">
                     <p class="name">
-                        <span>{{currentMusicItem && currentMusicItem.name || '让生活充满音乐'}}</span>
-                        <span v-if="currentMusicItem"> - </span>
+                        <span>{{currentMusicItem && currentMusicItem.name}}</span>
+                        <span v-if="currentMusicItem.id"> - </span>
                         <span 
                         v-for="(singer,index) in currentMusicItem && currentMusicItem.artists"
                         :key="index"
                         >{{singer.name}}</span>
                     </p>
-                    <p class="duration"  v-if="currentMusicItem">
+                    <p class="duration" v-if="currentMusicItem.id">
                         <span>{{ currentTime | formatTimeMMSS}}</span> / 
                         <span>{{ currentMusicItem && currentMusicItem.duration | formatTimeMMSS}}</span>
                     </p>
@@ -70,6 +70,7 @@
                         <el-slider
                         v-model="soundPercent"
                         vertical
+                        @change="changeCurrentSound"
                         height="100px">
                         </el-slider>
                         <div slot="reference">
@@ -82,7 +83,7 @@
     </div>
     <!-- 全屏播放 -->
     <transition name="bottom-collapse" appear>
-        <div class="full-player-box" v-if="isShowFullPlayer">
+        <div class="full-player-box" v-show="isShowFullPlayer">
             <div class="bg" :style="{backgroundImage:`url(${currentMusicItem.album.picUrl})`}"></div>
             <div class="content">
                 <div class="header">
@@ -115,7 +116,7 @@
                             <p class="name">
                                 {{currentMusicItem.name}}
                             </p>
-                            <div class="mark">
+                            <div class="mark" v-if="currentMusicItem.id">
                                 <div class="album">
                                     <p>
                                         <span>专辑：</span> 
@@ -125,11 +126,12 @@
                                 <div class="singer">
                                     <p>
                                         <span>歌手：</span>
-                                    <span 
-                            v-for="(singer,index) in currentMusicItem && currentMusicItem.artists"
-                            :key="index"
-                            class="active"
-                            >{{singer.name}}</span>
+                                        <span 
+                                            v-for="(singer,index) in currentMusicItem && currentMusicItem.artists"
+                                            :key="index"
+                                            class="active"
+                                            >{{singer.name}}
+                                        </span>
                                     </p>
                                 </div>
                                 <div class="source">
@@ -140,19 +142,20 @@
                                 </div>
                             </div>
                             <el-scrollbar
-                                wrap-class="scrollbar-wrapper"
+                                wrap-class="scroll-lyric"
                                 style="height:500px;"
-                                ref="myScrollbar">
+                                v-if="lyric" 
+                                >
                                 <div class="lyric">
-                                    <ul v-if="lyric">
+                                    <ul>
                                         <!-- <li class="active">让生活充满音乐</li> -->
-                                        <li v-for="(item,index) in lyric.lines" :key="index" :class="{active:currentLyricIndex===index}">{{item.txt}}</li>
+                                        <li v-for="(item,index) in lyric.lines" :key="index" :class="{active:currentLyricIndex===index}" ref="lyricLine">{{item.txt}}</li>
                                     </ul>
-                                    <div class="no-lyriv" v-if="!lyric">
-                                        <p>让生活充满音乐</p>
-                                    </div>
                                 </div>
                             </el-scrollbar>
+                            <div class="no-lyric" v-if="!lyric">
+                                <p>亲爱的，该歌曲暂无歌词噢~</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,6 +197,7 @@
                                     <el-slider
                                     v-model="soundPercent"
                                     vertical
+                                    @change="changeCurrentSound"
                                     height="100px">
                                     </el-slider>
                                     <div slot="reference">
@@ -232,26 +236,27 @@
     import PlayerMode from './PlayerMode'
     import {mapActions} from 'vuex'
     import Lyric from 'lyric-parser'
+    const SOUND = '__sound__'
     export default {
         data() {
             return {
-                customColors: '#f56c6c',
-                percentage:0, // 歌曲进度条
-                isShowFullPlayer:false,
-                soundPercent:13, // 调节声音
-                musicURL: null,           // 音乐地址
-                musicStart: false,
-                currentTime: 0,     // 当前播放时间
-                lyric:null,
-                currentLyricIndex:0
+                customColors: '#f56c6c',     // 自定义颜色
+                percentage:0,                // 歌曲进度条
+                isShowFullPlayer:false,      // 是否全屏显示播放
+                soundPercent:50,             // 声音进度条
+                musicURL: null,              // 音乐地址
+                musicStart: true,            // 开始播放时事件
+                currentTime: 0,              // 当前播放的时间
+                lyric:null,                  // 歌词实例
+                currentLyricIndex:0          // 歌词当前索引
             }
         },
         mounted() {
-            if(this.currentMusicItem&& this.currentMusicItem.id) {
-                // this.getSongURL()
+            if(this.currentMusicItem && this.currentMusicItem.id) {
                 this.getlyric()
+                this.$refs.musicAudio.volume = JSON.parse(localStorage.getItem(SOUND)).volume
+                this.soundPercent = JSON.parse(localStorage.getItem(SOUND)).percent
             }
-            // this.$store.commit(`player/${types.SET_PLAY_STATUS}`,false)
         },
         computed: {
             currentMusicItem() {
@@ -293,19 +298,38 @@
             }
         },
         methods: {
+            openFullPlayer() {
+                this.isShowFullPlayer = true
+            },
             changeCurrentTime(e) {
-                if(this.currentMusicItem){
-                    this.$refs.musicAudio.currentTime = ((this.currentMusicItem.duration * e) / 100) / 1000
+                if(this.currentMusicItem.id){
+                    const currentTime = ((this.currentMusicItem.duration * e) / 100)
+                    this.$refs.musicAudio.currentTime = currentTime / 1000
+                    if(this.lyric) {
+                        this.lyric.seek(currentTime)
+                    }
                 }
             },
-            // 播放暂停按钮
+            changeCurrentSound(e) {
+                if(this.currentMusicItem.id){
+                    let sound = {
+                        volume:e/100,
+                        percent: e
+                    }
+                    this.$refs.musicAudio.volume = sound.volume  // range [0,1]
+                    this.soundPercent = sound.percent
+                    localStorage.setItem(SOUND,JSON.stringify(sound))
+                }
+            },
             togglePlaying() {
-                if(this.currentMusicItem) {
+                if(this.currentMusicItem.id) {
                     if (this.currentMusicItem.id && this.musicURL === null) {
                         this.getSongURL()
                     }
-                    this.lyric.togglePlay()
                     this.$store.commit(`player/${types.SET_PLAY_STATUS}`,!this.playStatus)
+                    if(this.lyric) {
+                        this.lyric.togglePlay()
+                    }
                     const audio = this.$refs.musicAudio
                     this.$nextTick(() => {
                         this.playStatus ? audio.play() : audio.pause()
@@ -314,7 +338,6 @@
                     this.$toast(NOSELECT_MUSIC_LIST)
                 }
             },
-            // 获取音乐的播放地址
             async getSongURL() {
                 let [res] = await to(neteaseApi.songURL({
                     id:this.currentMusicItem && this.currentMusicItem.id
@@ -335,6 +358,7 @@
                 }
             },
             prev() {
+                // 下一首时，播放列表数组下标加 1 
                 if(!this.musicStart) return
                 let playerListlength = this.playerList.length - 1
                 let index = this.playCurrentIndex - 1 === -1 ? playerListlength :  Number(this.playCurrentIndex) - 1
@@ -355,21 +379,17 @@
                 this.musicStart = false
             },
             musicError() {
-                // console.log(123)
                 this.musicStart = true
-                this.currentMusicItem.url = `http://music.163.com/song/media/outer/url?id=${
-                    this.currentMusicItem.id
-                }.mp3`
+                this.currentMusicItem.url = `http://music.163.com/song/media/outer/url?id=${this.currentMusicItem.id}.mp3`
             },
             updataTime(e) {
-                // currentTime 秒数
+                // 监听timeupdate
+                // currentTime 单位为秒数，后台返回的duration为毫秒数，需要转换
                 let currentTime = this.$refs.musicAudio.currentTime
                 this.currentTime = currentTime * 1000
-                if(this.lyric) {
-                    this.lyric.seek(currentTime)
-                }
             },
             musicLiked() {
+                // i like music items
                 if(this.currentMusicItem) {
                     this.like()
                 }else {
@@ -391,23 +411,21 @@
                     this.$toast('取消喜欢成功')
                 }
             },
-            // 播放模式
             changePlayMode(mode) {
                 // 0 列表循环 1 单曲循环  2 顺序播放 3 随机播放
                 this.$store.commit(`player/${types.SET_PLAY_MODE}`,mode)
                 let list = []
                 let index = -1
                 if(mode === 3) {
-                    // 打乱数组playlist
                     list = shuffle(this.playerList)
                 }else {
                     list = this.sequentList
                 }
+                // 为随机播放时，点击歌曲播放时，找到该歌曲的索引
                 index = list.findIndex(item => item.id === this.currentMusicItem.id)
                 this.$store.commit(`player/${types.SET_PLAY_CURRENT_INDEX}`,index)
                 this.$store.commit(`player/${types.SET_PLAY_LIST}`,list)
             },
-            // 获取歌词
             async getlyric() {
                 let [res] = await to(neteaseApi.lyric({
                     id: this.currentMusicItem && this.currentMusicItem.id
@@ -419,15 +437,25 @@
                     this.currentMusicItem.lyric = res.lrc.lyric
                     this.currentLyricIndex = 0
                     this.lyric = new Lyric(res.lrc.lyric, this.handlerLyric)
-                    // if (this.playStatus) {
-                    //     this.lyric.play()
-                    // }
+                    // console.log(this.lyric)
+                    if (this.playStatus) {
+                        this.lyric.play()
+                    }
                 }
-                console.log(this.lyric)
             },
             handlerLyric({lineNum, txt}) {
-                console.log(lineNum)
                 this.currentLyricIndex = lineNum
+                const scrollDom = document.querySelectorAll('.scroll-lyric')[0]
+                if (lineNum < 5) {
+                    // 当小于5时，滚动条不滚动
+                    scrollDom.scrollTop = 0
+                } else {
+                    // 大于5时，滚动条向上滚动一个li的高度
+                    if (this.$refs.lyricLine[lineNum - 5]) {
+                        scrollDom.scrollTop = this.$refs.lyricLine[lineNum - 5].offsetTop
+                    }
+                }
+                //  console.log(scrollDom)
             },
             ...mapActions('user', ['insertUserLikelist', 'deleteUserLikelist'])
         },
@@ -442,24 +470,28 @@
                 }
             },
             currentMusicItem(n,o) {
-                // if(n) {
-                    console.log(n)
-                    if(this.lyric && this.playStatus) {
-                        this.lyric.stop()
-                    }
-                    if(n.id) {
-                        this.musicURL = n.url
-                        this.getSongURL()
-                        this.getlyric()
-                        this.$nextTick(() => {
-                            this.$refs.musicAudio.play()
-                        })
-                    }
-                // }
+                if(this.lyric && this.playStatus) {
+                    this.lyric.stop()
+                }
+                if(n.id) {
+                    this.musicURL = n.url
+                    this.getSongURL()
+                    this.getlyric()
+                    this.$nextTick(() => {
+                        this.$refs.musicAudio.play()
+                    })
+                }
             },
             currentTime(newTime) {
                 this.percentage = (newTime / this.currentMusicItem.duration) * 100
-            }
+            },
+            // 也可以监听播放状态，为播放还是暂停
+            // playStatus(status) {
+            //     const audio = this.$refs.musicAudio
+            //     this.$nextTick(() => {
+            //         status ? audio.play() : audio.pause()
+            //     })
+            // }
         },
         filters: {
             formatTimeMMSS 
@@ -781,6 +813,12 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                                 }
                             }
                         }
+                    }
+                    .no-lyric {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 500px;
                     }
                 }
             }
