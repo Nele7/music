@@ -10,6 +10,10 @@
             </SlickItem>
           </SlickList>
         </div>
+        <el-tooltip class="item" effect="light" content="按Ctrl+Enter发送" placement="top">
+                  <el-button plain size="small" style="float: right;margin-right: 15px" @click="sendMsg()">发送
+                  </el-button>
+                </el-tooltip>
       <!-- </SlickItem>
     </SlickList>-->
   </div> 

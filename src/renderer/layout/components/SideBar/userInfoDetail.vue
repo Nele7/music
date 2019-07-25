@@ -1,7 +1,7 @@
 <template>
     <transition name="slide-left">
         <div class="user-detail-wrapper" v-if="userDetail" @click="closeUserDetail">
-            <div class="user-info-detail">
+            <div class="user-info-detail" @click="cancelDefault">
                 <div class="user-info-count">
                     <div class="dynamic" @click="clickEventList">
                         <span href class="count">{{eventSum > 99 ? '99+' : eventSum }}</span>
@@ -141,13 +141,15 @@ export default {
         }
     },
     methods: {
+        cancelDefault() {
+            window.event.stopPropagation()  // 解决父元素点击事件的问题，阻止事件冒泡即可
+        },
         // 关闭用户详情页
         closeUserDetail() {
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
         },
         // 点击其他项
         noViews() {
-            window.event.stopPropagation()  // 解决父元素点击事件的问题，阻止事件冒泡即可
             this.$toast('暂未开放，敬请期待~~~')
         },
         // 获取用户详情，需登录
@@ -156,34 +158,28 @@ export default {
         },
         // 用户签到
         async sign() {
-            window.event.stopPropagation()
             let res = await this.$store.dispatch('user/sign')
             this.$toast('签到成功积分+'+res.point)
             // 更新签到状态
             this.$store.commit(`user/${types.USER_SIGN}`,true)
-            // await this.$store.dispatch('user/getUserDetail')
         },
         // 点击动态进入动态列表
         clickEventList() {
-            window.event.stopPropagation()
             this.$router.push({path:'/userDetail',query:{type:1}})
             this.closeUserDetail()
         },
         // 点击关注进入关注列表
         clickFollowList() {
-            window.event.stopPropagation()
             this.$router.push({path:'/userDetail',query:{type:2}})
             this.closeUserDetail()
         },
         // 点击粉丝进入粉丝列表
         clickFollowerList() {
-            window.event.stopPropagation()
             this.$router.push({path:'/userDetail',query:{type:3}})
             this.closeUserDetail()
         },
         // 退出登录
         async userSignOut() {
-            window.event.stopPropagation()
             let res = await this.$store.dispatch('user/logout')
             this.$toast(res)
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)

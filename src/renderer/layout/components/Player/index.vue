@@ -13,7 +13,7 @@
             <div class="left">
                 <div class="muisc-avatar">
                     <img :src="currentMusicItem && currentMusicItem.album.picUrl" alt="">
-                    <div class="mask-layer" @click="openFullPlayer">
+                    <div class="mask-layer" @click="isShowFullPlayer = true">
                         <i class="el-icon-top"></i>
                         <i class="el-icon-bottom"></i>
                     </div>
@@ -55,7 +55,7 @@
             <div class="right">
                 <div class="music-tools">
                     <player-mode @playMode="changePlayMode"></player-mode>
-                    <div>
+                    <div @click="showPlayerListDialog = !showPlayerListDialog">
                         <i class="iconfont icon-liebiao" style="font-size:14px"></i>
                     </div>
                     <div>
@@ -74,7 +74,8 @@
                         height="100px">
                         </el-slider>
                         <div slot="reference">
-                            <i class="iconfont icon-icon--"></i>
+                            <i class="iconfont icon-icon--" v-if="soundPercent > 0"></i>
+                            <i class="iconfont icon-jingyin" v-if="soundPercent === 0"></i>
                         </div>
                     </el-popover>
                 </div>
@@ -82,7 +83,7 @@
         </div>
     </div>
     <!-- 全屏播放 -->
-    <transition name="bottom-collapse" appear>
+    <transition name="side-bottom" appear>
         <div class="full-player-box" v-show="isShowFullPlayer">
             <div class="bg" :style="{backgroundImage:`url(${currentMusicItem.album.picUrl})`}"></div>
             <div class="content">
@@ -136,13 +137,13 @@
                                 </div>
                                 <div class="source">
                                     <p>
-                                        <span>来源：</span><span class="active">我喜欢的音乐</span>
+                                        <span>来源：</span><span class="active">{{currentMusicItem && currentMusicItem.from}}</span>
                                     </p>
                                     
                                 </div>
                             </div>
                             <el-scrollbar
-                                wrap-class="scroll-lyric"
+                                wrap-class="scrollbar-wrapper"
                                 style="height:500px;"
                                 v-if="lyric" 
                                 >
@@ -201,10 +202,11 @@
                                     height="100px">
                                     </el-slider>
                                     <div slot="reference">
-                                        <i class="iconfont icon-icon--"></i>
+                                        <i class="iconfont icon-icon--" v-if="soundPercent > 0"></i>
+                                        <i class="iconfont icon-jingyin" v-if="soundPercent === 0"></i>
                                     </div>
                                 </el-popover>
-                                <div style="margin-left:10px">
+                                <div style="margin-left:10px" @click="showPlayerListDialog = !showPlayerListDialog">
                                     <i class="iconfont icon-liebiao" style="font-size:15px"></i>
                                 </div>
                                 <player-mode @playMode="changePlayMode"></player-mode>
@@ -215,6 +217,7 @@
             </div>
         </div>
      </transition>
+    
     <audio 
     ref="musicAudio"
     :src="musicURL"
@@ -223,18 +226,21 @@
     @timeupdate="updataTime"
     @error="musicError"
     ></audio>
+    
+    <player-list></player-list>
 </div>
 </template>
 
 <script>
     import { neteaseApi } from "@/api/"
     import { NOSELECT_MUSIC_LIST } from '@/config/'
+    import { mapActions } from 'vuex'
+    import { formatTimeMMSS,shuffle } from '@/utils/util'
     import * as types from '@/store/mutation_types'
     import to from "@/utils/await-to.js"
-    import { formatTimeMMSS,shuffle } from '@/utils/util'
     import PlayerProgress from '@/components/PlayerProgress'
     import PlayerMode from './PlayerMode'
-    import {mapActions} from 'vuex'
+    import playerList from './PlayerList'
     import Lyric from 'lyric-parser'
     const SOUND = '__sound__'
     export default {
@@ -277,6 +283,14 @@
             sequentList() {
                 return this.$store.getters.sequentList
             },
+            showPlayerListDialog: {
+                get() {
+                    return this.$store.getters.showPlayerListDialog
+                },
+                set(newFlag) {
+                    this.$store.commit(`toggle/${types.TOGGLE_PLAYERLIST}`,newFlag)
+                }
+            },
             toggleIconPlay() {
                 return this.playStatus ? 'icon-zanting1': 'icon-bofang2'
             },
@@ -298,9 +312,6 @@
             }
         },
         methods: {
-            openFullPlayer() {
-                this.isShowFullPlayer = true
-            },
             changeCurrentTime(e) {
                 if(this.currentMusicItem.id){
                     const currentTime = ((this.currentMusicItem.duration * e) / 100)
@@ -498,7 +509,8 @@
         },
         components: {
             PlayerProgress,
-            PlayerMode
+            PlayerMode,
+            playerList
         }
     }
 </script>
@@ -766,6 +778,7 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                     .music-lyric-box {
                         display: flex;
                         flex-direction: column;
+                        justify-content: space-evenly;
                         width: 500px;
                         height: 100%;
                         color: rgba(255, 255, 255, 0.8);
@@ -786,7 +799,7 @@ $tools-bg:rgba(0, 0, 0, 0.1);
                             width: 150px;
                         }
                         .source {
-                            width: 150px;
+                            width: 170px;
                         }
                         div {
                             padding: 0 10px;

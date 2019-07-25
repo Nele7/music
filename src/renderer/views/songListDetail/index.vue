@@ -179,6 +179,7 @@ export default {
             name: item.name,
             duration: item.dt,
             mv: item.mv,
+            from: this.indexList.name
           }
           return obj
         })

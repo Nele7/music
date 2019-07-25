@@ -48,10 +48,8 @@ const actions = {
   insertMusicPlayList({commit,state},{list,index}) {
     let playlist = [...list]
     if(state.playMode == 3){
-      shuffle(playlist)
-      index = playlist.findIndex(item => {
-        return item.id == list[index].id
-      })
+      playlist = shuffle(list)
+      index = playlist.findIndex(item => item.id === list[index].id)
     }
     commit(types.SET_PLAY_LIST,playlist)
     commit(types.SET_PLAY_SEQUENTLIST,playlist)

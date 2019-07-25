@@ -13,6 +13,7 @@ const getters = {
     // s toggle.js
     showLoginDialog: state => state.toggle.showLoginDialog,
     showUserInfoDetail: state => state.toggle.showUserInfoDetail,
+    showPlayerListDialog: state => state.toggle.showPlayerListDialog,
     // e
 
     // s player.js

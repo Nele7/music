@@ -44,12 +44,22 @@
 }
 // open player transition
 
-.bottom-collapse-enter-active,
-.bottom-collapse-leave-active {
+.side-bottom-enter-active,
+.side-bottom-leave-active {
     transition: all 0.3s linear;
 }
-.bottom-collapse-enter,
-.bottom-collapse-leave-to {
+.side-bottom-enter,
+.side-bottom-leave-to {
     opacity: 0;
     transform: translateY(100vh);
+}
+
+.side-right-enter-active,
+.side-right-leave-active {
+    transition: all 0.3s linear;
+}
+.side-right-enter,
+.side-right-leave-to {
+    opacity: 0;
+    transform: translateX(250px);
 }

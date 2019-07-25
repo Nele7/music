@@ -2,7 +2,8 @@ import * as types from '../mutation_types'
 
 const state = {
   showLoginDialog: false,
-  showUserInfoDetail: false
+  showUserInfoDetail: false,
+  showPlayerListDialog: true,
 }
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
   [types.TOGGLE_USERINFO_DETAIL](state, flag) {
     state.showUserInfoDetail = flag
   },
+  [types.TOGGLE_PLAYERLIST](state,flag) {
+    state.showPlayerListDialog = flag
+  }
 }
 
 const actions = {

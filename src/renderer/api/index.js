@@ -56,5 +56,6 @@ export const neteaseApi = {
   checkMusic: apiData('/check/music'),                // 检测音乐是否可用
   songURL: apiData('/song/url'),                      // 获取音乐URL
   lyric: apiData('/lyric'),                           // 获取歌词
+  record: apiData('/user/record'),                    // 用户播放记录
   // e
 }
