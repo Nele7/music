@@ -86,7 +86,7 @@ import Subscribers from './Subscribers'
 const briefWrapperHeight = 32;
 export default {
   name: 'songlistdetail',
-  mixins: [musicMixin ],
+  mixins: [musicMixin],
   data() {
     return {
       commentName:'',
@@ -168,9 +168,7 @@ export default {
     async selectItem(item,index) {
       try{
         await this.checkMusic(item.id)
-        let {data:[d]} = await neteaseApi.songURL({
-          id:item.id
-        })
+        let { url } = await this.getSongURL(item.id)
         let list = this.indexList.tracks.map(item => {
           let obj = {
             id: item.id,
@@ -183,7 +181,7 @@ export default {
           }
           return obj
         })
-        list[index].url = d.url
+        list[index].url = url
         // 整个歌单放在播放列表中
         this.insertMusicPlayList({list,index})
       }catch (err) {

@@ -105,7 +105,7 @@ export default {
       width: 100%;
       height: 40px;
       display: flex;
-      border-bottom: 1px solid $color-border;
+      // border-bottom: 1px solid $color-border;
       transition: all 0.3s;
       &.title {
         div {

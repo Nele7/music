@@ -1,15 +1,15 @@
 <template>
     <transition name="side-right">
-        <div class="player-list-wrapper" v-if="showPlayerListDialog" @click="closeDialog">
+        <div class="player-list-wrapper" v-if="showPlayerListDialog" @click="showPlayerListDialog = false">
             <div class="dialog" @click="cancelDefault">
                 <div class="title-group">
                     <ul class="title-panel">
-                        <li class="active">播放列表</li>
-                        <li>历史记录</li>
+                        <li @click="clickTabs(true)" :class="{active:isShowTabs}">播放列表</li>
+                        <li @click="clickTabs(false)" :class="{active:!isShowTabs}">历史记录</li>
                     </ul>
                 </div>
                 <div class="count">
-                    <div>总{{playerList.length}}首</div>
+                    <div>总{{isShowTabs?sequentList.length:playerHistory.length}}首</div>
                     <div class="clear">
                         <i class="el-icon-delete"></i>
                         <span>清空</span>
@@ -18,34 +18,18 @@
                 <el-scrollbar
                 wrap-class="scrollbar-wrapper"
                 style="height: calc(100% - 88px)"
+                ref="scroll"
                 >
                 <ul class="list">
-                    <li class="list-item active">
+                    <li 
+                    class="list-item" 
+                    v-for="(item,index) in isShowTabs?sequentList:playerHistory"
+                    :class="{'active':item.id === currentMusicItem.id}" 
+                    @dblclick="togglePlaying(item,index)"
+                    ref="listItem"
+                    :key="index">
                         <div class="music-title ellipsiz play">
                             <i class="icon-living"></i>
-                            <p>
-                                <span>234</span>
-                            </p>
-                        </div>
-                        <div class="muisc-singer ellipsiz play">
-                            <p>
-                                <span>
-                                    affdsf
-                                </span>
-                            </p>
-                        </div>
-                        <el-tooltip effect="dark" content="asd" placement="bottom">
-                            <div class="icon center play">
-                                <i class="el-icon-paperclip"></i>
-                            </div>
-                        </el-tooltip>
-                        <div class="duration center play">
-                            02:22
-                        </div>
-                    </li>
-                    <li class="list-item" v-for="(item,index) in playerList" :key="index">
-                        <div class="music-title ellipsiz play">
-                            <!-- <i class="icon-living"></i> -->
                             <p>
                                 <span>{{item.name}}</span>
                             </p>
@@ -57,13 +41,16 @@
                                 </span>
                             </p>
                         </div>
-                        <el-tooltip effect="dark" :content="item.from" placement="bottom">
+                        <el-tooltip effect="dark" :content="'来源：'+item.from" placement="bottom">
                             <div class="icon center play">
                                 <i class="el-icon-paperclip"></i>
                             </div>
                         </el-tooltip>
                         <div class="duration center play">
-                            {{item.duration | formatTime}}
+                            <p>
+                                <span v-if="isShowTabs">{{item.duration | formatTime}}</span>
+                                <span v-else>{{item.date | formatterTime}}</span>
+                            </p>
                         </div>
                     </li>
                 </ul>
@@ -75,21 +62,34 @@
 
 <script>
     import * as types from '@/store/mutation_types'
-    import { formatTime } from "@/utils/util"
+    import { formatTime,formatterTime } from "@/utils/util"
     import { neteaseApi } from "@/api/"
     import to from "@/utils/await-to.js"
+    import { musicMixin } from '@/utils/mixin'
+
     export default {
+        name:"PlayerList",
+        mixins: [musicMixin],
         data() {
             return {
-                isshowDialog: true
+                isShowTabs: true,
             }
         },
         computed: {
-            uid() {
-                return this.$store.getters.uid
+            currentMusicItem() {
+                return Object.assign({},this.$store.getters.currentMusic)
+            },
+            sequentList() {
+                return this.$store.getters.sequentList
             },
             playerList() {
                 return this.$store.getters.playerList
+            },
+            playMode() {
+                return this.$store.getters.playMode
+            },
+            playerHistory() {
+                return this.$store.getters.PlayerHistory
             },
             showPlayerListDialog: {
                 get() {
@@ -103,15 +103,35 @@
         mounted() {
         },
         methods: {
-            closeDialog() {
-                this.showPlayerListDialog = false
-            },
             cancelDefault() {
                 window.event.stopPropagation()  // 解决父元素点击事件的问题，阻止事件冒泡即可
             },
+            clickTabs(flag) {
+                this.isShowTabs = flag
+            },
+            async togglePlaying(item,index) {
+                if(this.isShowTabs) {
+                    try {
+                    // 如果为随机播放时
+                        if(this.playMode == 3) {
+                            index = this.playerList.findIndex(items => items.id === this.sequentList[index].id)
+                        }
+                        await this.checkMusic(item.id)
+                        this.$store.commit(`player/${types.SET_PLAY_CURRENT_INDEX}`,index)
+                    } catch (error) {
+                        this.$toast(err.response.data.message)
+                    }
+                }else {
+                    this.$store.dispatch('player/replaceMusicPlayList',item)
+                    // this.currentMusicItem = item
+                    console.log(item)
+                    this.$toast(item)
+                }
+            }
         },
         filters: {
             formatTime,
+            formatterTime
         }
     }
 </script>
@@ -120,20 +140,12 @@
 @import "@/assets/style/mixin.scss";
 
 .player-list-wrapper {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 60px;
-    left: 0;
+    @include position(fixed,0,0,60px,0);
     z-index: 1501;
     overflow: auto;
     margin: 0;
     .dialog{
-        position: absolute;
-        width: 400px;
-        top: 52px;
-        right: 0;
-        bottom: 0;
+        @include position(absolute,52px,0,0,auto,400px,auto);
         background: #fff;
         .title-group {
             height: 60px;
@@ -202,14 +214,23 @@
                         padding: 0 10px 0 25px;
                         box-sizing: border-box;
                     }
-                    &:last-child {
-                        padding: 0 10px;
-                        box-sizing: border-box;
-                    }
                 }
                 &.active {
                     .play {
                         color:#b31212;
+                    }
+                    .music-title {
+                        .icon-living {
+                            position: absolute;
+                            display: block;
+                            left: 4px;
+                            width: 16px;
+                            height: 16px;
+                            border-radius: 50%;
+                            background-color: #f56c6c;
+                            background-image:url(../../../assets/image/icon_living.png);
+                            animation: momentAnchorLiving .6s steps(6) infinite;
+                        }
                     }
                 }
                 .ellipsiz {
@@ -225,17 +246,6 @@
                 .music-title {
                     width: 150px;
                     position: relative;
-                    .icon-living {
-                        position: absolute;
-                        display: block;
-                        left: 4px;
-                        width: 16px;
-                        height: 16px;
-                        border-radius: 50%;
-                        background-color: #f56c6c;
-                        background-image:url(../../../assets/image/icon_living.png);
-                        animation: momentAnchorLiving .6s steps(6) infinite;
-                    }
                 }
                 .muisc-singer {
                     width: 150px;
@@ -247,7 +257,7 @@
                     }
                 }
                 .duration {
-                    width: 50px;
+                    width: 60px;
                 }
             }
         }

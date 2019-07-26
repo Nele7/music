@@ -98,16 +98,28 @@ export const musicMixin = {
         checkMusic(id) {
             return new Promise(async(resolve,reject) => {
                 try {
-                let res = await neteaseApi.checkMusic({
-                    id
-                })
-                if(res.success) {
-                    resolve(res)
-                }
+                    let res = await neteaseApi.checkMusic({
+                        id
+                    })
+                    if(res.success) {
+                        resolve(res)
+                    }
                 } catch (error) {
                     reject(error)
                 }
             })
         },
+        getSongURL(id) {
+            return new Promise(async(resolve,reject) => {
+                try {
+                    let {data:[obj]} = await neteaseApi.songURL({
+                        id
+                    })
+                    resolve(obj)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
     }
 }

@@ -13,7 +13,7 @@
             <div class="left">
                 <div class="muisc-avatar">
                     <img :src="currentMusicItem && currentMusicItem.album.picUrl" alt="">
-                    <div class="mask-layer" @click="isShowFullPlayer = true">
+                    <div class="mask-layer" @click="openFullPlayer">
                         <i class="el-icon-top"></i>
                         <i class="el-icon-bottom"></i>
                     </div>
@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                             <el-scrollbar
-                                wrap-class="scrollbar-wrapper"
+                                wrap-class="lyric-scrollbar-wrapper"
                                 style="height:500px;"
                                 v-if="lyric" 
                                 >
@@ -254,7 +254,8 @@
                 musicStart: true,            // 开始播放时事件
                 currentTime: 0,              // 当前播放的时间
                 lyric:null,                  // 歌词实例
-                currentLyricIndex:0          // 歌词当前索引
+                currentLyricIndex:0,         // 歌词当前索引
+                // historyRecordList:[],        // 
             }
         },
         mounted() {
@@ -312,6 +313,12 @@
             }
         },
         methods: {
+            openFullPlayer() {
+                if(this.$store.getters.showPlayerListDialog) {
+                    this.$store.commit(`toggle/${types.TOGGLE_PLAYERLIST}`,false)
+                }
+                this.isShowFullPlayer = true
+            },
             changeCurrentTime(e) {
                 if(this.currentMusicItem.id){
                     const currentTime = ((this.currentMusicItem.duration * e) / 100)
@@ -456,7 +463,7 @@
             },
             handlerLyric({lineNum, txt}) {
                 this.currentLyricIndex = lineNum
-                const scrollDom = document.querySelectorAll('.scroll-lyric')[0]
+                const scrollDom = document.querySelector('.lyric-scrollbar-wrapper')
                 if (lineNum < 5) {
                     // 当小于5时，滚动条不滚动
                     scrollDom.scrollTop = 0
@@ -466,7 +473,6 @@
                         scrollDom.scrollTop = this.$refs.lyricLine[lineNum - 5].offsetTop
                     }
                 }
-                //  console.log(scrollDom)
             },
             ...mapActions('user', ['insertUserLikelist', 'deleteUserLikelist'])
         },
@@ -488,10 +494,17 @@
                     this.musicURL = n.url
                     this.getSongURL()
                     this.getlyric()
-                    this.$nextTick(() => {
-                        this.$refs.musicAudio.play()
-                    })
+                    if(!this.playStatus) {
+                        this.$nextTick(() => {
+                            this.$refs.musicAudio.play()
+                            this.$store.commit(`player/${types.SET_PLAY_STATUS}`,true)
+                        })
+                    }
+                    
                 }
+                // 添加到本地
+                let _n = Object.assign({date:(new Date()).valueOf()},n)
+                this.$store.dispatch('player/savePlayerHistoryRecord',_n)
             },
             currentTime(newTime) {
                 this.percentage = (newTime / this.currentMusicItem.duration) * 100

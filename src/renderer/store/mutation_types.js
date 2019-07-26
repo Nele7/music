@@ -26,3 +26,4 @@ export const SET_PLAY_SEQUENTLIST = 'SET_PLAY_SEQUENTLIST'       // 设置顺序
 export const SET_PLAY_MODE = 'SET_PLAY_MODE'                     // 当前播放模式
 export const SET_PLAY_STATUS = 'SET_PLAY_STATUS'                 // 当前播放状态
 export const SET_PLAY_CURRENT_INDEX = 'SET_CURRENT_PLAY_INDEX'   // 当前播放下标
+export const SET_HISTORYRECOED_LIST = 'SET_HISTORYRECOED_LIST'   // 当前历史记录
