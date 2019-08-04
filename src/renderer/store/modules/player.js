@@ -12,7 +12,7 @@ const state = {
   playCurrentIndex: localStorage.getItem(currentIndex) || -1,               // 当前下标
   playStatus:false,                                                         // 播放状态
   playMode: localStorage.getItem(playMode) || 0,                            // 播放模式
-  PlayerHistory: JSON.parse(localStorage.getItem(historyRecord)) || []  // 历史记录
+  playerHistory: JSON.parse(localStorage.getItem(historyRecord)) || []  // 历史记录
 }
 
 const mutations = {
@@ -49,8 +49,13 @@ const mutations = {
       localStorage.setItem(historyRecord,JSON.stringify(list))
       state.PlayerHistory = list
     } catch (error) {}
+  },
+  [types.CLEAR_HISTORY_LIST](state) {
+    try {
+      localStorage.removeItem(historyRecord)
+      state.playerHistory = []
+    } catch (error) { }
   }
-
 }
 
 const actions = {
@@ -58,7 +63,9 @@ const actions = {
   insertMusicPlayList({commit,state},{list,index}) {
     let playlist = [...list]
     if(state.playMode == 3){
+      // 打乱数组
       playlist = shuffle(list)
+      // 找到当前播放歌曲在打乱之后数组的索引
       index = playlist.findIndex(item => item.id === list[index].id)
     }
     commit(types.SET_PLAY_LIST,playlist)
@@ -67,10 +74,10 @@ const actions = {
     commit(types.SET_PLAY_STATUS,true)
   },
   savePlayerHistoryRecord({commit,state},obj) {
-    let historyRecordArr = [...state.PlayerHistory]
-    
+    let historyRecordArr = [...state.playerHistory]
     let index = historyRecordArr.findIndex(item => item.id === obj.id)
-    if(index > 0) {
+    console.log(index)
+    if(index > -1) {
       // 说明有重复项，删除重新添加
       historyRecordArr.splice(index,1)
     }
@@ -92,7 +99,12 @@ const actions = {
     if(index > -1) {     // 当前歌曲存在当前播放列表中
       commit(types.SET_PLAY_CURRENT_INDEX,index)
     }else {     // 当前歌曲不存在当前播放列表中，
-      console.log(currentIndex)
+      // if(state.playMode == 3) {
+      //   console.log('随机播放模式')
+      //   let currentSong = state.playList[currentIndex] // 找到当前播放的歌曲
+      //   currentIndex = sequentList.findIndex(item => item.id === currentSong.id)
+      //   console.log(currentIndex)
+      // }
       currentIndex += 1  // 在他后面添加当前元素
       playlist.splice(currentIndex,0,obj)
       commit(types.SET_PLAY_LIST,playlist)

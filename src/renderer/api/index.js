@@ -48,14 +48,20 @@ export const neteaseApi = {
   // s 评论 api
   comment: apiData('/comment'),                       // 发送/删除评论
   commentHot: apiData('/comment/hot'),                // 热门评论
-  commentPlaylist:apiData('/comment/playlist'),       // 歌单评论
+  commentPlaylist: apiData('/comment/playlist'),      // 歌单评论
   commentLike: apiData('comment/like'),               // 给评论点赞
   // e
 
-  // s 播放器
+  // s 播放器api
   checkMusic: apiData('/check/music'),                // 检测音乐是否可用
   songURL: apiData('/song/url'),                      // 获取音乐URL
   lyric: apiData('/lyric'),                           // 获取歌词
   record: apiData('/user/record'),                    // 用户播放记录
+  // e
+  
+  // s 搜索api
+  hotSearch: apiData('/search/hot'),                  // 热门搜索(简略)
+  hotSearchDetail: apiData('/search/hot/detail'),     // 热门搜索(详细)
+  searchSuggest: apiData('/search/suggest'),          // 搜索建议
   // e
 }

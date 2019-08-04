@@ -8,12 +8,13 @@
     </div>
     <!-- tab栏 -->
     <tab></tab>
-    <div class="nav-search-area">
+    <search></search>
+    <!-- <div class="nav-search-area">
       <div class="nav-search">
         <i class="el-icon-search"></i>
         <input type="text" placeholder="搜索您想听的歌曲...">
       </div>
-    </div>
+    </div> -->
     <div class="nav-setting-area">
       <i class="el-icon-setting"></i>
       <i class="el-icon-message"></i>
@@ -24,11 +25,13 @@
 </template>
 
 <script>
-import Tab from './tab'
+import Tab from './Tab'
+import Search from './Search'
 export default {
   name: 'navbar',
   components:{
-    Tab
+    Tab,
+    Search
   },
   data() {
     return {
@@ -94,32 +97,7 @@ export default {
   }
 }
 
-.nav-search-area {
-  flex: 0 0 180px;
-  width: 180px;
-  -webkit-app-region: no-drag;
-  .nav-search {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    position: relative;
-    i {
-      position: absolute;
-      left: 5px;
-      color: $color-base-grey !important;
-    }
-    input {
-      outline: none;
-      border: 0;
-      color: rgb(66, 66, 66);
-      background-color: $background-grey;
-      padding: 0 23px;
-      border-radius: 20px;
-      height: 25px;
-      width: 100%;
-    }
-  }
-}
+
 .nav-setting-area {
   flex: 0 0 180px;
   width: 180px;

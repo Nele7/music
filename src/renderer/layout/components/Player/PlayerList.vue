@@ -10,7 +10,7 @@
                 </div>
                 <div class="count">
                     <div>总{{isShowTabs?sequentList.length:playerHistory.length}}首</div>
-                    <div class="clear">
+                    <div class="clear" @click="clearRecord" v-if="!isShowTabs && playerHistory.length > 0">
                         <i class="el-icon-delete"></i>
                         <span>清空</span>
                     </div>
@@ -89,7 +89,7 @@
                 return this.$store.getters.playMode
             },
             playerHistory() {
-                return this.$store.getters.PlayerHistory
+                return this.$store.getters.playerHistory
             },
             showPlayerListDialog: {
                 get() {
@@ -109,6 +109,11 @@
             clickTabs(flag) {
                 this.isShowTabs = flag
             },
+            clearRecord() {
+                if(!this.isShowTabs) {
+                    this.$store.commit(`player/${types.CLEAR_HISTORY_LIST}`)
+                }
+            },
             async togglePlaying(item,index) {
                 if(this.isShowTabs) {
                     try {
@@ -123,9 +128,6 @@
                     }
                 }else {
                     this.$store.dispatch('player/replaceMusicPlayList',item)
-                    // this.currentMusicItem = item
-                    console.log(item)
-                    this.$toast(item)
                 }
             }
         },
@@ -147,6 +149,7 @@
     .dialog{
         @include position(absolute,52px,0,0,auto,400px,auto);
         background: #fff;
+        border-left: 1px solid #e9e9e9;
         .title-group {
             height: 60px;
             display: flex;
@@ -181,6 +184,7 @@
             box-sizing: border-box;
             justify-content: space-between;
             color: #969696;
+            font-size: 15px;
             .clear {
                 height: 18px;
                 line-height: 18px;

@@ -3,7 +3,7 @@ import * as types from '../mutation_types'
 const state = {
   showLoginDialog: false,
   showUserInfoDetail: false,
-  showPlayerListDialog: true,
+  showPlayerListDialog: false,
 }
 
 const mutations = {

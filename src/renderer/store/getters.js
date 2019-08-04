@@ -22,7 +22,7 @@ const getters = {
     playerStatus: state => state.player.playStatus,
     playCurrentIndex: state => state.player.playCurrentIndex,
     playMode: state => state.player.playMode,
-    PlayerHistory: state => state.player.PlayerHistory,
+    playerHistory: state => state.player.playerHistory,
     currentMusic: state => state.player.playList[state.player.playCurrentIndex] || {
         name:'让生活充满音乐',
         album: {
