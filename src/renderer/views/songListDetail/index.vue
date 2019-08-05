@@ -350,12 +350,13 @@ $song-cover-width: 240px;
 }
 
 .tab {
-  padding: 0 20px;
+  // padding: 0 20px;
   ul {
     display: flex;
     flex-direction: row;
     width: 100%;
-    border-bottom: 1px solid $color-border;   
+    border-bottom: 1px solid $color-border;
+    padding: 0 10px; 
     li {
       font-size: 14px;
       height: 40px;

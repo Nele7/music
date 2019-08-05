@@ -24,12 +24,12 @@
         </div>
         <div class="songs">
           <p>
-            <span v-for="(singer,index) in item.ar"
+            <span v-for="(singer,index) in item.ar || item.artists"
             :key="index">{{singer.name}}</span>
           </p>
         </div>
-        <div class="album song-group-item">
-          <p>{{item.al.name}}</p>
+         <div class="album song-group-item">
+            <p>{{item | formatAlbum}}</p>
         </div>
         <div class="duration">{{item.dt || item.duration | formatTime}}</div>
       </li>
@@ -91,7 +91,10 @@ export default {
     formatTime,
     // covertUnit,
     pad,
-    formatDateTime
+    formatDateTime,
+    formatAlbum(item) {
+      return item.al ? item.al.name : item.album ? item.album.name : ''
+    }
   }
 }
 </script>
@@ -105,6 +108,8 @@ export default {
       width: 100%;
       height: 40px;
       display: flex;
+      padding: 0 20px;
+      box-sizing: border-box;
       // border-bottom: 1px solid $color-border;
       transition: all 0.3s;
       &.title {

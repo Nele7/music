@@ -6,3 +6,46 @@ export const commentListType = {
     station_type:4,
     video_type:5
 }
+
+export const searchTabList = [
+    {
+        tab:'单曲',
+        type:1,
+        component:'SearchMusic'
+    },
+    {
+        tab:'歌手',
+        type:100,
+        component:'SearchArtist'
+    },
+    {
+        tab:'专辑',
+        type:10,
+        component:'SearchAlbum'
+    },
+    {
+        tab:'视频',
+        type:1014,
+        component:'SearchVidio'
+    },
+    {
+        tab:'歌单',
+        type:1000,
+        component:'SearchPlaylist'
+    },
+    {
+        tab:'歌词',
+        type:1006,
+        component:'SearchLyric'
+    },
+    {
+        tab:'主播电台',
+        type:1009,
+        component:'SearchRadio'
+    },
+    {
+        tab:'用户',
+        type:1002,
+        component:'SearchUser'
+    },
+]

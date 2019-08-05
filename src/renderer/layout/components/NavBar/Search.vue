@@ -93,7 +93,7 @@ export default {
         async getHotSearch() {
             let [res] = await to(neteaseApi.hotSearch())
             this.hotSearch = res.result.hots
-            console.log(res)
+            // console.log(res)
         },
         enterSearch() {
             // 保存本地,跳转
@@ -130,7 +130,7 @@ export default {
                 keywords
             }))
             this.suggestSearch = res.result
-            console.log(res)
+            // console.log(res)
         },
         normalTitle(order) {
             let obj = {
