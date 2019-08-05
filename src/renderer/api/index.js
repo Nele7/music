@@ -61,7 +61,7 @@ export const neteaseApi = {
   
   // s 搜索api
   hotSearch: apiData('/search/hot'),                  // 热门搜索(简略)
-  hotSearchDetail: apiData('/search/hot/detail'),     // 热门搜索(详细)
+  search: apiData('/search'),                         // 搜索
   searchSuggest: apiData('/search/suggest'),          // 搜索建议
   // e
 }
