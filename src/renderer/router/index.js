@@ -19,7 +19,7 @@ const follow = () => import('@/views/follow/index')
 
 const songListDetail = () => import('@/views/songListDetail/index')
 
-const searchDetail = () => import('@/views/searchDetail/index')
+const searchDetail = () => import('@/views/searchDetail/index.vue')
 Vue.use(Router)
 
 export default new Router({
@@ -156,7 +156,7 @@ export default new Router({
       path: '/songlistdetail',
       name: 'songlistdetail',
       component: Layout,
-      redirect: '/userDetail/index/:id',
+      redirect: '/songlistdetail/index/:id',
       children:[
         {
           path: 'index/:id',

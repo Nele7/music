@@ -19,8 +19,8 @@
       }
     },
     methods: {
-      selectItem(){
-        
+      selectItem(item){
+        console.log(item)
       }
     },
     components:{

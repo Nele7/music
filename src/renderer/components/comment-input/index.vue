@@ -43,7 +43,7 @@
 
 <style lang="scss" scoped>
  .comment-input-wrapper {
-    padding: 20px 0;
+    padding: 20px;
     .comment-tools {
         display: flex;
         flex-direction: row-reverse;

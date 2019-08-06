@@ -122,8 +122,8 @@ export default {
             this.valueSearch = first
             this.insertHistorySearch(this.historySearch,this.valueSearch)
             localStorage.setItem(historySearch, JSON.stringify(this.historySearch))
-            this.$router.push(`/searchdetail/index/${first}`)
             this.isShowDialog = false
+            this.$router.push(`/searchdetail/index/${first}`)
         },
         async getSerachSuggest(keywords) {
             let [res] = await to(neteaseApi.searchSuggest({

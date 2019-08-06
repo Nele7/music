@@ -26,7 +26,7 @@ export const searchTabList = [
     {
         tab:'视频',
         type:1014,
-        component:'SearchVidio'
+        component:'SearchVideo'
     },
     {
         tab:'歌单',

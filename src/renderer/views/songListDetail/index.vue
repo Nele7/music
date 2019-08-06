@@ -357,6 +357,7 @@ $song-cover-width: 240px;
     width: 100%;
     border-bottom: 1px solid $color-border;
     padding: 0 10px; 
+    box-sizing: border-box;
     li {
       font-size: 14px;
       height: 40px;

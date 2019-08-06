@@ -66,6 +66,7 @@
 <style lang="scss" scoped>
 .comment-list-wrapper {
   .comment-list {
+    padding: 0 20px;
     .comment-item {
       display: flex;
       flex-direction: row;
