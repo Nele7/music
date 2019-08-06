@@ -127,6 +127,7 @@
                         this.$toast(err.response.data.message)
                     }
                 }else {
+                    console.log('单曲',item)
                     this.$store.dispatch('player/replaceMusicPlayList',item)
                 }
             }

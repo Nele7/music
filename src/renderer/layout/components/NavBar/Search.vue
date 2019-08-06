@@ -57,7 +57,7 @@
                                 </div>
                                 <ul class="suggest-list">
                                     <li v-for="(item,index) in suggestSearch[order]" :key="index">
-                                        <a href>{{item.name}}</a>
+                                        <a href="#" @click="changeSuggest(order,index)">{{item.name}}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -130,7 +130,6 @@ export default {
                 keywords
             }))
             this.suggestSearch = res.result
-            // console.log(res)
         },
         normalTitle(order) {
             let obj = {
@@ -152,6 +151,16 @@ export default {
             }
             arr.unshift(val)
         },
+        changeSuggest(order,index) {
+            let orderArr = this.suggestSearch[order]
+            if(order === 'songs'){
+                // 说明为单曲播放
+                this.$store.dispatch('player/replaceMusicPlayList',orderArr[index])
+            }else if(order === 'artists') {
+
+            }
+            console.log(order,index,orderArr[index])
+        }
     },
     watch: {
         valueSearch(n, o) {

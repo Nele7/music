@@ -79,8 +79,8 @@
     .title {
       @include ellipsized;
       margin: 5px 0;
-      font-weight: 500;
-      font-size: 14px;
+      font-weight: 400;
+      font-size: 13px;
     }
     .by {
       color: $color-base-grey;

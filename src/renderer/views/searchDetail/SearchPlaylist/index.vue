@@ -13,15 +13,7 @@
             {{item.trackCount}}首
           </div>
           <div class="hint">
-            {{item.creator.nickname}}
-            <!-- <p>
-              <span>专辑:</span>
-              <span>{{item.albumSize}}</span>
-            </p>
-            <p>
-              <span>视频:</span>
-              <span>{{item.mvSize}}</span>
-            </p> -->
+            by {{item.creator.nickname}}
           </div>
         </div>
       </li>
@@ -79,22 +71,27 @@
        flex: 1;
        margin-left: 15px;
      }
+     .count {
+       width: 200px;
+       color: $color-base-grey;
+       font-size: 12px;
+     }
      .hint {
-       background: $background-grey;
+      //  background: $background-grey;
        color: $color-base-grey;
        padding: 3px 8px;
-       border-radius: 5px;
-       font-size: 14px;
-       width: 80px;
-       p {
-         line-height: 20px;
-         span:first-child {
-            display: inline-block;
-            width: 45px;
-            text-align: justify;
-            text-align-last: justify;
-         }
-       }
+      //  border-radius: 5px;
+       font-size: 12px;
+       width: 120px;
+      //  p {
+      //    line-height: 20px;
+      //    span:first-child {
+      //       display: inline-block;
+      //       width: 45px;
+      //       text-align: justify;
+      //       text-align-last: justify;
+      //    }
+      //  }
      }
    }
  } 

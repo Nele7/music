@@ -80,7 +80,7 @@
        color: $color-base-grey;
        padding: 3px 8px;
        border-radius: 5px;
-       font-size: 14px;
+       font-size: 12px;
        width: 80px;
        p {
          line-height: 20px;

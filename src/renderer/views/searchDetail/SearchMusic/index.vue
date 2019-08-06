@@ -6,8 +6,11 @@
 
 <script>
   import MusicList from '../../songListDetail/MusicList'
+  import { musicMixin } from '@/utils/mixin'
+
   export default {
     name:'searchMusic',
+    mixins: [musicMixin],
     props: {
       songs: {
         type: Array
@@ -19,8 +22,16 @@
       }
     },
     methods: {
-      selectItem(item){
-        console.log(item)
+      async selectItem(item){
+        try {
+          await this.checkMusic(item.id)
+          // let { url } = await this.getSongURL(item.id)
+          // 插入单首
+          console.log(item)
+          this.$store.dispatch('player/replaceMusicPlayList',item)
+        } catch (error) {
+          this.$toast(err.response.data.message)
+        }
       }
     },
     components:{

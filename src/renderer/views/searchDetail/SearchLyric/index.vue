@@ -35,14 +35,17 @@
           </div>
         </div>
         <div class="lyric">
-          <pre>{{item.lyrics.txt}}</pre>
+          <pre ref="pre">{{item.lyrics.txt}}</pre>
           <div class="btn-group">
-            <div class="btn-mini">展开歌词</div>
-            <div class="btn-mini">复制歌词</div>
+            <div class="btn-mini" @click="unfoldLyric(index)">
+              <i :class="!isShow?'el-icon-arrow-down':'el-icon-arrow-up'"></i>{{isShow ? '收起歌词':'展开歌词'}}
+            </div>
+            <div class="btn-mini" @click="copyLyric(index)">复制歌词</div>
           </div>
         </div>
       </li>
     </ul>
+    <input type="text" v-model="clipboardText" class="clipboard-input" ref="clipboard">
   </div>
 </template>
 
@@ -58,7 +61,28 @@
     },
     data() {
       return {
-        
+        isShow:false,
+        clipboardText:''
+      }
+    },
+    methods: {
+      unfoldLyric(index) {
+        if(!this.isShow) {
+          this.$refs.pre[index].style.height = `100%`
+        }else {
+          this.$refs.pre[index].style.height = ''
+        }
+        this.isShow = !this.isShow
+      },
+      copyLyric(index) {
+        // console.log('要复制这个文本：', text)
+        this.clipboardText = this.songs[index].lyrics.txt
+        // $nextTick 在这里没用
+        setTimeout(() => {
+          this.$refs.clipboard.select()
+          document.execCommand('Copy')
+        })
+        this.$toast('已复制到剪切板')
       }
     },
     filters: {
@@ -70,6 +94,13 @@
 <style lang="scss" scoped>
 @import "@/assets/style/variables.scss";
 @import "@/assets/style/mixin.scss";
+.clipboard-input {
+    position: absolute;
+    z-index: -1;
+    height: 0px;
+    opacity: 0;
+}
+
 .search-lyric-wrapper {
   .song-item {
     padding: 15px 30px;
@@ -106,11 +137,12 @@
       flex-direction: row;
       pre {
         flex: 1;
-        height: 66px;
+        height: 68px;
         overflow: hidden;
         white-space: pre-wrap;
         word-wrap: break-word;
-        font-size: 15px;
+        font-size: 13px;
+        color: $color-base-grey;
       }
       .btn-group {
         display: flex;
@@ -122,7 +154,7 @@
         .btn-mini {
           border:1px solid $color-border;
           padding: 4px 12px;
-          font-size: 14px;
+          font-size: 12px;
           border-radius: 10px;
           cursor: pointer;
           &:hover {

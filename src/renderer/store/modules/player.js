@@ -47,7 +47,7 @@ const mutations = {
   [types.SET_HISTORYRECOED_LIST](state,list) {
     try {
       localStorage.setItem(historyRecord,JSON.stringify(list))
-      state.PlayerHistory = list
+      state.playerHistory = list
     } catch (error) {}
   },
   [types.CLEAR_HISTORY_LIST](state) {

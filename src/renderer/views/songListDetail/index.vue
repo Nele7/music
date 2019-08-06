@@ -168,6 +168,7 @@ export default {
     async selectItem(item,index) {
       try{
         await this.checkMusic(item.id)
+        console.log(item)
         let { url } = await this.getSongURL(item.id)
         let list = this.indexList.tracks.map(item => {
           let obj = {

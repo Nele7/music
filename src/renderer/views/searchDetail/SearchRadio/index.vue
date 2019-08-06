@@ -11,14 +11,6 @@
           </div>
           <div class="hint">
             by {{item.dj.nickname}}
-            <!-- <p>
-              <span>专辑:</span>
-              <span>{{item.albumSize}}</span>
-            </p>
-            <p>
-              <span>视频:</span>
-              <span>{{item.mvSize}}</span>
-            </p> -->
           </div>
         </div>
       </li>
@@ -77,21 +69,9 @@
        margin-left: 15px;
      }
      .hint {
-      //  background: $background-grey;
        color: $color-base-grey;
        padding: 3px 8px;
-      //  border-radius: 5px;
-       font-size: 14px;
-      //  width: 80px;
-      //  p {
-      //    line-height: 20px;
-      //    span:first-child {
-      //       display: inline-block;
-      //       width: 45px;
-      //       text-align: justify;
-      //       text-align-last: justify;
-      //    }
-      //  }
+       font-size: 12px;
      }
    }
  } 
