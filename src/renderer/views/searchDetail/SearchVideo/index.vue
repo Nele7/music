@@ -16,6 +16,12 @@
         <p v-for="(name,index) in item.creator" :key="index" class="by">by {{name.userName}}</p>
       </el-col>
     </el-row>
+    <h4 class="more" v-if="isMore" @click="loadHotMore">
+        <a href="#">
+            加载更多视频
+            <i class="el-icon-arrow-down"></i>
+        </a>
+    </h4>
   </div>
 </template>
 
@@ -27,7 +33,15 @@
     props:{
       videos:{
         type:Array
+      },
+      isMore:{
+
       }
+    },
+    methods: {
+      loadHotMore() {
+       this.$emit('loadMore')
+     }
     },
     filters: {
       covertUnit,
@@ -87,5 +101,22 @@
       font-size: 12px;
     }
   }
+  .more {
+  text-align: center;
+  a {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 15px;
+    color: #666;
+    padding: 4px 16px;
+    font-size: 13px;
+    font-weight: 400;
+    &:hover {
+        background: rgba(223, 223, 223, 0.555);
+    }
+  }
 }
+}
+
 </style>

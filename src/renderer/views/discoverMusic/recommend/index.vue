@@ -59,7 +59,7 @@ export default {
         // 获取轮播图
         async getBanner() {
             let [res] = await to(neteaseApi.banner())
-            setInterval(()=>{
+            setTimeout(()=>{
                 this.bannerList = res.banners
             },TIME)
         },

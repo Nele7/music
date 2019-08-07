@@ -64,4 +64,10 @@ export const neteaseApi = {
   search: apiData('/search'),                         // 搜索
   searchSuggest: apiData('/search/suggest'),          // 搜索建议
   // e
+
+  // s 歌单api
+  playlistCat: apiData('/playlist/catlist'),          // 全部歌单分类
+  playlistHot: apiData('/playlist/hot'),              // 热门歌单分类
+  playlistTop: apiData('/top/playlist'),              // 歌单
+  // e
 }

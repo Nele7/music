@@ -70,6 +70,9 @@
         </component>
       </keep-alive>
     </div>
+    <!-- <div class="loading" v-if="loading">
+        <Spinner name="ball-scale-multiple" color="#b31212"/>
+    </div> -->
   </div>
 </template>
 
@@ -82,6 +85,7 @@ import to from "@/utils/await-to.js"
 import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
+import Spinner from 'vue-spinkit'
 
 const briefWrapperHeight = 32;
 export default {
@@ -99,6 +103,7 @@ export default {
       showTabsComponent: 'music-list',
       indexList: {},
       showBriefMoreIcon:false,
+      loading:true
     }
   },
   created() {
@@ -116,6 +121,10 @@ export default {
         id: this.songId
       }))
       this.indexList = res.playlist
+      // setTimeout(()=>{
+      //   console.log(this.loading)
+      //   this.loading = false
+      // },1000)
       // this.tab[1].name = `评论(${this.indexList.commentCount})`
       this.$set(this.tab[1],'name',`评论(${this.indexList.commentCount})`)
     },
@@ -196,6 +205,7 @@ export default {
     songId: {
       deep: true, // 确认是否深入监听。deep的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上这个监听器
       handler() {
+        // this.loading = true
         this.getPlayListDetail()
       }
     }
@@ -203,7 +213,8 @@ export default {
   components: {
     MusicList,
     Comment,
-    Subscribers
+    Subscribers,
+    Spinner
   },
   filters: {
     covertUnit,
@@ -216,7 +227,16 @@ export default {
 @import "@/assets/style/variables.scss";
 @import "@/assets/style/mixin.scss";
 $song-cover-width: 240px;
-
+.loading {
+    @include position(absolute,0,0,0,0);
+    background: #fff;
+    z-index: 99999;
+    div {
+        position: absolute;
+        top:50%;
+        left: 50%;
+    }
+}
 .songlistdetail-title-wrapper {
   display: flex;
   flex-direction: row;

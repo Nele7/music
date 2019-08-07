@@ -13,8 +13,15 @@
             @click="changeTab(item.type,item.component)"
             >{{item.tab}}</li>
         </ul>
-        <div class="views">
-            <component :is="currentComponent" v-bind="result"></component>
+        <div class="search-detail-container">
+            <div class="views">
+                <component 
+                :is="currentComponent" 
+                v-bind="result" 
+                @loadMore="changeLoadMore"
+                :isMore="isMore"
+                ></component>
+            </div>
         </div>
     </div>
 </template>
@@ -33,16 +40,22 @@
         SearchRadio,
         SearchUser
     } from './index'
+import Spinner from 'vue-spinkit'
+
     export default {
         name:'searchdetail',
         data() {
             return {
-                searchTabList,
-                currentType: 1,
-                currentComponent:'SearchMusic',
-                result: {},
-                resultCount: 0,
-                resultList: []
+                searchTabList,                      // tab
+                currentType: 1,                     // 作为serach的参数
+                currentComponent:'SearchMusic',     // 显示组件
+                // currentIndex:1,                     // 当前
+                result: {},                         // 搜索结果
+                resultCount: 0,                     // 总条数
+                resultList: [],                     // 临时搜索结果数组
+                limit:30,                           // 一页显示条数
+                pageSize:1,                         // 当前页数
+                isMore:false,                       // 用于判断加载更多是否显示
             }
         },
         created() {
@@ -64,33 +77,51 @@
             },
             keywords() {
                 return this.$route.params.keywords
+            },
+            offset() {
+                return (this.pageSize - 1) * this.limit
             }
         },
         methods: { 
             async getSearch() {
                 let [res] = await to(neteaseApi.search({
                     keywords:this.keywords,
-                    type: this.currentType
+                    type: this.currentType,
+                    limit:this.limit,
+                    offset:this.offset
                 }))
                 this.normalizeResult(res.result)
-                console.log(res)
+                // console.log(res)
             },
             normalizeResult(result) {
+                /**
+                 * typeof 一般只返回number string boolean object function undefined
+                 * typeof 遇到引用类型会出现问题，它都会返回object
+                 * instaceof 用来检测某个对象是不是另一个对象的实例
+                 */
+                let totalResult = []   // 用于存放当前的list
+                let arrKey = ''        // 用于存放当前的key
                 Object.keys(result).forEach(key => {
-                    /**
-                     * typeof 一般只返回number string boolean object function undefined
-                     * typeof 遇到引用类型会出现问题，它都会返回object
-                     * instaceof 用来检测某个对象是不是另一个对象的实例
-                     */
                     if(typeof result[key] === 'number') {
-                        this.resultCount = result[key]
+                        this.resultCount = result[key]  // 保存当前的count
                     }
                     if(result[key] instanceof Array) {
-                        this.resultList = result[key]    
+                        totalResult = result[key]
+                        arrKey = key  
                     }
-                    this.result = result
-                    // console.log(this.resultCount)
                 })
+                if(totalResult) {
+                    // 取到当前的result，resultList作为临时变量
+                    this.resultList = result[arrKey] = [...this.resultList,...totalResult]
+                    this.result = result
+                    this.isMore = true
+                    console.log(result)
+                }
+                // 如果页数*当前数量 大于总数
+                if(this.pageSize * this.limit >= this.resultCount){
+                    this.isMore = false
+                }
+                
             },
             changeTab(type,component) {
                 this.currentType = type
@@ -98,12 +129,23 @@
                 this.result = {}
                 this.resultCount = 0
                 this.resultList = []
+                this.pageSize = 1
+                this.limit = 30
+                this.getSearch()
+            },
+            changeLoadMore() {
+                this.pageSize += 1
                 this.getSearch()
             }
         },
         watch: {
             keywords(n,o) {
                 if(n){
+                    this.resultList = []
+                    this.result = {}
+                    this.pageSize = 1
+                    this.limit = 30
+                    this.resultCount = 0
                     this.getSearch()
                 }
             }
@@ -116,13 +158,14 @@
             SearchPlaylist,
             SearchLyric,
             SearchRadio,
-            SearchUser
+            SearchUser,
         }
     }
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/style/variables.scss";
+@import "@/assets/style/mixin.scss";
 
 .search-detail-wrapper {
     .result{
@@ -149,8 +192,12 @@
             cursor: pointer;
             &.active {
                 font-weight: bold;
+                color: $color-base-red;
             }
         }
+    }
+    .search-detail-container {
+        height: calc(100% - 60px);
     }
 }
 </style>

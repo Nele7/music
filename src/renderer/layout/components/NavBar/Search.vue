@@ -57,7 +57,12 @@
                                 </div>
                                 <ul class="suggest-list">
                                     <li v-for="(item,index) in suggestSearch[order]" :key="index">
-                                        <a href="#" @click="changeSuggest(order,index)">{{item.name}}</a>
+                                        <a href="#" @click="changeSuggest(order,index)">
+                                            <span>{{item.name}}</span>
+                                            <span v-for="(ar,i) in item.artists" :key="i">
+                                                 - {{ar.name}}
+                                            </span>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -99,6 +104,7 @@ export default {
             // 保存本地,跳转
             this.insertHistorySearch(this.historySearch,this.valueSearch)
             localStorage.setItem(historySearch, JSON.stringify(this.historySearch))
+            this.$router.push(`/searchdetail/index/${this.valueSearch}`)
         },
         clearHistoryItem(index) {
             this.historySearch.splice(index, 1)
@@ -278,7 +284,7 @@ export default {
             .suggest-list {
                 padding-top: 10px;
                 li {
-                    font-size: 15px;
+                    font-size: 13px;
                     height: 35px;
                     line-height: 35px;
                     cursor: pointer;
