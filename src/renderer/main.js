@@ -7,7 +7,7 @@ import store from './store'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import './assets/style/index.scss'
-import './assets/iconfont/font_1289985_clj3algoyh5/iconfont.css'
+import './assets/iconfont/font_1289985_pav2puqzjsa/iconfont.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
