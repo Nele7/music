@@ -8,9 +8,11 @@
           </div>
           <div class="name">
             <span>{{item.nickname}}</span>
+            <i class="iconfont" :class="getGender(item.gender)"></i>
           </div>
           <div class="hint">
             {{item.signature}}
+            
           </div>
         </div>
       </li>
@@ -40,7 +42,10 @@
     methods: {
       loadHotMore() {
        this.$emit('loadMore')
-     }
+     },
+     getGender(gender) {
+            return gender === 0 ? '' : (gender === 1 ? 'icon-nan' : 'icon-nv')
+        },
     },
   }
 </script>
@@ -75,6 +80,19 @@
      .name {
        flex: 1;
        margin-left: 15px;
+       .iconfont {
+          font-size: 12px;
+          padding: 2px;
+          border-radius: 50%;
+        }
+        .icon-nv {
+          background: rgb(255, 193, 227);
+          color: rgb(220, 43, 113);
+        }
+        .icon-nan {
+          background: rgb(192, 240, 255);
+          color: rgb(48, 141, 197);
+        }
      }
      .hint {
        color: $color-base-grey;

@@ -90,3 +90,24 @@
         }
     }
 }
+// 分页样式
+.el-pager .number.active {
+    background: rgb(198,36,38);
+    color: white;
+}
+.el-pager .number {
+    border:1px solid rgb(224,224,224);
+    border-radius: 10px;
+    padding: 0px;
+    margin-right: 4px;
+    min-width: 29px;
+    color: rgb(83,83,83);
+    font-weight: 400;
+}
+.el-pager li.active+li {
+    border:1px solid rgb(224,224,224);
+}
+.el-pager li:hover {
+    color: rgb(37,37,37);
+    background: rgb(242,242,242);
+}
