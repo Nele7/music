@@ -68,16 +68,19 @@
             </div>
         </div>
         <!-- 歌单 -->
-        <div class="playlist-body">
-            <song-lists :playlists="playlistResult.playlists" @selectId="selectId"></song-lists>
-            <div class="page-wrapper">
+        <div class="playlist-body" v-if="!loading">
+            <song-lists :playlists="playlistResult" @selectId="selectId"></song-lists>
+            <div class="page-wrapper" >
               <el-pagination
-                :page-size="pageSize"
+                :page-size="limit"
                 :total="total"
                 layout="prev, pager, next"
                 @current-change="currentChange"
               ></el-pagination>
             </div>
+        </div>
+        <div class="loading" v-if="loading">
+          <Spinner name="ball-scale-multiple" color="#b31212"/>
         </div>
     </div>
 </template>
@@ -88,6 +91,8 @@ import to from "@/utils/await-to.js"
 import { covertUnit } from '@/utils/util.js'
 import SongLists from './SongLists'
 import { songListMixin } from '@/utils/mixin.js'
+import Spinner from 'vue-spinkit'
+import { DELAY } from '@/config'
 
 export default {
     name: 'songList',
@@ -95,15 +100,16 @@ export default {
         return {
             hotCategoryList: [],
             allCategoryList: [],
-            playlistResult: {},
+            playlistResult: [],
             isShowPopover: false,
             currentCategory: '华语',
-            limit:1,
-            pageSize:50,
-            total:0
+            limit:50,
+            currentPage:1,
+            total:0,
+            loading:false
         }
     },
-    created() {
+    mounted() {
         this.getPlaylistHotCategory()
         this.getPlaylistAllCategory()
         this.getPlaylist()
@@ -113,7 +119,7 @@ export default {
             return ['icon-yuzhong', 'icon-fengge', 'icon-cha', 'icon-xiaolian', 'icon-zhuti1']
         },
         offset() {
-          return (this.limit - 1) * this.pageSize
+          return (this.currentPage - 1) * this.limit
         }
     },
     methods: {
@@ -134,13 +140,17 @@ export default {
             })
         },
         async getPlaylist() {
+            this.loading = true
             let [res] = await to(neteaseApi.playlistTop({
                 cat: this.currentCategory,
-                limit:this.currentPage,
+                limit:this.limit,
                 offset: this.offset
             }))
-            this.playlistResult = res
-            this.total = res.total
+              this.playlistResult = res.playlists
+              this.total = res.total
+              setTimeout(()=>{
+                this.loading = false
+              },DELAY)
         },
         selectCategoryName(name) {
             if (this.isShowPopover) {
@@ -152,20 +162,22 @@ export default {
           this.$router.push(`/songlistdetail/index/${id}`)
         },
         currentChange(page) {
-          console.log(page)
-          this.limit = page
+          this.currentPage = page
           this.getPlaylist()
         }
     },
     watch: {
         currentCategory() {
-            this.getPlaylist()
+          this.currentPage = 1
+          this.limit = 50
+          this.total = 0
+          this.getPlaylist()
         }
     },
     components: {
         SongLists,
+        Spinner
     },
-
 }
 </script>
 
@@ -309,6 +321,13 @@ $background-icon: rgba(12, 12, 12, 0.452);
           text-align: center;
           margin: 20px 0;
         }
+    }
+    .loading {
+      div {
+        position: absolute;
+        top:50%;
+        left: 50%;
+      }
     }
 }
 </style>

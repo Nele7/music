@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="!loading">
     <div class="songlistdetail-title-wrapper">
       <div class="song-cover">
         <div class="song-list-img">
@@ -70,9 +71,10 @@
         </component>
       </keep-alive>
     </div>
-    <!-- <div class="loading" v-if="loading">
+    </div>
+    <div class="loading" v-if="loading">
         <Spinner name="ball-scale-multiple" color="#b31212"/>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -86,7 +88,7 @@ import MusicList from './MusicList'
 import Comment from './Comment'
 import Subscribers from './Subscribers'
 import Spinner from 'vue-spinkit'
-
+import { DELAY } from '@/config'
 const briefWrapperHeight = 32;
 export default {
   name: 'songlistdetail',
@@ -103,7 +105,7 @@ export default {
       showTabsComponent: 'music-list',
       indexList: {},
       showBriefMoreIcon:false,
-      loading:true
+      loading:false
     }
   },
   created() {
@@ -117,16 +119,16 @@ export default {
   methods: {
     // 获取歌单详情
     async getPlayListDetail() {
+      this.loading = true
       let [res] = await to(neteaseApi.playlistDetail({
         id: this.songId
       }))
       this.indexList = res.playlist
-      // setTimeout(()=>{
-      //   console.log(this.loading)
-      //   this.loading = false
-      // },1000)
       // this.tab[1].name = `评论(${this.indexList.commentCount})`
       this.$set(this.tab[1],'name',`评论(${this.indexList.commentCount})`)
+      setTimeout(()=>{
+        this.loading = false
+      },DELAY)
     },
     // 点击tab条
     showTabs(item, index) {

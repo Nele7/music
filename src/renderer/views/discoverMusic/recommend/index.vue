@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="recommend-wrapper" v-if="bannerList.length > 0">
+    <div class="recommend-wrapper" v-if="!loading">
         <div class="carousel-wrapper">
             <banner :bannerList="bannerList" v-if="bannerList.length > 0"></banner>
         </div>
@@ -15,7 +15,7 @@
         </div>
         <adjust></adjust>
     </div>
-    <div class="loading" v-if="bannerList.length <= 0">
+    <div class="loading" v-if="loading">
         <Spinner name="ball-scale-multiple" color="#b31212"/>
     </div>
 </div>
@@ -32,12 +32,14 @@ import RecommendList from '@/components/RecommendList/'
 import Title from '@/components/Title/'
 import * as types from '@/store/mutation_types'
 import Spinner from 'vue-spinkit'
-const TIME = 1000;
+import { DELAY } from '@/config'
+import axios from 'axios'
 export default {
     name: 'recommend',
     data() {
         return {
             bannerList: [],
+            loading:false
         }
     },
     created() {
@@ -58,11 +60,14 @@ export default {
         },
         // 获取轮播图
         async getBanner() {
+            this.loading = true
             let [res] = await to(neteaseApi.banner())
-            setTimeout(()=>{
-                this.bannerList = res.banners
-            },TIME)
+            this.bannerList = res.banners
+            setTimeout(() => {
+                this.loading = false
+            },DELAY)
         },
+
     },
     components: {
         Banner,

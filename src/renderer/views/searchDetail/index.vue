@@ -1,27 +1,32 @@
 <template>
-    <div class="search-detail-wrapper">
-        <div class="result">
+    <div>
+        <div class="search-detail-wrapper">
+            <div class="result">
             <h3>
                 {{keywords}} 
                 <span>{{hint}}</span>
             </h3>
-        </div>
-        <ul class="tabs">
-            <li class="tab-item" 
-            v-for="item in searchTabList" :key="item.type"
-            :class="{active:currentType===item.type}"
-            @click="changeTab(item.type,item.component)"
-            >{{item.tab}}</li>
-        </ul>
-        <div class="search-detail-container">
-            <div class="views">
-                <component 
-                :is="currentComponent" 
-                v-bind="result" 
-                @loadMore="changeLoadMore"
-                :isMore="isMore"
-                ></component>
             </div>
+            <ul class="tabs">
+                <li class="tab-item" 
+                v-for="item in searchTabList" :key="item.type"
+                :class="{active:currentType===item.type}"
+                @click="changeTab(item.type,item.component)"
+                >{{item.tab}}</li>
+            </ul>
+            <div class="search-detail-container" v-if="!loading">
+                <div class="views">
+                    <component 
+                    :is="currentComponent" 
+                    v-bind="result" 
+                    @loadMore="changeLoadMore"
+                    :isMore="isMore"
+                    ></component>
+                </div>
+            </div>
+        </div>
+        <div class="loading" v-if="loading">
+            <Spinner name="ball-scale-multiple" color="#b31212"/>
         </div>
     </div>
 </template>
@@ -40,7 +45,8 @@
         SearchRadio,
         SearchUser
     } from './index'
-import Spinner from 'vue-spinkit'
+    import Spinner from 'vue-spinkit'
+    import { DELAY } from '@/config'
 
     export default {
         name:'searchdetail',
@@ -56,6 +62,7 @@ import Spinner from 'vue-spinkit'
                 limit:30,                           // 一页显示条数
                 pageSize:1,                         // 当前页数
                 isMore:false,                       // 用于判断加载更多是否显示
+                loading:false
             }
         },
         created() {
@@ -84,6 +91,7 @@ import Spinner from 'vue-spinkit'
         },
         methods: { 
             async getSearch() {
+                this.loading = true
                 let [res] = await to(neteaseApi.search({
                     keywords:this.keywords,
                     type: this.currentType,
@@ -91,7 +99,9 @@ import Spinner from 'vue-spinkit'
                     offset:this.offset
                 }))
                 this.normalizeResult(res.result)
-                // console.log(res)
+                setTimeout(()=> {
+                    this.loading = false
+                },DELAY)
             },
             normalizeResult(result) {
                 /**
@@ -159,6 +169,7 @@ import Spinner from 'vue-spinkit'
             SearchLyric,
             SearchRadio,
             SearchUser,
+            Spinner
         }
     }
 </script>
@@ -198,6 +209,13 @@ import Spinner from 'vue-spinkit'
     }
     .search-detail-container {
         height: calc(100% - 60px);
+    }
+}
+.loading {
+    div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
     }
 }
 </style>

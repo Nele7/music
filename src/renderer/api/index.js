@@ -70,4 +70,9 @@ export const neteaseApi = {
   playlistHot: apiData('/playlist/hot'),              // 热门歌单分类
   playlistTop: apiData('/top/playlist'),              // 歌单
   // e
+
+  // s 排行榜api
+  toplist: apiData('/toplist'),                       // 所有榜单
+  topDetail: apiData('/toplist/detail'),              // 所有榜单内容摘要
+  // e
 }
