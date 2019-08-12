@@ -8,6 +8,7 @@ const getters = {
     followList: state => state.user.userFollowList,
     followerList: state => state.user.userFollowerList,
     eventList: state => state.user.userEvent,
+    userInfoLoading: state => state.user.userInfoLoading,
     // e
 
     // s toggle.js

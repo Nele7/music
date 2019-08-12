@@ -14,7 +14,7 @@
                 @click="changeTab(item.type,item.component)"
                 >{{item.tab}}</li>
             </ul>
-            <div class="search-detail-container" v-if="!loading">
+            <div class="search-detail-container" v-if="resultList.length > 0">
                 <div class="views">
                     <component 
                     :is="currentComponent" 
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="loading" v-if="loading">
+        <div class="loading" v-if="resultList.length <= 0">
             <Spinner name="ball-scale-multiple" color="#b31212"/>
         </div>
     </div>

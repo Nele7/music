@@ -36,11 +36,27 @@ export default {
         this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, true)
       } else {
         this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, true)
-        this.$store.dispatch('user/getUserFollow')
-        this.$store.dispatch('user/getUserFollower')
-        this.$store.dispatch('user/getUserEvent')
+        this.$store.dispatch('user/getUserInfo')
+        // this.$store.dispatch('user/getUserFollow')
+        // this.$store.dispatch('user/getUserFollower')
+        // this.$store.dispatch('user/getUserEvent')
+        // this.getUserInfo()
       }
     },
+    //  同时请求接口
+    // getUserInfo() {
+    //   this.$store.commit(`user/${types.USER_INFO_LOADING}`,true)
+    //   Promise.all([
+    //     this.$store.dispatch('user/getUserFollow'),
+    //     this.$store.dispatch('user/getUserFollower'),
+    //     this.$store.dispatch('user/getUserEvent')
+    //   ]).then(()=> {
+    //     setTimeout(() => {
+    //       this.$store.commit(`user/${types.USER_INFO_LOADING}`,false)
+    //       console.log('成功')
+    //     },1500)
+    //   })
+    // }
   },
   components:{
     userInfoDetail

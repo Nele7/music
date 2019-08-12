@@ -72,7 +72,7 @@ export const neteaseApi = {
   // e
 
   // s 排行榜api
-  toplist: apiData('/toplist'),                       // 所有榜单
-  topDetail: apiData('/toplist/detail'),              // 所有榜单内容摘要
+  toplist: apiData('/top/list'),                      // 排行榜
+  topDetail: apiData('/toplist'),                     // 所有榜单内容摘要
   // e
 }

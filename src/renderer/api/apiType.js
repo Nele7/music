@@ -49,3 +49,10 @@ export const searchTabList = [
         component:'SearchUser'
     },
 ]
+
+export const rankMusicType = {
+    newMusic:0,               // 云音乐新歌榜
+    hotMusic:1,              //  云音乐热歌榜
+    originalMusic:2,         //  网易原创歌曲榜
+    soaringMusic:3,          //  云音乐飙升榜
+}

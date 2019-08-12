@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-05 09:39:22
+ * @LastEditTime: 2019-08-12 10:22:27
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
     <div class="nav-search-area">
         <div class="nav-search">
@@ -31,7 +38,7 @@
                         <ul>
                             <li v-for="(item,index) in historySearch" :key="index" @click="selectSearchItem(item)">
                                 <a href="#">{{item}}</a>
-                                <i class="el-icon-close" @click="clearHistoryItem(index)"></i>
+                                <i class="el-icon-close" @click.stop="clearHistoryItem(index)"></i>
                             </li>
                         </ul>
                     </div>

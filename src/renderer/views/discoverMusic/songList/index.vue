@@ -87,12 +87,12 @@
 
 <script>
 import { neteaseApi } from "@/api/"
-import to from "@/utils/await-to.js"
 import { covertUnit } from '@/utils/util.js'
-import SongLists from './SongLists'
-import { songListMixin } from '@/utils/mixin.js'
-import Spinner from 'vue-spinkit'
 import { DELAY } from '@/config'
+
+import to from "@/utils/await-to.js"
+import SongLists from './SongLists'
+import Spinner from 'vue-spinkit'
 
 export default {
     name: 'songList',

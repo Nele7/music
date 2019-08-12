@@ -20,6 +20,7 @@ const state = {
   userFollowerList:[],                                           // 用户粉丝列表
   userEvent:[],                                                  // 用户动态列表
   userlikelist: [],                                              // 用户喜欢列表
+  userInfoLoading:false,                                         // 用户详情loading
 }
 
 const mutations = {
@@ -72,6 +73,9 @@ const mutations = {
   [types.USER_PLAY_LIST](state,arr) {
     state.userPlayList = arr
   },
+  [types.USER_INFO_LOADING](state,flag) {
+    state.userInfoLoading = flag
+  }
 }
 
 const actions = {
@@ -100,25 +104,34 @@ const actions = {
     })
   },
   // 获取用户--关注列表
-  async getUserFollow({commit}){
-    let [res] = await to(neteaseApi.userFollows({
-      uid: state.userInfo.userId
-    }))
-    commit(types.USER_FOLLOW,res.follow)
+   getUserFollow({commit}){
+    return new Promise(async (resolve) => {
+      let [res] = await to(neteaseApi.userFollows({
+        uid: state.userInfo.userId
+      }))
+      commit(types.USER_FOLLOW,res.follow)
+      resolve()
+    })
   },
   // 获取用户--粉丝列表
-  async getUserFollower({commit,state}){
-    let [res] = await to(neteaseApi.userFollowed({
-       uid: state.userInfo.userId
-    }))
-    commit(types.USER_FOLLOWER,res.followeds)
+   getUserFollower({commit,state}){
+    return new Promise(async (resolve) => {
+      let [res] = await to(neteaseApi.userFollowed({
+        uid: state.userInfo.userId
+      }))
+      commit(types.USER_FOLLOWER,res.followeds)
+      resolve()
+    })
   },
   // 获取用户--动态列表
-  async getUserEvent({commit,state}){
-    let [res] = await to(neteaseApi.userEvent({
-      uid: state.userInfo.userId
-    }))
-    commit(types.USER_EVENT,res.events)
+   getUserEvent({commit,state}){
+    return new Promise(async (resolve) => {
+      let [res] = await to(neteaseApi.userEvent({
+        uid: state.userInfo.userId
+      }))
+      commit(types.USER_EVENT,res.events)
+      resolve()
+    })
   },
   // 获取用户--详情
   getUserDetail({ state,commit }){
@@ -128,6 +141,20 @@ const actions = {
       }))
       commit(types.USER_SIGN,res.mobileSign)
       resolve(res)
+    })
+  },
+  // 一起请求动态---关注---粉丝
+  getUserInfo({dispatch,state,commit}) {
+    commit(types.USER_INFO_LOADING,true)
+    return Promise.all([
+      dispatch('getUserFollow'),
+      dispatch('getUserFollower'),
+      dispatch('getUserEvent'),
+    ]).then((res)=> {
+      setTimeout(()=> {
+        commit(types.USER_INFO_LOADING,false)
+        // console.log('成功')
+      },1500)
     })
   },
   // 获取用户--歌单

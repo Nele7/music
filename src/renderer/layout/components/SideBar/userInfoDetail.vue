@@ -2,32 +2,43 @@
     <transition name="slide-left">
         <div class="user-detail-wrapper" v-if="userDetail" @click="closeUserDetail">
             <div class="user-info-detail" @click="cancelDefault">
-                <div class="user-info-count">
-                    <div class="dynamic" @click="clickEventList">
-                        <span href class="count">{{eventSum > 99 ? '99+' : eventSum }}</span>
-                        <span>动态</span>
+                <div class="detail-list">
+                    <div class="user-info-wrapper" v-if="!userInfoLoading">
+                        <div class="user-info-count">
+                            <div class="info">
+                                <div class="dynamic" @click="clickEventList">
+                                    <span href class="count">{{eventSum > 99 ? '99+' : eventSum }}</span>
+                                    <span>动态</span>
+                                </div>
+                                <div class="follow" @click="clickFollowList">
+                                    <span href class="count">{{ followSum > 99 ? '99+' : followSum }}</span>
+                                    <span>关注</span>
+                                </div>
+                                <div class="fans" @click="clickFollowerList">
+                                    <span href class="count">{{ followerSum > 99 ? '99+' : followerSum }}</span>
+                                    <span>粉丝</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="user-info-sign">
+                            <div class="sign">
+                                <span @click="sign" v-if="!signStatus" class="noSign">
+                                    <i class="el-icon-coin"></i>
+                                    <i>签到</i>
+                                </span>
+                                <span v-else class="isSign">
+                                    <i class="el-icon-coin"></i>
+                                    <i>已签到</i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="follow" @click="clickFollowList">
-                        <span href class="count">{{ followSum > 99 ? '99+' : followSum }}</span>
-                        <span>关注</span>
-                    </div>
-                    <div class="fans" @click="clickFollowerList">
-                        <span href class="count">{{ followerSum > 99 ? '99+' : followerSum }}</span>
-                        <span>粉丝</span>
+                    <div class="loading" v-if="userInfoLoading">
+                        <Spinner name="ball-scale-multiple" color="#b31212"/>
                     </div>
                 </div>
-                <div class="user-info-sign">
-                    <div class="sign">
-                        <span @click="sign" v-if="!signStatus" class="noSign">
-                            <i class="el-icon-coin"></i>
-                            <i>签到</i>
-                        </span>
-                        <span v-else class="isSign">
-                            <i class="el-icon-coin"></i>
-                            <i>已签到</i>
-                        </span>
-                    </div>
-                </div>
+                
                 <div class="user-info-list" v-for="(data,index) in userDetailData" :key="index">
                     <div
                         class="user-info-item"
@@ -71,6 +82,7 @@
 import * as types from "@/store/mutation_types"
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
+import Spinner from 'vue-spinkit'
 
 export default {
     data() {
@@ -138,6 +150,9 @@ export default {
         },
         signStatus() {
             return this.$store.getters.signStatus
+        },
+        userInfoLoading() {
+            return this.$store.getters.userInfoLoading
         }
     },
     methods: {
@@ -185,6 +200,9 @@ export default {
             this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, false)
             this.$router.push('/')
         }
+    },
+    components: {
+        Spinner
     }
 }
 </script>
@@ -203,63 +221,88 @@ export default {
         background: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
         z-index: 201;
-        .user-info-count {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 30px 30px 0px;
-            .follow {
-                border: 1px solid $color-border;
-                border-top: 0;
-                border-bottom: 0;
-            }
-            div {
-                display: flex;
-                flex-direction: column;
-                padding: 0 21px;
-                cursor: pointer;
-                & > span:last-child {
-                    font-size: 13px;
-                    color: $color-base-grey;
+        .detail-list {
+            position: relative;
+            height: 131px;
+            .user-info-wrapper {
+                .user-info-count {
+                    position: relative;
+                    .info {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        padding: 30px 30px 0px;
+                        .follow {
+                            border: 1px solid $color-border;
+                            border-top: 0;
+                            border-bottom: 0;
+                        }
+                        div {
+                            display: flex;
+                            flex-direction: column;
+                            padding: 0 21px;
+                            cursor: pointer;
+                            & > span:last-child {
+                                font-size: 13px;
+                                color: $color-base-grey;
+                            }
+                            span {
+                                text-align: center;
+                                width: 40px;
+                                &.count {
+                                    font-size: 32px;
+                                    font-weight: 400;
+                                    margin-bottom: 2px;
+                                }
+                            }
+                        }
+                    }
+                    .loading {
+                        div {
+                            position: absolute;
+                            top:50%;
+                            left: 50%;
+                        }
+                    }
                 }
-                span {
+                .user-info-sign {
                     text-align: center;
-                    width: 40px;
-                    &.count {
-                        font-size: 32px;
-                        font-weight: 400;
-                        margin-bottom: 2px;
-                    }
-                }
-            }
-        }
-        .user-info-sign {
-            text-align: center;
-            border-bottom: 1px solid $color-border;
+                    border-bottom: 1px solid $color-border;
 
-            .sign {
-                padding: 10px;
-                span {
-                    display: inline-block;
-                    padding: 4px 24px;
-                    border-radius: 18px;
-                    border: 1px solid $color-border;
-                    color: $color-simple-black;
-                    &.noSign:hover {
-                        color: $color-base-black;
-                        background: $background-active;
-                        cursor: pointer;
-                    }
-                    &.isSign {
-                        color: $color-base-grey;
-                        background: $background-active;
-                    }
-                    i {
-                        font-style: normal;
+                    .sign {
+                        padding: 10px;
+                        span {
+                            display: inline-block;
+                            padding: 4px 24px;
+                            border-radius: 18px;
+                            border: 1px solid $color-border;
+                            color: $color-simple-black;
+                            &.noSign:hover {
+                                color: $color-base-black;
+                                background: $background-active;
+                                cursor: pointer;
+                            }
+                            &.isSign {
+                                color: $color-base-grey;
+                                background: $background-active;
+                            }
+                            i {
+                                font-style: normal;
+                            }
+                        }
                     }
                 }
             }
+            .loading {
+                div {
+                    position: absolute;
+                    top:50%;
+                    left: 50%;
+                }
+            }
         }
+        
+        
         #user-signout {
             border-bottom: 0;
         }

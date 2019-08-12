@@ -32,6 +32,10 @@ export function formatterTime(time) {
 export function formatTimeMMSS(time) {
     return moment(time).format('mm:ss')
 }
+
+export function formatTimeMMDD(time) {
+    return moment(time).format('MM-DD')
+}
 // export function shuffle(arr) {
 //     for (let i = 0; i < arr.length; i++) {
 //         let j = getRandom(0,i);
