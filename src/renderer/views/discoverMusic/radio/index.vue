@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <player-progress></player-progress>
-  </div>
+  <ul class="infinite-list" v-infinite-scroll="load">
+    <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
+  </ul>
 </template>
 
 <script>
-  import PlayerProgress from '@/components/PlayerProgress'
   export default {
-    components: {
-      PlayerProgress
+    data () {
+      return {
+        count: 0
+      }
+    },
+    methods: {
+      load () {
+        this.count += 2
+      }
     }
   }
 </script>

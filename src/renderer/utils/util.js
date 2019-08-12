@@ -34,7 +34,7 @@ export function formatTimeMMSS(time) {
 }
 
 export function formatTimeMMDD(time) {
-    return moment(time).format('MM-DD')
+    return moment(time).format('MM月DD日')
 }
 // export function shuffle(arr) {
 //     for (let i = 0; i < arr.length; i++) {

@@ -75,4 +75,9 @@ export const neteaseApi = {
   toplist: apiData('/top/list'),                      // 排行榜
   topDetail: apiData('/toplist'),                     // 所有榜单内容摘要
   // e
+
+  // s 歌手api
+  artist: apiData('/toplist/artist'),                 // 歌手榜
+  topArtists: apiData('/top/artists'),                // 热门歌手
+  artistlist: apiData('/artist/list'),                // 歌手分类
 }

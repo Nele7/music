@@ -119,7 +119,7 @@ export default {
 @import '@/assets/style/mixin.scss';
 @import '@/assets/style/variables.scss';
 .rank-wrapper {
-    padding: 0 20px 20px;
+    padding: 20px 30px;
     .loading {
       div {
         position: absolute;
@@ -142,14 +142,16 @@ export default {
 
             .cover-box {
                 position: relative;
-                width: 230px;
-                height: 230px;
+                width: 175px;
+                height: 175px;
                 overflow: hidden;
+                border-radius: 4px;
                 .create-time {
                     position: absolute;
-                    top: 148px;
-                    left: 79px;
+                    top: 120px;
+                    left: 48px;
                     color: $color-white;
+                    font-size: 13px;
                 }
                 img {
                     width: 100%;
@@ -160,8 +162,8 @@ export default {
                     @include position(absolute,0,0,0,0,100%);
                     transform: scale(1.2);
                     background-size:100% 100%;
-                    opacity: 0.5;
-                    filter: blur(10px);
+                    opacity: 0.1;
+                    filter: blur(2px);
                 }
             }
             .list-box {
@@ -177,11 +179,15 @@ export default {
                             display: flex;
                             flex-direction: row;
                             align-items: center;
-                            height: 46px;
-                            line-height: 46px;
+                            height: 35px;
+                            line-height: 35px;
                             color:$color-base-grey;
                             transition: background 0.3s;
+                            
                             &#viewAll {
+                                .text {
+                                    padding-left: 20px;
+                                }
                                 &:hover {
                                     background: none;
                                 }
@@ -199,13 +205,14 @@ export default {
                             .text {
                                 flex: 1;
                                 color:$color-base-black;
+                                font-size: 13px;
                             }
                             .name {
                                 max-width: 230px;
                                 @include ellipsized;
                                 padding: 0 10px;
                                 box-sizing: border-box;
-                                font-size: 14px;
+                                font-size: 12px;
                             }
                         }
                     }
@@ -232,25 +239,26 @@ export default {
                     border-radius: 4px;
                     overflow: hidden;
                     img {
-                        transition: transform 0.3s;
+                        transition: transform 0.5s;
                         &:hover {
                             transform: scale(1.3);
                         }
+                        border-radius: 4px;
                         @include position(absolute,0,0,0,0,100%)
                     }
                     .play-count {
                         position: absolute;
-                        top: 4px;
-                        right: 5px;
+                        top: 6px;
+                        right: 6px;
                         color: #fff;
-                        font-size: 14px;
+                        font-size: 12px;
                         i {
-                            font-size: 14px;
+                            font-size: 10px;
                         }
                     }
                 }
                 p {
-                    font-size: 14px;
+                    font-size: 13px;
                     margin-top: 5px;
                 }
             }
