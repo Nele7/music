@@ -38,7 +38,7 @@
           console.log(item)
           this.$store.dispatch('player/replaceMusicPlayList',item)
         } catch (error) {
-          this.$toast(err.response.data.message)
+          this.$toast(error.response.data.message)
         }
       },
       loadHotMore() {

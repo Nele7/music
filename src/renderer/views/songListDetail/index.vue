@@ -95,7 +95,6 @@ export default {
   mixins: [musicMixin],
   data() {
     return {
-      commentName:'',
       tab: [
         { name: '歌曲列表', v: 'music-list' },
         { name: '', v: 'comment' },

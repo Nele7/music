@@ -80,7 +80,8 @@ export const neteaseApi = {
   topArtists: apiData('/top/artists'),                // 热门歌手
   artistlist: apiData('/artist/list'),                // 歌手分类
   artists: apiData('/artists'),                       // 歌手单曲
-  artistMv: apiData('/artist/mv'),                    // 歌手MV
+  artistSub: apiData('/artist/sub'),                  // 收藏歌手
+  artistMv: apiData('/artist/mv'),                    // 歌手M V
   artistAlbum: apiData('/artist/album'),              // 歌手专辑
   artistDesc: apiData('/artist/desc'),                // 歌手描述
   simiArtist: apiData('/simi/artist'),                // 相似歌手
