@@ -27,7 +27,7 @@
                     <!-- <div class="menu-text" v-for="(playlist,i) in item.playList" @click="toSongListDetail(playlist.id)"> -->
                     <router-link 
                     v-for="playlist in item.playList"
-                    :to="`/songlistdetail/index/${playlist.id}`"
+                    :to="`/songlistdetail/${playlist.id}`"
                     class="menu-text"
                     tag="div"
                     :key="playlist.id"

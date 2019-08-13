@@ -148,7 +148,7 @@ export default {
             }))
               this.playlistResult = res.playlists
               this.total = res.total
-              setTimeout(()=>{
+              setTimeout(() => {
                 this.loading = false
               },DELAY)
         },

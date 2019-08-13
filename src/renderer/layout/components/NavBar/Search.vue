@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-05 09:39:22
- * @LastEditTime: 2019-08-12 10:22:27
+ * @LastEditTime: 2019-08-13 15:14:33
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -111,7 +111,7 @@ export default {
             // 保存本地,跳转
             this.insertHistorySearch(this.historySearch,this.valueSearch)
             localStorage.setItem(historySearch, JSON.stringify(this.historySearch))
-            this.$router.push(`/searchdetail/index/${this.valueSearch}`)
+            this.$router.push(`/searchdetail/${this.valueSearch}`)
         },
         clearHistoryItem(index) {
             this.historySearch.splice(index, 1)
@@ -136,7 +136,7 @@ export default {
             this.insertHistorySearch(this.historySearch,this.valueSearch)
             localStorage.setItem(historySearch, JSON.stringify(this.historySearch))
             this.isShowDialog = false
-            this.$router.push(`/searchdetail/index/${first}`)
+            this.$router.push(`/searchdetail/${first}`)
         },
         async getSerachSuggest(keywords) {
             let [res] = await to(neteaseApi.searchSuggest({

@@ -1,74 +1,29 @@
 <template>
   <el-row class="list-wrapper" :gutter="10">
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p class="name">Alan Walker</p>
-          </el-col>
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p>Alan Walker</p>
-          </el-col>
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p>Alan Walker</p>
-          </el-col>
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p>Alan Walker</p>
-          </el-col>
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p>Alan Walker</p>
-          </el-col>
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p>Alan Walker</p>
-          </el-col>
-          <el-col class="list-item" 
-            :md="6"
-            :lg="4"
-            :xl="3">
-            <div class="item">
-              <img src="http://p1.music.126.net/wTcIyvb9xPsNzZTJ7ettow==/109951164273697592.jpg" alt="">
-            </div>
-            <p>Alan Walker</p>
-          </el-col>
-        </el-row>
+    <el-col class="list-item" 
+      :md="6"
+      :lg="4"
+      :xl="3"
+      v-for="(item,index) in list"
+      :key="index"
+      @click.native="selectId(item.id)"
+      >
+      <div class="item">
+        <img :src="item.img1v1Url" alt="">
+      </div>
+      <p class="name">{{item.name}}</p>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
   export default {
-    
+    props:['list'],
+    methods: {
+      selectId(id) {
+        this.$emit('selectId',id)
+      }
+    },
   }
 </script>
 

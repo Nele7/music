@@ -20,6 +20,8 @@ const follow = () => import('@/views/follow/index')
 const songListDetail = () => import('@/views/songListDetail/index')
 
 const searchDetail = () => import('@/views/searchDetail/index.vue')
+
+const singerDetail = () => import('@/views/singerDetail/index.vue')
 Vue.use(Router)
 
 export default new Router({
@@ -156,10 +158,10 @@ export default new Router({
       path: '/songlistdetail',
       name: 'songlistdetail',
       component: Layout,
-      redirect: '/songlistdetail/index/:id',
+      redirect: '/songlistdetail/:id',
       children:[
         {
-          path: 'index/:id',
+          path: ':id',
           component: songListDetail,
           name: '_songlistdetail'
         },
@@ -169,12 +171,25 @@ export default new Router({
       path: '/searchdetail',
       name: 'searchdetail',
       component: Layout,
-      redirect: '/searchdetail/index/:keywords',
+      redirect: '/searchdetail/:keywords',
       children:[
         {
-          path: 'index/:keywords',
+          path: ':keywords',
           component: searchDetail,
           name: '_searchdetail'
+        },
+      ]
+    },
+    {
+      path: '/singerdetail',
+      name: 'singerdetail',
+      component: Layout,
+      redirect: '/singerdetail/:id',
+      children:[
+        {
+          path: ':id',
+          component: singerDetail,
+          name: '_singerdetail'
         },
       ]
     },

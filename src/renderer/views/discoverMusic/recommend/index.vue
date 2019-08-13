@@ -56,7 +56,7 @@ export default {
     },
     methods: {
         selectId(id) {
-            this.$router.push(`/songlistdetail/index/${id}`)
+            this.$router.push(`/songlistdetail/${id}`)
         },
         // 获取轮播图
         async getBanner() {
