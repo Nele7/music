@@ -25,8 +25,8 @@
             <i class="el-icon-plus"></i>
           </div>
           <div class="btn-mini" @click="toggleSubscribe(indexList.subscribed)">
-            <i class="el-icon-folder-add"></i>
-            {{indexList.subscribed?'已收藏':'收藏'}} ({{indexList.subscribedCount | covertUnit}})
+            <i :class="indexList.subscribed?'el-icon-folder-checked':'el-icon-folder-add'"></i>
+            {{indexList.subscribed?'取消收藏':'收藏'}} ({{indexList.subscribedCount | covertUnit}})
           </div>
 
           <div class="btn-mini" @click="$toast('暂未开放,敬请期待！！！')">
@@ -382,8 +382,8 @@ $song-cover-width: 240px;
     box-sizing: border-box;
     li {
       font-size: 14px;
-      height: 40px;
-      line-height: 40px;
+      height: 36px;
+      line-height: 36px;
       padding: 0 20px;
       text-align: center;
       letter-spacing: 2px;

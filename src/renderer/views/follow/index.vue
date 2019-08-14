@@ -2,7 +2,6 @@
     <div style="height:100%">
         <follow-list :list="followList" v-if="queryType == 2"></follow-list>
         <follow-list :list="followerList" v-if="queryType == 3" @follow="changeFollow"></follow-list>
-        <!-- {{this.$route.query.type}} -->
     </div>
 </template>
 

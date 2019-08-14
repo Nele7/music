@@ -69,25 +69,21 @@
           transform: scale(1.2);
         }
       }
-      .play-count {
+      & > div {
         position: absolute;
-        color: #fff;
+        background: rgba(12, 12, 12, 0.452);
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 14px;
+        color: $color-white;
+      }
+      .play-count {
         right: 1px;
         top: 3px;
-        background: rgba(12, 12, 12, 0.452);
-        padding: 1px 5px;
-        border-radius: 5px;
-        font-size: 14px;
       }
       .durationms {
-        position: absolute;
-        color: #fff;
         bottom: 3px;
         right: 7px;
-        background: rgba(12, 12, 12, 0.452);
-        font-size: 14px;
-        padding: 1px 5px;
-        border-radius: 5px;
       }
     }
     .title {

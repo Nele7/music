@@ -50,11 +50,23 @@
                 >
                 <span :class="{'active':index===tempIndex}" @click="showTabs(item,index)">{{item.name}}</span></li>
             </ul>
+            <div class="widget" v-if="showTabsComponent === 'singer-album'">
+                <div :class="{active:viewType === 1}" @click="selectView(1)">
+                    <i class="iconfont icon-geshihua"></i>
+                </div>
+                <div :class="{active:viewType === 2}" @click="selectView(2)">
+                    <i class="iconfont icon-duotiaohengxian"></i>
+                </div>
+            </div>
             <keep-alive>
                 <component 
                     :is="showTabsComponent"
+                    :id="singerId"
+                    :viewType="viewType"
                     :musiclist="musiclist"
-                    @select="selectItem"
+                    @select="selectItemMusic"
+                    @selectAlbum="selectItemAlbum"
+                    @selectSinger="selectSinger"
                 >
                 </component>
             </keep-alive>
@@ -88,21 +100,24 @@ import { musicMixin } from '@/utils/mixin'
                 tempIndex: 0,
                 showTabsComponent:'music-list',
                 musiclist:[],
-                detailInfo:{}
+                detailInfo:{},
+                viewType:1,
+                id:null
             }
         },
         created() {
+            // this.id = this.$route.params.id
             this.getArtists()
         },
         computed:{
-            id() {
-                return this.$route.params.id
+            singerId() {
+                return parseInt(this.$route.params.id)
             }
         },
         methods: {
             async getArtists() {
                 let [res] = await to(neteaseApi.artists({
-                    id:this.id
+                    id:this.singerId
                 }))
                 this.musiclist = res.hotSongs
                 let str = res.artist.briefDesc
@@ -115,7 +130,7 @@ import { musicMixin } from '@/utils/mixin'
                 this.showTabsComponent = item.component
                 this.tempIndex = index
             },
-            async selectItem(item){
+            async selectItemMusic(item){
                 try {
                     await this.checkMusic(item.id)
                     // 插入单首
@@ -144,6 +159,24 @@ import { musicMixin } from '@/utils/mixin'
                 let msg = this.detailInfo.followed ? '收藏成功':'取消收藏成功'
                 this.$toast(msg)
             },
+            selectView(type) {
+                this.viewType = type
+            },
+            selectItemAlbum(id) {
+                console.log('跳转到专辑详情',id)
+            },
+            selectSinger(id) {
+                this.$router.push(`/singerdetail/${id}`)
+            }
+        },
+        watch: {
+            '$route'(n,o) {
+                this.getArtists()
+                this.showTabsComponent = 'music-list'
+                this.tempIndex = 0
+                this.id = n.params.id
+                console.log(n)
+            }
         },
         components: {
             MusicList,
@@ -233,32 +266,48 @@ $singer-cover-width:240px;
   }
 }
 .tab {
-  ul {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    border-bottom: 1px solid $color-border;
-    padding: 0 10px; 
-    box-sizing: border-box;
-    li {
-      font-size: 14px;
-      height: 40px;
-      line-height: 40px;
-      padding: 0 20px;
-      text-align: center;
-      letter-spacing: 2px;
-      box-sizing: border-box;
-      span {
-        display: block;
-        height: 100%;
-        border-bottom: 2px solid transparent;
-        cursor: pointer;
-        &.active {
-          border-bottom: 2px solid $color-base-red;
-          color: $color-base-red;
+    position: relative;
+    ul {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        border-bottom: 1px solid $color-border;
+        padding: 0 10px; 
+        box-sizing: border-box;
+        li {
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 20px;
+        text-align: center;
+        letter-spacing: 2px;
+        box-sizing: border-box;
+        span {
+            display: block;
+            height: 100%;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            &.active {
+            border-bottom: 2px solid $color-base-red;
+            color: $color-base-red;
+            }
         }
-      }
+        }
     }
-  }
+    .widget {
+        position: absolute;
+        top: 6px;
+        right: 40px;
+        display: flex;
+        & > div {
+            padding: 2px 4px;
+            background: #f9f9f9;
+            cursor: pointer;
+            &.active {
+                background: $background-active;
+                color:$color-base-red;
+            }
+        }
+    }
 }
 </style>

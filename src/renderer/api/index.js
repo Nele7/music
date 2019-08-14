@@ -85,7 +85,7 @@ export const neteaseApi = {
   artistAlbum: apiData('/artist/album'),              // 歌手专辑
   artistDesc: apiData('/artist/desc'),                // 歌手描述
   simiArtist: apiData('/simi/artist'),                // 相似歌手
-  simiPlaylist: apiData('/simi/playlist'),            // 相似歌单
-  simiSong: apiData('/simi/song'),                    // 相似音乐
+  // simiPlaylist: apiData('/simi/playlist'),            // 相似歌单
+  // simiSong: apiData('/simi/song'),                    // 相似音乐
   // e
 }

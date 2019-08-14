@@ -52,7 +52,7 @@ import { singerCatlist,alphalist } from '@/api/apiType'
 import { DELAY } from '@/config'
 
 import to from "@/utils/await-to.js"
-import SingerList from './SingerList'
+import SingerList from '@/components/SingerList'
 
   export default {
     data() {

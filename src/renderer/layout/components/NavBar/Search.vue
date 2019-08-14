@@ -1,10 +1,3 @@
-<!--
- * @Description: In User Settings Edit
- * @Author: your name
- * @Date: 2019-08-05 09:39:22
- * @LastEditTime: 2019-08-13 15:14:33
- * @LastEditors: Please set LastEditors
- -->
 <template>
     <div class="nav-search-area">
         <div class="nav-search">
@@ -170,9 +163,17 @@ export default {
                 // 说明为单曲播放
                 this.$store.dispatch('player/replaceMusicPlayList',orderArr[index])
             }else if(order === 'artists') {
-
+                this.$router.push(`/singerdetail/${orderArr[index].id}`)
+            }else if(order === 'playlists'){
+                console.log('歌单')
+                this.$router.push(`/songlistdetail/${orderArr[index].id}`)
+            }else if(order === 'albums') {
+                console.log('专辑详情')
+            }else if(order === 'mvs') {
+                console.log('视频详情')
             }
-            console.log(order,index,orderArr[index])
+            this.closeDialog()
+            console.log(order,orderArr[index].id)
         }
     },
     watch: {

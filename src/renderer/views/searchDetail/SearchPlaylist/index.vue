@@ -2,7 +2,7 @@
   <div>
     <ul class="list-wrapper">
       <li class="list-item" v-for="(item,index) in playlists" :key="index">
-        <div class="item">
+        <div class="item" @click="selectItem(item.id)">
           <div class="avatar">
             <img :src="item.coverImgUrl" alt="">
           </div>
@@ -44,6 +44,9 @@
     methods: {
      loadHotMore() {
        this.$emit('loadMore')
+     },
+     selectItem(id){
+       this.$router.push(`/songlistdetail/${id}`)
      }
     },
   }

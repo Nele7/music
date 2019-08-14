@@ -67,7 +67,7 @@ $background-icon: rgba(12, 12, 12, 0.452);
             }
             & > div {
                 position: absolute;
-                background: $background-icon;
+                // background: $background-icon;
                 color: $color-white;
                 transition: all 0.3s;
             }
@@ -86,6 +86,8 @@ $background-icon: rgba(12, 12, 12, 0.452);
                 font-size: 12px;
                 padding: 3px 13px;
                 border-radius: 4px;
+                width: 100%;
+                background-image: linear-gradient(transparent, rgba(0, 0, 0, .5));
             }
         }
         .name {
