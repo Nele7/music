@@ -1,5 +1,5 @@
 <template>
-    <transition name="side-right">
+    <transition name="slide-right">
         <div class="player-list-wrapper" v-if="showPlayerListDialog" @click="showPlayerListDialog = false">
             <div class="dialog" @click="cancelDefault">
                 <div class="title-group">

@@ -16,7 +16,9 @@
                     </p>
                     <p>
                         <span class="sq" v-if="list.song.copyright === 0">SQ</span>
-                        <span>{{list.song.artists[0].name}}</span>
+                        <span v-for="(ar,i) in list.song.artists" :key="i"> {{ar.name}}  
+                            <i v-if="i !== list.song.artists.length-1">/</i> 
+                        </span>
                     </p>
                 </div>
             </div>

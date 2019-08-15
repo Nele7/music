@@ -1,27 +1,31 @@
 <template>
     <div style="padding:20px">
-        <el-row :gutter="10" class="list-wrapper" v-if="viewType === 1">
-            <el-col
-                :md="6"
-                :lg="6"
-                :xl="6"
-                class="list"
-                v-for="(item,index) in hotAlbums"
-                :key="index"
-            >
-                <div class="list-card" @click="selectAlbum(item.id)">
-                    <div class="list-item">
-                        <img :src="item.picUrl" />
-                        <div class="bg"></div>
+        <div v-if="viewType === 1">
+            <album-list @select="selectId" :list="hotAlbums"></album-list>
+            <!-- <el-row :gutter="10" class="list-wrapper">
+                <el-col
+                    :md="6"
+                    :lg="6"
+                    :xl="6"
+                    class="list"
+                    v-for="(item,index) in hotAlbums"
+                    :key="index"
+                >
+                    <div class="list-card" @click="selectId(item.id)">
+                        <div class="list-item">
+                            <img :src="item.picUrl" />
+                            <div class="bg"></div>
+                        </div>
+                        <p class="text">
+                            <span class="name">{{item.name}}</span>
+                            <span v-for="(al,i) in item.alias" :key="i" class="al">({{al}})</span>
+                        </p>
+                        <p class="day">{{ item.publishTime | formatDateTime }}</p>
                     </div>
-                    <p class="text">
-                        <span class="name">{{item.name}}</span>
-                        <span v-for="(al,i) in item.alias" :key="i" class="al">({{al}})</span>
-                    </p>
-                    <p class="day">{{ item.publishTime | formatDateTime }}</p>
-                </div>
-            </el-col>
-        </el-row>
+                </el-col>
+            </el-row> -->
+        </div>
+        
         <div class="list-line-wrapper" v-if="viewType === 2">
             <div class="list-line">
                 <div class="list-line-item" v-for="(item,index) in hotAlbums" :key="index" @click="selectAlbum(item.id)">
@@ -41,6 +45,7 @@
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
 import { formatDateTime } from '@/utils/util'
+import AlbumList from '@/components/AlbumList'
 export default {
     props: ['id', 'viewType'],
     data() {
@@ -61,12 +66,15 @@ export default {
             }))
             this.hotAlbums = res.hotAlbums
         },
-        selectAlbum(id) {
-          this.$emit('selectAlbum',id)
+        selectId(id) {
+            this.$emit('selectId',{
+                type:'album',
+                id
+            })
         }
     },
     components: {
-
+        AlbumList
     },
     filters: {
         formatDateTime
@@ -86,6 +94,7 @@ export default {
         margin-bottom: 10px;
         .list-card {
             width: 164px;
+            margin:auto;
             cursor: pointer;
             .list-item {
                 position: relative;
@@ -123,6 +132,14 @@ export default {
             padding: 10px;
             height: 80px;
             line-height: 80px;
+            transition: background .5s;
+            &:nth-child(2n) {
+                background: #f9f9f9;
+            }
+            &:hover {
+                background: $background-active;
+
+            }
             .avatar {
                 width: 80px;
                 height: 100%;
@@ -130,7 +147,6 @@ export default {
                    width: 100%;
                     border-radius: 4px;
                 }
-                
             }
             .text {
                 flex: 1;

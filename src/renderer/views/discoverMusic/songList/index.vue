@@ -93,7 +93,7 @@ import { DELAY } from '@/config'
 import to from "@/utils/await-to.js"
 import SongLists from './SongLists'
 import Spinner from 'vue-spinkit'
-
+import Bus from '@/utils/Bus'
 export default {
     name: 'songList',
     data() {
@@ -106,10 +106,15 @@ export default {
             limit:50,
             currentPage:1,
             total:0,
-            loading:false
+            loading:false,
         }
     },
     mounted() {
+        Bus.$on('selectTag',(tag) => {
+            // this.currentCategory = tag
+            console.log(tag)
+            // this.changeCurrentCategory(tag)
+        })
         this.getPlaylistHotCategory()
         this.getPlaylistAllCategory()
         this.getPlaylist()
@@ -123,6 +128,11 @@ export default {
         }
     },
     methods: {
+        changeCurrentCategory(tag) {
+             console.log(tag)
+            this.currentChange = tag
+            console.log(this.currentCategory)
+        },
         async getPlaylistHotCategory() {
             let [res] = await to(neteaseApi.playlistHot())
             this.hotCategoryList = res.tags
@@ -159,7 +169,7 @@ export default {
             this.currentCategory = name
         },
         selectId(id) {
-          this.$router.push(`/songlistdetail/index/${id}`)
+          this.$router.push(`/songlistdetail/${id}`)
         },
         currentChange(page) {
           this.currentPage = page
@@ -167,7 +177,8 @@ export default {
         }
     },
     watch: {
-        currentCategory() {
+        currentCategory(n) {
+            console.log('标签变化-------',n)
           this.currentPage = 1
           this.limit = 50
           this.total = 0

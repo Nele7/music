@@ -1,4 +1,0 @@
-class ApiResUtils{
-  constructor(){}
-  
-}

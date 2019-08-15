@@ -1,6 +1,6 @@
 <template>
   <div style="padding:20px">
-    <singer-list :list="simiArtis"></singer-list>
+    <singer-list :list="simiArtis" @selectId="selectId"></singer-list>
   </div>
 </template>
 
@@ -30,8 +30,11 @@ export default {
             this.simiArtis = res.artists
             console.log(res)
         },
-        selectSinger(id) {
-          this.$emit('selectSinger',id)
+        selectId(id) {
+          this.$emit('selectId',{
+            type:'singer',
+            id
+          })
         }
     },
     components: {

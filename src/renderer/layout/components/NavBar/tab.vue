@@ -46,7 +46,7 @@
                 discoverTab: [
                     { path: '/music/recommend', name: '个性推荐' },
                     { path: '/music/songList', name: '歌单' },
-                    { path: '/music/radio', name: '主播电台' },
+                    // { path: '/music/radio', name: '主播电台' },
                     { path: '/music/rank', name: '排行榜' },
                     { path: '/music/singer', name: '歌手' },
                     { path: '/music/newMusic', name: '最新音乐' },
@@ -91,7 +91,7 @@
   .nav-text-area {
     width: 384px;
     display: flex;
-    justify-content: space-around;
+    // justify-content: space-around;
     align-items: center;
     padding: 0 20px;
     font-size: 14px;
@@ -102,8 +102,9 @@
     }
     cursor: pointer;
     & > div.link {
-      height: 50;
+      height: 50px;
       line-height: 50px;
+      padding: 0 10px;
       &:hover{
         color: $color-base-red;
       }

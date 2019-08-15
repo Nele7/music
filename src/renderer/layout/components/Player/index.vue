@@ -83,7 +83,7 @@
         </div>
     </div>
     <!-- 全屏播放 -->
-    <transition name="side-bottom" appear>
+    <transition name="slide-bottom" appear>
         <div class="full-player-box" v-show="isShowFullPlayer">
             <div class="bg" :style="{backgroundImage:`url(${currentMusicItem.album.picUrl})`}"></div>
             <div class="content">

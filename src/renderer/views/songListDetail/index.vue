@@ -36,7 +36,10 @@
         </div>
         <div class="tags name">
           <span>标签：</span>
-          <span class="active">{{indexList.tags && indexList.tags.join(',') || '暂无！！'}}</span>
+          <span class="active" v-for="(tag,i) in indexList.tags && indexList.tags" :key="i" @click="selectTag(tag)"> 
+            {{tag}} 
+            <i v-if="i !== indexList.tags.length -1">/</i>
+          </span>
         </div>
         <div class="play-count name">
           <span>歌曲数：</span>
@@ -89,6 +92,7 @@ import Comment from './Comment'
 import Subscribers from './Subscribers'
 import Spinner from 'vue-spinkit'
 import { DELAY } from '@/config'
+import Bus from '@/utils/Bus'
 const briefWrapperHeight = 32;
 export default {
   name: 'songlistdetail',
@@ -198,6 +202,11 @@ export default {
       }catch (err) {
         this.$toast(err.response.data.message)
       }
+    },
+    selectTag(tag) {
+      Bus.$emit('selectTag',tag)
+      this.$router.push(`/music/songList`)
+      console.log(tag)
     },
     ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList']),
     ...mapActions('player', ['insertMusicPlayList'])

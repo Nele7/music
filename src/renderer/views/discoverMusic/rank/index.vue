@@ -87,9 +87,9 @@ export default {
             await this.getTopList(rankMusicType.soaringMusic)
             await this.getTopList(rankMusicType.originalMusic)
             await this.getTopList(rankMusicType.hotMusic)
-            setTimeout(()=> {
+            // setTimeout(()=> {
                 this.loading = false
-            },DELAY)
+            // },DELAY)
         },
         async getTopList(idx) {
             let [res] = await to(neteaseApi.toplist({
@@ -102,7 +102,7 @@ export default {
             })
         },
         selectId(id) {
-            this.$router.push(`/songlistdetail/index/${id}`)
+            this.$router.push(`/songlistdetail/${id}`)
         }
     },
     filters: {

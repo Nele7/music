@@ -1,11 +1,7 @@
 import { apiServer } from '../utils/httpUtil'
 
 const apiData = (url, type = 'get') => (params) => apiServer[type](url, params)
-// function apiData(url,type) {
-//   return function(params){
-//     return apiServer[type](url,params)
-//   }
-// }
+
 export const neteaseApi = {
   // s   登录 api
   phoneLogin: apiData('/login/cellphone'),     // 手机登录
@@ -87,5 +83,10 @@ export const neteaseApi = {
   simiArtist: apiData('/simi/artist'),                // 相似歌手
   // simiPlaylist: apiData('/simi/playlist'),            // 相似歌单
   // simiSong: apiData('/simi/song'),                    // 相似音乐
+  // e
+
+  // s 最新音乐api
+  topSong: apiData('/top/song'),                      // 新歌速递
+  topAlbum: apiData('/top/album'),                    // 新碟上架
   // e
 }

@@ -65,8 +65,7 @@
                     :viewType="viewType"
                     :musiclist="musiclist"
                     @select="selectItemMusic"
-                    @selectAlbum="selectItemAlbum"
-                    @selectSinger="selectSinger"
+                    @selectId="selectItemId"
                 >
                 </component>
             </keep-alive>
@@ -162,11 +161,14 @@ import { musicMixin } from '@/utils/mixin'
             selectView(type) {
                 this.viewType = type
             },
-            selectItemAlbum(id) {
-                console.log('跳转到专辑详情',id)
-            },
-            selectSinger(id) {
-                this.$router.push(`/singerdetail/${id}`)
+            selectItemId(value) {
+                let actions = new Map([
+                    ['album',() => {console.log('跳转到专辑详情',value.id)}],
+                    ['mv',() => {console.log('跳转到mv详情',value.id)}],
+                    ['singer',() => { this.$router.push(`/singerdetail/${value.id}`) }]
+                ])
+                actions.get(value.type).call(this)
+                // action.call(this)
             }
         },
         watch: {

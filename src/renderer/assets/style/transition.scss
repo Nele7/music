@@ -6,6 +6,7 @@
 //   transform: translateY(20px);
   opacity: 0;
 }
+// login
 .slide-top-enter-active,.slide-top-leave-active  {
   transition: all .3s ease;
 }
@@ -30,7 +31,7 @@
   transform: translateX(10px);
 }
 
-
+// userinfo-detail
 .slide-left-enter-active,.slide-left-leave-active  {
   transition: all .3s ease;
 }
@@ -40,26 +41,40 @@
 }
 .slide-left-leave-to{
   opacity: 0;
-
 }
-// open player transition
 
-.side-bottom-enter-active,
-.side-bottom-leave-active {
+
+// open player transition
+.slide-bottom-enter-active,
+.slide-bottom-leave-active {
     transition: all 0.3s linear;
 }
-.side-bottom-enter,
-.side-bottom-leave-to {
+.slide-bottom-enter,
+.slide-bottom-leave-to {
     opacity: 0;
     transform: translateY(100vh);
 }
 
-.side-right-enter-active,
-.side-right-leave-active {
+.slide-right-enter-active,
+.slide-right-leave-active {
     transition: all 0.3s linear;
 }
-.side-right-enter,
-.side-right-leave-to {
+.slide-right-enter,
+.slide-right-leave-to {
     opacity: 0;
     transform: translateX(250px);
+}
+//
+
+.slide--left-enter-active,
+.slide--left-leave-active {
+    transition: all 0.5s;
+}
+.slide--left-enter {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+.slide--left-leave-to {
+  opacity: 0;
+  transform: translateX(10px);
 }

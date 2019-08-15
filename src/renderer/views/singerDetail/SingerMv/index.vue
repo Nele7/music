@@ -1,7 +1,7 @@
 <template>
   <div style="padding:20px">
     <el-row :gutter="10" class="list-mv-wrapper">
-      <el-col class="list" :md="8" :lg="6" :xl="4" v-for="(item,index) in mvs" :key="index">
+      <el-col class="list" :md="8" :lg="6" :xl="4" v-for="(item,index) in mvs" :key="index" @click.native="selectId(item.id)">
         <div class="item">
           <img :src="item.imgurl16v9">
           <div class="play-count">
@@ -40,7 +40,12 @@ import { covertUnit,formatTimeMMSS } from '@/utils/util.js'
         this.mvs = res.mvs
         console.log(res)
       },
-
+      selectId(id) {
+        this.$emit('selectId',{
+          type:'mv',
+          id
+        })
+      }
     },
     filters: {
       covertUnit,

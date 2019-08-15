@@ -22,7 +22,7 @@
         data() {
             return {
                textareaVal:'',
-               placeholder:'期待你的评论！！！'
+               placeholder:'期待你的神评论！！！'
             }
         },
         created() {

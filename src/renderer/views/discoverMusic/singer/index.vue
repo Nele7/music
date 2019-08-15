@@ -140,6 +140,7 @@ import SingerList from '@/components/SingerList'
         }
       },
       selectId(id) {
+        console.log(id)
         this.$router.push(`/singerdetail/${id}`)
       }
     },
