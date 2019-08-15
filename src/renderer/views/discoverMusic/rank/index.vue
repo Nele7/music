@@ -5,7 +5,7 @@
                 <h4 class="title">官方榜</h4>
                 <div class="list-group-box" v-for="(item,index) in topList.slice(0,4)" :key="index">
                     <div class="cover-box">
-                        <img :src="item.coverImgUrl" alt="">
+                        <img v-lazy="item.coverImgUrl" alt="">
                         <div class="create-time">{{item.updateTime | formatTimeMMDD}} 更新</div>
                         <div class="bg" :style="`background-image:url(${item.tracks[0].al.picUrl})`"></div>
                     </div>
@@ -40,7 +40,7 @@
                 <el-row class="list-wrapper" :gutter="20">
                     <el-col class="list-group" :sm="6" :lg="6" :xl="6" v-for="(item,index) in topList.slice(4)" :key="index" @click.native="selectId(item.id)">
                         <div class="list-top-item">
-                            <img :src="item.coverImgUrl" alt="">
+                            <img v-lazy="item.coverImgUrl" alt="">
                             <div class="play-count">
                                 <i class="iconfont icon-bofang1"></i>
                                 {{item.playCount | covertUnit}}

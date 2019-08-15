@@ -3,7 +3,7 @@
     <el-row :gutter="10" class="list-mv-wrapper">
       <el-col class="list" :md="8" :lg="6" :xl="4" v-for="(item,index) in mvs" :key="index" @click.native="selectId(item.id)">
         <div class="item">
-          <img :src="item.imgurl16v9">
+          <img v-lazy="item.imgurl16v9">
           <div class="play-count">
             <i class="el-icon-video-camera"></i>
             <span>{{item.playCount | covertUnit}}</span>

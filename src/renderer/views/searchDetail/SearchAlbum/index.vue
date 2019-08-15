@@ -4,7 +4,7 @@
       <li class="list-item" v-for="(item,index) in albums" :key="index">
         <div class="item">
           <div class="avatar">
-            <img :src="item.blurPicUrl" alt="">
+            <img v-lazy="item.blurPicUrl" alt="">
           </div>
           <div class="name">
             <span>{{item.name}}</span>

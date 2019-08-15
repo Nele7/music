@@ -10,7 +10,7 @@
         >
             <div class="list-card" @click="selectId(item.id)">
                 <div class="list-item">
-                    <img :src="item.picUrl" />
+                    <img v-lazy="item.picUrl" />
                     <div class="bg"></div>
                 </div>
                 <p class="text">

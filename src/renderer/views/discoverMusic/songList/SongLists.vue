@@ -9,7 +9,7 @@
             :key="index"
         >
             <div class="item" @click="selectItem(item)">
-                <img :src="item.coverImgUrl" />
+                <img v-lazy="item.coverImgUrl" />
                 <div class="nick-name">
                     <i class="iconfont icon-yonghu"></i>
                     <span>{{item.creator.nickname}}</span>

@@ -3,7 +3,7 @@
         <el-col :md="12" :lg="6" v-for="(item,index) in collectList" :key="index" class="list-item">
             <div class="item">
                 <div class="avatar">
-                    <img :src="item.avatarUrl" alt />
+                    <img v-lazy="item.avatarUrl" alt />
                 </div>
                 <div class="description">
                     <div class="name">

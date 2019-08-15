@@ -46,13 +46,16 @@ import to from "@/utils/await-to.js"
   padding: 20px;
   .desc {
     color:$color-base-grey;
-    text-indent: 18px;
+    font-size: 12px;
+    line-height: 30px;
   }
   .desc-item {
     pre {
       color:$color-base-grey;
       white-space: pre-wrap;
-      text-indent: 18px;
+      font-size: 12px;
+      line-height: 30px;
+
     }
   }
 }

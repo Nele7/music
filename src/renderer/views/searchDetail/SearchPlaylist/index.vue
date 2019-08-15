@@ -4,7 +4,7 @@
       <li class="list-item" v-for="(item,index) in playlists" :key="index">
         <div class="item" @click="selectItem(item.id)">
           <div class="avatar">
-            <img :src="item.coverImgUrl" alt="">
+            <img v-lazy="item.coverImgUrl" alt="">
           </div>
           <div class="name">
             <span>{{item.name}}</span>

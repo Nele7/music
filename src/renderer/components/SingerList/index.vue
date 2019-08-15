@@ -9,7 +9,7 @@
       @click.native="selectId(item.id)"
       >
       <div class="item">
-        <img :src="item.img1v1Url" alt="">
+        <img v-lazy="item.img1v1Url" alt="">
       </div>
       <p class="name">{{item.name}}</p>
     </el-col>

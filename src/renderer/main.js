@@ -19,6 +19,11 @@ Vue.use(Toast, {
   type: 'center'
 });
 
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {
+  loading: require('@/assets/image/default.png')
+})
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 // Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false

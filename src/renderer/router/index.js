@@ -22,6 +22,11 @@ const songListDetail = () => import('@/views/songListDetail/index')
 const searchDetail = () => import('@/views/searchDetail/index.vue')
 
 const singerDetail = () => import('@/views/singerDetail/index.vue')
+
+const albumDetail = () => import('@/views/albumDetail/index.vue')
+
+const mvDetail = () => import('@/views/mvDetail/index.vue')
+
 Vue.use(Router)
 
 export default new Router({
@@ -190,6 +195,32 @@ export default new Router({
           path: ':id',
           component: singerDetail,
           name: '_singerdetail'
+        },
+      ]
+    },
+    {
+      path: '/albumdetail',
+      name: 'albumdetail',
+      component: Layout,
+      redirect: ':id',
+      children:[
+        {
+          path: ':id',
+          component: albumDetail,
+          name: '_albumdetail'
+        },
+      ]
+    },
+    {
+      path: '/mvdetail',
+      name: 'mvdetail',
+      component: Layout,
+      redirect: ':id',
+      children:[
+        {
+          path: ':id',
+          component: mvDetail,
+          name: '_mvetail'
         },
       ]
     },

@@ -163,8 +163,8 @@ import { musicMixin } from '@/utils/mixin'
             },
             selectItemId(value) {
                 let actions = new Map([
-                    ['album',() => {console.log('跳转到专辑详情',value.id)}],
-                    ['mv',() => {console.log('跳转到mv详情',value.id)}],
+                    ['album',() => { this.$router.push(`/albumdetail/${value.id}`) }],
+                    ['mv',() => { this.$router.push(`/mvdetail/${value.id}`) }],
                     ['singer',() => { this.$router.push(`/singerdetail/${value.id}`) }]
                 ])
                 actions.get(value.type).call(this)

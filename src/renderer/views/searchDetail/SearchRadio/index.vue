@@ -4,7 +4,7 @@
       <li class="list-item" v-for="(item,index) in djRadios" :key="index">
         <div class="item">
           <div class="avatar">
-            <img :src="item.picUrl" alt="">
+            <img v-lazy="item.picUrl" alt="">
           </div>
           <div class="name">
             <span>{{item.name}}</span>

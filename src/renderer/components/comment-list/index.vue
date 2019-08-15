@@ -4,7 +4,7 @@
       <h4>{{title}}</h4>
       <div class="comment-item" v-for="(item,index) in commentlist" :key="index">
         <div class="avatar">
-          <img :src="item.user.avatarUrl" :alt="item.user.nickname">
+          <img v-lazy="item.user.avatarUrl" :alt="item.user.nickname">
         </div>
         <div class="content">
           <div class="text">

@@ -24,7 +24,7 @@
                     {{index + 1}}
                   </div>
                   <div class="avatar">
-                    <img :src="item.album.blurPicUrl">
+                    <img v-lazy="item.album.blurPicUrl">
                     <i class="iconfont icon-bofang" @click="selectItemMusic(item)"></i>
                   </div>
                   <div class="song-name pd">

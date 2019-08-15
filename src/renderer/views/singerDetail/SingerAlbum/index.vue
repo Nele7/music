@@ -1,34 +1,12 @@
 <template>
     <div style="padding:20px">
         <div v-if="viewType === 1">
-            <album-list @select="selectId" :list="hotAlbums"></album-list>
-            <!-- <el-row :gutter="10" class="list-wrapper">
-                <el-col
-                    :md="6"
-                    :lg="6"
-                    :xl="6"
-                    class="list"
-                    v-for="(item,index) in hotAlbums"
-                    :key="index"
-                >
-                    <div class="list-card" @click="selectId(item.id)">
-                        <div class="list-item">
-                            <img :src="item.picUrl" />
-                            <div class="bg"></div>
-                        </div>
-                        <p class="text">
-                            <span class="name">{{item.name}}</span>
-                            <span v-for="(al,i) in item.alias" :key="i" class="al">({{al}})</span>
-                        </p>
-                        <p class="day">{{ item.publishTime | formatDateTime }}</p>
-                    </div>
-                </el-col>
-            </el-row> -->
+            <album-list @selectId="selectId" :list="hotAlbums"></album-list>
         </div>
         
         <div class="list-line-wrapper" v-if="viewType === 2">
             <div class="list-line">
-                <div class="list-line-item" v-for="(item,index) in hotAlbums" :key="index" @click="selectAlbum(item.id)">
+                <div class="list-line-item" v-for="(item,index) in hotAlbums" :key="index" @click="selectId(item.id)">
                     <div class="avatar">
                         <img :src="item.picUrl" />
                     </div>
@@ -152,13 +130,17 @@ export default {
                 flex: 1;
                 padding: 0 15px;
                 @include ellipsized;
+                font-size: 14px;
             }
             .size {
                 width: 220px;
                 text-align: center;
+                font-size: 12px;
+                color: $color-base-grey;
             }
             .publish-time {
-                font-size: 13px;
+                font-size: 12px;
+                color: $color-base-grey;
             }
         }
     }

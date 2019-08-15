@@ -110,14 +110,25 @@ export default {
         }
     },
     mounted() {
+        console.log(1)
         Bus.$on('selectTag',(tag) => {
-            // this.currentCategory = tag
+            this.currentCategory = tag
+        console.log(2)
+
             console.log(tag)
             // this.changeCurrentCategory(tag)
         })
+        console.log(3)
+
         this.getPlaylistHotCategory()
+        console.log(4)
+
         this.getPlaylistAllCategory()
+        console.log(5)
+
         this.getPlaylist()
+        console.log(6)
+
     },
     computed: {
         categoryIcon() {
@@ -166,7 +177,7 @@ export default {
             if (this.isShowPopover) {
                 this.isShowPopover = false
             }
-            this.currentCategory = name
+            // this.currentCategory = name
         },
         selectId(id) {
           this.$router.push(`/songlistdetail/${id}`)

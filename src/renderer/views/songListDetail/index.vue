@@ -206,7 +206,6 @@ export default {
     selectTag(tag) {
       Bus.$emit('selectTag',tag)
       this.$router.push(`/music/songList`)
-      console.log(tag)
     },
     ...mapActions('user', ['insertUserPlayList', 'deleteUserPlayList']),
     ...mapActions('player', ['insertMusicPlayList'])

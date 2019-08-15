@@ -89,4 +89,8 @@ export const neteaseApi = {
   topSong: apiData('/top/song'),                      // 新歌速递
   topAlbum: apiData('/top/album'),                    // 新碟上架
   // e
+
+  // s 专辑详情api
+  album: apiData('/album'),                           // 专辑详情
+  // e
 }

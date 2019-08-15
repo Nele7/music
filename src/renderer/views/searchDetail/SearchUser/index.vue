@@ -4,7 +4,7 @@
       <li class="list-item" v-for="(item,index) in userprofiles" :key="index">
         <div class="item">
           <div class="avatar">
-            <img :src="item.avatarUrl" alt="">
+            <img v-lazy="item.avatarUrl" alt="">
           </div>
           <div class="name">
             <span>{{item.nickname}}</span>

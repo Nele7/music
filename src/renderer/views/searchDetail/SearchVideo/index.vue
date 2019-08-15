@@ -3,7 +3,7 @@
     <el-row :gutter="10">
       <el-col :md="8" :lg="6" :xl="4" v-for="(item,index) in videos" :key="index" class="list-item">
         <div class="item">
-          <img :src="item.coverUrl" alt="">
+          <img v-lazy="item.coverUrl">
           <div class="play-count">
             <i class="el-icon-video-camera"></i>
             <span>{{item.playTime | covertUnit}}</span>

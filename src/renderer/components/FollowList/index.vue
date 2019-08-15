@@ -4,7 +4,7 @@
             <li v-for="(item,index) in dataList" :key="index">
                 <div class="follow-item">
                     <div class="follow-avatar">
-                        <img :src="item.avatarUrl" :alt="item.nickname">
+                        <img v-lazy="item.avatarUrl" :alt="item.nickname">
                     </div>
                     <div class="follow-text">
                         <p class="name">{{item.nickname}}</p>
