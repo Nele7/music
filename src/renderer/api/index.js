@@ -44,8 +44,10 @@ export const neteaseApi = {
   // s 评论 api
   comment: apiData('/comment'),                       // 发送/删除评论
   commentHot: apiData('/comment/hot'),                // 热门评论
-  commentPlaylist: apiData('/comment/playlist'),      // 歌单评论
   commentLike: apiData('comment/like'),               // 给评论点赞
+  commentPlaylist: apiData('/comment/playlist'),      // 歌单评论
+  commentAlbum: apiData('/comment/album'),            // 专辑评论
+  commentMv: apiData('/comment/mv'),                  // mv 评论
   // e
 
   // s 播放器api
@@ -92,5 +94,19 @@ export const neteaseApi = {
 
   // s 专辑详情api
   album: apiData('/album'),                           // 专辑详情
+  // albumSub: apiData('/album/sub'),                    // 收藏取消专辑
+  // albumSublist: apiData('/album/sublist'),            // 获取已收藏的专辑列表
+  // e
+
+  // s 视频api
+  videoTag: apiData('/video/group/list'),             // 获取视频标签列表
+  videoGroup: apiData('/video/group'),                // 获取视频标签下的视频
+  videoRelated: apiData('/related/allvideo'),         // 相关视频
+  videoDetail: apiData('/video/detail'),              // 视频详情
+  videoUrl: apiData('/video/url'),                    // 获取视频播放地址
+  // e
+
+  // s MV api
+
   // e
 }

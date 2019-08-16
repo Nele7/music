@@ -1,7 +1,7 @@
 <template>
     <ul class="new-music-wrapper">
-        <li class="new-muisc-list" v-for="(item,index) in list">
-            <div class="new-muisc-item" v-for="(list,index) in item">
+        <li class="new-muisc-list" v-for="(item,index) in list" :key="index">
+            <div class="new-muisc-item" v-for="(list,i) in item" :key="i">
                 <div class="item-img">
                     <img :src="list.song.album.blurPicUrl" alt="">
                     <i class="iconfont icon-bofang"></i>

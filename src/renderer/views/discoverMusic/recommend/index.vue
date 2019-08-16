@@ -4,7 +4,7 @@
         <div class="carousel-wrapper">
             <banner :bannerList="bannerList" v-if="bannerList.length > 0"></banner>
         </div>
-        <div v-for="item in listFilters" v-if="item.list.length > 0">
+        <div v-for="(item,index) in listFilters" v-if="item.list.length > 0" :key="index">
             <component :is="item.title" :t="item.t"></component>
             <component :is="item.type" 
             :listType="item.listType" 
@@ -24,16 +24,18 @@
 
 <script>
 import { neteaseApi } from "@/api/"
-import to from "@/utils/await-to.js"
-import Banner from './Banner'
-import NewMusic from './NewMusic'
-import Adjust from './Adjust'
-import RecommendList from '@/components/RecommendList/'
-import Title from '@/components/Title/'
-import * as types from '@/store/mutation_types'
-import Spinner from 'vue-spinkit'
 import { DELAY } from '@/config'
-import axios from 'axios'
+import to from "@/utils/await-to.js"
+
+import RecommendList from '@/components/RecommendList/'
+import Banner from './Banner/'
+import NewMusic from './NewestMusic/'
+import Adjust from './Adjust/'
+import Title from './Title/'
+import Spinner from 'vue-spinkit'
+
+import * as types from '@/store/mutation_types'
+
 export default {
     name: 'recommend',
     data() {

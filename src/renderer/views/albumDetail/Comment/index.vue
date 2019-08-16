@@ -36,24 +36,46 @@
     import to from "@/utils/await-to.js"
     import {commentMixin} from '@/utils/mixin'
     import { commentListType } from '@/api/apiType'
-    import CommentInput from '@/components/comment-input'
-    import CommentList from '@/components/comment-list'
+    import CommentInput from '@/components/CommentInput'
+    import CommentList from '@/components/CommentList'
     export default {
         mixins:[commentMixin],
         data() {
             return {
-               hotType: commentListType.songlist_type,
+               hotType: commentListType.album_type,
             }
         },
         props:['id'],
         created() {
-            this.getCommentList(this.id)
+            this.getCommentList()
         },
         methods: {
+            async getCommentList() {
+                let offset = (this.currentPage - 1) * this.pagesize
+                let [res] = await to(neteaseApi.commentAlbum({
+                    id:this.id,
+                    limit:this.pagesize,
+                    offset
+                }))
+                console.log(res)
+                this.comments = res.comments
+                if(res.hotComments){            // 没有热门评论时
+                    if(res.moreHot) {           // 展示是否显示更多评论
+                        this.getCommentHotList(id)
+                    }else {
+                        this.hotComments = res.hotComments
+                    }
+                }
+                this.total = res.total
+            },
+            // 改变分页时
+            currentChange(pages) {
+                this.currentPage = pages
+                this.getCommentList()
+            },
             // 监听回复组件内容,发送评论
             changeComment(v) {
                 this.sendComment(v)
-                // this.$refs.commentInput.clear()  // 调用子组件的方法
             },
             // 热门评论加载更多
             loadHotMore() {

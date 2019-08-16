@@ -1,17 +1,7 @@
 <template>
-    <div>
-        <keep-alive>
+    <transition name="fade-transform" mode="out-in">
+        <!-- <keep-alive> -->
             <router-view></router-view>
-        </keep-alive>
-    </div>
+        <!-- </keep-alive> -->
+    </transition>
 </template>
-
-<script>
-    export default {
-        
-    }
-</script>
-
-<style lang="scss" scoped>
-
-</style>

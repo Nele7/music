@@ -18,7 +18,7 @@ export const commentMixin = {
         // 歌单发送评论
         async sendComment(content) {
             let [res] = await to(neteaseApi.comment({
-                t:1,
+                t:1, // 1为发送评论，2为删除评论
                 type:this.hotType,
                 id:this.id,
                 content
@@ -34,24 +34,6 @@ export const commentMixin = {
             this.$emit('addComment')         // 通知父组件
             this.$refs.commentInput.clear()  // 调用子组件的方法
             this.$toast('评论成功')
-        },
-        // 歌单评论列表
-        async getCommentList(id) {
-            let offset = (this.currentPage - 1) * this.pagesize
-            let [res] = await to(neteaseApi.commentPlaylist({
-                id,
-                limit:this.pagesize,
-                offset
-            }))
-            this.comments = res.comments
-            if(res.hotComments){            // 没有热门评论时
-                if(res.moreHot) {           // 展示是否显示更多评论
-                    this.getCommentHotList(id)
-                }else {
-                    this.hotComments = res.hotComments
-                }
-            }
-            this.total = res.total
         },
         // 热门评论列表
         async getCommentHotList(id) {
@@ -84,11 +66,6 @@ export const commentMixin = {
             let add = comment.liked ? 1 : -1
             comment.likedCount += add
         },
-        // 改变分页时
-        currentChange(pages) {
-            this.currentPage = pages
-            this.getCommentList(this.id)
-        }
     },
 }
 

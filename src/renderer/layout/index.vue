@@ -12,11 +12,13 @@
                 style="height:100%;"
                 ref="myScrollbar"
             >
-                <transition name="fade-transform" mode="out-in">
-                    <router-view></router-view>
-                </transition>
+                <!-- <transition name="fade-transform" mode="out-in">
+                    <keep-alive>
+                        <router-view></router-view>
+                    </keep-alive>
+                </transition> -->
+                <app-main/>
             </el-scrollbar>
-            <!-- <app-main/> -->
         </div>
         <div class="player-container">
             <player/>

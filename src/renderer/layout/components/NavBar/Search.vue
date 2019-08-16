@@ -159,21 +159,16 @@ export default {
         },
         changeSuggest(order,index) {
             let orderArr = this.suggestSearch[order]
-            if(order === 'songs'){
-                // 说明为单曲播放
-                this.$store.dispatch('player/replaceMusicPlayList',orderArr[index])
-            }else if(order === 'artists') {
-                this.$router.push(`/singerdetail/${orderArr[index].id}`)
-            }else if(order === 'playlists'){
-                console.log('歌单')
-                this.$router.push(`/songlistdetail/${orderArr[index].id}`)
-            }else if(order === 'albums') {
-                console.log('专辑详情')
-            }else if(order === 'mvs') {
-                console.log('视频详情')
-            }
+            let action = new Map([
+                ['songs',() => { this.$store.dispatch('player/replaceMusicPlayList',orderArr[index]) }],
+                ['artists',() => {this.$router.push(`/singerdetail/${orderArr[index].id}`)}],
+                ['albums',() => { this.$router.push(`/albumdetail/${orderArr[index].id}`) }],
+                ['playlists',() => { this.$router.push(`/songlistdetail/${orderArr[index].id}`) }],
+                ['mvs',() => { this.$router.push(`/mvdetail/${orderArr[index].id}`) }],
+            ])
+            action.get(order).call(this)
             this.closeDialog()
-            console.log(order,orderArr[index].id)
+            // console.log(order,orderArr[index].id)
         }
     },
     watch: {

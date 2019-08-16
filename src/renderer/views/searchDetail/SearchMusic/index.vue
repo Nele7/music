@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import MusicList from '../../songListDetail/MusicList'
+  import MusicList from '@/components/MusicList'
   import { musicMixin } from '@/utils/mixin'
 
   export default {

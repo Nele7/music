@@ -79,7 +79,7 @@
 <script>
 import { neteaseApi } from "@/api/"
 import to from "@/utils/await-to.js"
-import MusicList from '../songListDetail/MusicList'
+import MusicList from '@/components/MusicList'
 import SingerAlbum from './SingerAlbum'
 import SingerMv from './SingerMv'
 import SingerSimi from './SingerSimi'

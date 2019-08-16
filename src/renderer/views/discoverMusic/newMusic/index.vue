@@ -115,8 +115,7 @@
         console.log(res)
       },
       selectId(id) {
-        console.log('跳转到专辑详情',id)
-        // this.$router.push(`/`)
+        this.$router.push(`/albumdetail/${id}`)
       },
       async selectItemMusic(item) {
         try {

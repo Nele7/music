@@ -110,25 +110,19 @@ export default {
         }
     },
     mounted() {
-        console.log(1)
+        // this.currentCategory = '欧美'
         Bus.$on('selectTag',(tag) => {
-            this.currentCategory = tag
-        console.log(2)
+            // this.currentCategory = tag
 
-            console.log(tag)
+            // console.log(this)
             // this.changeCurrentCategory(tag)
         })
-        console.log(3)
-
         this.getPlaylistHotCategory()
-        console.log(4)
-
         this.getPlaylistAllCategory()
-        console.log(5)
-
         this.getPlaylist()
-        console.log(6)
-
+    },
+    beforeDestroy() {
+        Bus.$off('selectTag', this.onBusAction);
     },
     computed: {
         categoryIcon() {
