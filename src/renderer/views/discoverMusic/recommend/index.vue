@@ -57,8 +57,12 @@ export default {
         }  
     },
     methods: {
-        selectId(id) {
-            this.$router.push(`/songlistdetail/${id}`)
+        selectId(item) {
+            if(item.type === 0) {
+                this.$router.push(`/songlistdetail/${item.id}`)
+            }else if(item.type === 5) {
+                this.$router.push(`/mvdetail/${item.id}`)
+            }
         },
         // 获取轮播图
         async getBanner() {
@@ -68,8 +72,7 @@ export default {
             setTimeout(() => {
                 this.loading = false
             },DELAY)
-        },
-
+        }
     },
     components: {
         Banner,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="list-wrapper">
-      <li class="list-item" v-for="(item,index) in albums" :key="index">
+      <li class="list-item" v-for="(item,index) in albums" :key="index" @click="selectItem(item.id)">
         <div class="item">
           <div class="avatar">
             <img v-lazy="item.blurPicUrl" alt="">
@@ -44,6 +44,9 @@
     methods: {
      loadHotMore() {
        this.$emit('loadMore')
+     },
+     selectItem(id) {
+       this.$router.push(`/albumdetail/${id}`)
      }
     },
   }

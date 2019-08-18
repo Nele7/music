@@ -2,7 +2,7 @@
     <ul class="new-music-wrapper">
         <li class="new-muisc-list" v-for="(item,index) in list" :key="index">
             <div class="new-muisc-item" v-for="(list,i) in item" :key="i">
-                <div class="item-img">
+                <div class="item-img" @click="selectItemMusic(list)">
                     <img :src="list.song.album.blurPicUrl" alt="">
                     <i class="iconfont icon-bofang"></i>
                 </div>
@@ -27,7 +27,12 @@
 </template>
 
 <script>
+  import { neteaseApi } from "@/api/"
+  import to from "@/utils/await-to.js"
+  import { musicMixin } from '@/utils/mixin'
+
     export default {
+        mixins:[musicMixin],
         props:{
             list: {
                 type: Array,
@@ -35,7 +40,20 @@
                     return []
                 }
             }
-        }
+        },
+        methods: {
+            async selectItemMusic(item) {
+                try {
+                await this.checkMusic(item.id)
+                // 插入单首
+                let obj = {...item.song,from:'最新音乐'}
+                console.log(obj)
+                    this.$store.dispatch('player/replaceMusicPlayList',obj)
+                } catch (error) {
+                    this.$toast(error.response.data.message)
+                }
+            }
+        },
     }
 </script>
 

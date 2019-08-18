@@ -455,7 +455,7 @@
                     this.currentMusicItem.lyric = res.lrc.lyric
                     this.currentLyricIndex = 0
                     this.lyric = new Lyric(res.lrc.lyric, this.handlerLyric)
-                    // console.log(this.lyric)
+                    console.log(this.lyric)
                     if (this.playStatus) {
                         this.lyric.play()
                     }

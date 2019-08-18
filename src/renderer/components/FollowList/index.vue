@@ -159,7 +159,7 @@
                     display: inline-block;
                     height: 30px;
                     line-height: 30px;
-                    font-size: $font-size-text-small;
+                    font-size: 12px;
                     border-radius: 4px;
                     padding: 0 7px;
                     background: $background-grey;

@@ -111,7 +111,7 @@ import SingerList from '@/components/SingerList'
       selectSingerCat(code) {
         this.currentHotCat = false
         this.Artistlist = []
-        this.limit = 50
+        this.limit = 30
         this.currentPage = 1
 
         if(typeof code === 'string' && code !== '热门') {

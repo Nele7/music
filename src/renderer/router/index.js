@@ -12,7 +12,7 @@ const newMusic = () => import('@/views/discoverMusic/newMusic/index')
 const fm = () => import('@/views/fm/index')
 
 const mv = () => import('@/views/mv/index')
-const video = () => import('@/views/video/index')
+const av = () => import('@/views/audioVisual/index')
 
 const pal = () => import('@/views/pal/index')
 const follow = () => import('@/views/follow/index')
@@ -26,6 +26,10 @@ const singerDetail = () => import('@/views/singerDetail/index.vue')
 const albumDetail = () => import('@/views/albumDetail/index.vue')
 
 const mvDetail = () => import('@/views/mvDetail/index.vue')
+
+const avDetail = () => import('@/views/avDetail/index.vue')
+
+const userDetail = () => import('@/views/userDetail/index.vue')
 
 Vue.use(Router)
 
@@ -113,12 +117,12 @@ export default new Router({
       path: '/mv',
       name: 'mv',
       component: Layout,
-      redirect: '/mv/video',
+      redirect: '/mv/index',
       children:[
         {
-          path: 'video',
-          component: video,
-          name: 'video',
+          path: 'av',
+          component: av,
+          name: 'av',
           meta:{
             show:true
           }
@@ -150,8 +154,13 @@ export default new Router({
       path: '/userDetail',
       name: 'userDetail',
       component: Layout,
-      redirect: '/userDetail/index',
+      redirect: '/userDetail/:uid',
       children:[
+        {
+          path: ':uid',
+          component: userDetail,
+          name: '_userDetail'
+        },
         {
           path: 'index',
           component: follow,
@@ -159,6 +168,19 @@ export default new Router({
         },
       ]
     },
+    // {
+    //   path: '/userDetail',
+    //   name: 'userDetail',
+    //   component: Layout,
+    //   redirect: '/userDetail/:uid',
+    //   children:[
+    //     {
+    //       path: ':uid',
+    //       component: userDetail,
+    //       name: '_userDetail'
+    //     },
+    //   ]
+    // },
     {
       path: '/songlistdetail',
       name: 'songlistdetail',
@@ -208,6 +230,19 @@ export default new Router({
           path: ':id',
           component: albumDetail,
           name: '_albumdetail'
+        },
+      ]
+    },
+    {
+      path: '/avdetail',
+      name: 'avdetail',
+      component: Layout,
+      redirect: ':id',
+      children:[
+        {
+          path: ':id',
+          component: avDetail,
+          name: '_avetail'
         },
       ]
     },

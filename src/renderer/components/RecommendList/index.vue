@@ -1,7 +1,7 @@
 <template>
     <el-row :gutter="10" class="list-wrapper">
         <el-col :md="screenSize.md" :lg="screenSize.lg" :xl="screenSize.xl" v-for="(item,index) in list" :key="index" class="list-item">
-            <div class="item" :class="{'song-item':listType=='Song','mv-item':listType=='Mv','private-item':listType=='Private'}" @click="selectItem(item.id)">
+            <div class="item" :class="{'song-item':listType=='Song','mv-item':listType=='Mv','private-item':listType=='Private'}" @click="selectItem(item)">
                 <img v-lazy="item.picUrl" alt="">
                 <div class="hover-from" v-if="listType!='Private'">
                     {{item.copywriter}}
@@ -49,8 +49,8 @@
         created(){
         },
         methods:{
-            selectItem(id){
-                this.$emit('selectId',id)
+            selectItem(item){
+                this.$emit('selectId',item)
             }
         },
         filters:{

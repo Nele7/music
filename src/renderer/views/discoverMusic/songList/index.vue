@@ -221,6 +221,9 @@ $background-icon: rgba(12, 12, 12, 0.452);
                 color: $color-base-red;
                 background: rgb(253, 243, 244);
             }
+            &:hover {
+                color: $color-base-red;
+            }
         }
     }
     .cat-content-box {
@@ -236,6 +239,7 @@ $background-icon: rgba(12, 12, 12, 0.452);
                     height: 30px;
                     line-height: 30px;
                     text-align: left;
+                    cursor: default;
                     i {
                         font-size: 23px;
                         vertical-align: middle;
@@ -266,6 +270,9 @@ $background-icon: rgba(12, 12, 12, 0.452);
                             &.active {
                                 color: $color-base-red;
                                 background: rgb(253, 243, 244);
+                            }
+                            &:hover {
+                                color: $color-base-red;
                             }
                             &.hide::after {
                                 display: none;

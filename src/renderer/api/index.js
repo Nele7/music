@@ -48,6 +48,7 @@ export const neteaseApi = {
   commentPlaylist: apiData('/comment/playlist'),      // 歌单评论
   commentAlbum: apiData('/comment/album'),            // 专辑评论
   commentMv: apiData('/comment/mv'),                  // mv 评论
+  commentVideo: apiData('/comment/video'),            // 视频评论
   // e
 
   // s 播放器api
@@ -106,7 +107,12 @@ export const neteaseApi = {
   videoUrl: apiData('/video/url'),                    // 获取视频播放地址
   // e
 
-  // s MV api
+  resourceLike: apiData('/resource/like'),            // 资源点赞（mv，视频）
 
+  // s MV api
+  mvTop: apiData('/top/mv'),                          // mv排行榜
+  mvDetail: apiData('/mv/detail'),                    // mv数据
+  mvUrl: apiData('/mv/url'),                          // mv地址
+  mvSub: apiData('/mv/sub'),                          // mv收藏
   // e
 }

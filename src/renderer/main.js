@@ -24,6 +24,11 @@ Vue.use(VueLazyload, {
   loading: require('@/assets/image/default.png')
 })
 
+import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import'vue-video-player/src/custom-theme.css'
+Vue.use(VideoPlayer)
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 // Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false

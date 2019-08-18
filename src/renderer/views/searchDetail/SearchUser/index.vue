@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="list-wrapper">
-      <li class="list-item" v-for="(item,index) in userprofiles" :key="index">
+      <li class="list-item" v-for="(item,index) in userprofiles" :key="index" @click="selectUid(item)">
         <div class="item">
           <div class="avatar">
             <img v-lazy="item.avatarUrl" alt="">
@@ -45,7 +45,10 @@
      },
      getGender(gender) {
             return gender === 0 ? '' : (gender === 1 ? 'icon-nan' : 'icon-nv')
-        },
+      },
+      selectUid(item) {
+        this.$router.push(`/userdetail/${item.userId}`)
+      }
     },
   }
 </script>

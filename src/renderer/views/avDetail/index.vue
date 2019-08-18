@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mv-wrapper">
+    <div class="av-wrapper">
       <video-player
         class="video-player vjs-custom-skin"
         ref="videoPlayer"
@@ -8,72 +8,68 @@
         :options="playerOptions"
       ></video-player>
     </div>
-    <div class="mv-content-wrapper">
-      <!-- <div class="creator-box">
+    <div class="av-content-wrapper">
+      <div class="creator-box">
         <div class="avatar">
-          <img :src="detail.data && detail.data.cover" />
+          <img :src="detail.avatarUrl" />
         </div>
         <div class="nickname">
-          <p>{{detail.data && detail.data.name}}</p>
+          <p>{{detail.creator && detail.creator.nickname}}</p>
         </div>
         <div class="follow-wrapper">
           <span @click="toggleFollow" class="follow">
             <i class="el-icon-plus"></i>
             关注
           </span>
-          <span v-if="item.followed && !item.mutual" class="followed">
+          <!-- <span v-if="item.followed && !item.mutual" class="followed">
               <i class="el-icon-check"></i>
               已关注
-          </span>
+          </span>-->
         </div>
-      </div> -->
-      <div class="mv-detail-info">
+      </div>
+      <div class="av-detail-info">
         <div class="title">
-          <p>{{detail.data && detail.data.name}}</p>
+          <p>{{detail.title}}</p>
         </div>
         <div class="time">
           <p class="publishTime">
             <span>发布时间：</span>
-            <span>{{detail.data && detail.data.publishTime}}</span>
+            <span>{{detail.publishTime | formatDateTime}}</span>
           </p>
           <p class="playTime">
             <span>播放：</span>
-            <span>{{detail.data && detail.data.playCount | covertUnit}}</span>
+            <span>{{detail.playTime | covertUnit}}</span>
           </p>
         </div>
-        <div class="expertTags">
+        <div class="expertTags" v-if="isExpertTags">
           <p>
             <span
-              v-for="(ex,index) in detail.data && detail.data.artists"
+              v-for="(ex,index) in detail.creator && detail.creator.expertTags"
               :key="index"
-              @click="toSingerDetail(ex.id)"
-            >
-            {{ex.name}}
-            <!-- <i v-if="index !== detail.data.artists.length -1"> / </i> -->
-            </span>
+            >{{ex}}</span>
           </p>
         </div>
-        <div class="desc-wrapper" v-if="detail.data && detail.data.desc">
-          <p>{{detail.data && detail.data.desc}}</p>
+        <div class="desc-wrapper" v-if="detail.description">
+          <p>{{detail.description}}</p>
         </div>
-        <div class="mv-btn-group">
+        <div class="av-btn-group">
           <div class="btn-mini" @click="toggleLiked" :class="{active:like}">
             <i :class="[like?'icon-icon':'icon-zan1']" class="iconfont"></i>
-            {{praisedTxt}}({{detail.data && detail.data.likeCount}})
-          </div>
-          <div class="btn-mini" @click="toggleMvSub">
-            <i class="el-icon-folder-checked"></i>
-            {{subTxt}}({{detail.data && detail.data.subCount}})
+            {{praisedTxt}}({{detail.praisedCount}})
           </div>
           <div class="btn-mini">
             <i class="el-icon-folder-checked"></i>
-            分享({{detail.data && detail.data.shareCount}})
+            收藏({{detail.subscribeCount}})
+          </div>
+          <div class="btn-mini">
+            <i class="el-icon-folder-checked"></i>
+            分享({{detail.shareCount}})
           </div>
         </div>
       </div>
 
-       <div class="comment-wrapper">
-        <comment :id="mId"></comment>
+      <div class="comment-wrapper">
+        <comment :id="vId"></comment>
       </div>
     </div>
   </div>
@@ -81,7 +77,7 @@
 
 <script>
 import { neteaseApi } from "@/api/"
-import { formatDateTime, covertUnit } from '@/utils/util'
+import { formatDateTime,covertUnit } from '@/utils/util'
 import { resourcelikeType } from '@/api/apiType'
 import to from "@/utils/await-to.js"
 import Comment from './Comment/'
@@ -114,16 +110,16 @@ export default {
       url: '',
       detail: {},
       like:false,
-      likeType:resourcelikeType.mvlike
+      likeType:resourcelikeType.avlike
     }
   },
   created() {
-    this.getMvDetail()
-    this.getMvURL()
+    this.getVideoDetail()
+    this.getVideoURL()
   },
   computed: {
-    mId() {
-      return parseInt(this.$route.params.id)
+    vId() {
+      return this.$route.params.id
     },
     isExpertTags() {
       if(this.detail.creator) {
@@ -132,59 +128,47 @@ export default {
     },
     praisedTxt() {
       return this.like ? '已赞':'赞'
-    },
-    subTxt() {
-      return this.detail.subed ? '取消收藏':'收藏'
     }
   },
   methods: {
-    async getMvDetail() {
-      let [res] = await to(neteaseApi.mvDetail({
-        mvid:this.mId
+    async getVideoDetail() {
+      let [res] = await to(neteaseApi.videoDetail({
+        id: this.vId
       }))
-      this.detail = res
-      let ele = document.querySelectorAll('.scrollbar-wrapper')[1]
-      ele.scrollTop = 0
-      console.log(ele)
+      this.playerOptions.poster = res.data.coverUrl
+      this.detail = res.data
+      console.log(res)
     },
-    async getMvURL() {
-      let [res] = await to(neteaseApi.mvUrl({
-        id:this.mId
+    async getVideoURL() {
+      let [res] = await to(neteaseApi.videoUrl({
+        id: this.vId
       }))
-      this.playerOptions.sources[0].src = res.data.url
+      this.url = res.urls[0].url
+      this.playerOptions.sources[0].src = this.url
       this.playerOptions.autoplay = true
     },
-    toSingerDetail(id) {
-      this.$router.push(`/singerdetail/${id}`)
+    toggleFollow() {
+
     },
+    // 点赞，没找到标识？？？
     async toggleLiked() {
       let [res] = await to(neteaseApi.resourceLike({
         type: this.likeType,
         t:this.like ? 0 : 1,
-        id:this.mId
+        id:this.vId
       }))
       this.like = !this.like
       let str = this.like ? '点赞成功':'取消点赞成功'
       let num = this.like ? 1 : -1
-      this.detail.data.likeCount += num
+      this.detail.praisedCount += num
       this.$toast(str)
+      console.log(this.like)
     },
-    // 收藏mv，后端报错
-    async toggleMvSub() {
-      console.log(123)
-      let [res] = to(neteaseApi.mvSub({
-        id:this.mId,
-        t:this.detail.subed ? -1:1
-      }))
-      this.detail.subed = !this.detail.subed
-      let num = this.detail.subed ? 1 : -1
-      let str = this.detail.subed ? '收藏成功':'取消收藏成功'
-      this.detail.data.subCount += num
-      this.$toast(str)
-    }
+    
   },
   filters: {
     covertUnit,
+    formatDateTime
   },
   components: {
     Comment
@@ -195,11 +179,56 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/style/mixin.scss";
 @import "@/assets/style/variables.scss";
-.mv-content-wrapper {
-  .mv-detail-info {
-    padding:  20px;
+.av-content-wrapper {
+  .creator-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 50px;
+    line-height: 50px;
+    padding: 20px;
+    .avatar {
+      width: 50px;
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+    .nickname {
+      flex: 1;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+    .follow-wrapper {
+      width: 95px;
+      text-align: center;
+      height: 100%;
+      font-size: 14px;
+      span {
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        font-size: $font-size-text-small;
+        border-radius: 28px;
+        padding: 0 14px;
+        background: rgb(252, 243, 244);
+        &.follow {
+          color: $color-base-red;
+          cursor: pointer;
+        }
+        &.followed {
+          color: $color-base-grey;
+        }
+      }
+    }
+  }
+
+  .av-detail-info {
+    padding: 0 20px;
     & > div {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .title {
       font-size: 23px;
@@ -223,23 +252,23 @@ export default {
           font-size: 12px;
           color: $color-base-grey;
           background: $background-undertintgrey;
-          cursor: pointer;
         }
       }
     }
 
     .desc-wrapper {
-      padding: 0px 10px;
+      padding: 10px 0px;
       p {
         font-size: 12px;
         line-height: 20px;
       }
     }
 
-    .mv-btn-group {
+    .av-btn-group {
       display: flex;
       flex-direction: row;
       align-items: center;
+      padding: 10px 0px;
       .btn-mini {
         padding: 5px 13px;
         border-radius: 26px;
@@ -265,7 +294,6 @@ export default {
   }
 }
 </style>
-
 <style>
 .video-js .vjs-play-progress {
   background-color: #f56c6c !important;

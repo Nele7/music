@@ -148,3 +148,19 @@ export const topSongTabListType = [
         type:16
     },
 ]
+
+export const resourcelikeType = {
+    mvlike:1,
+    avlike:5,
+    dtlike:4,
+    evtlike:6
+}
+
+export const mvTopCatType = [
+    {name:'全部',area:''},
+    {name:'内地',area:'内地'},
+    {name:'港台',area:'港台'},
+    {name:'欧美',area:'欧美'},
+    {name:'日本',area:'日本'},
+    {name:'韩国',area:'韩国'},
+]

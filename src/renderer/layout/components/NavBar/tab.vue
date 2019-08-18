@@ -52,8 +52,8 @@
                     { path: '/music/newMusic', name: '最新音乐' },
                 ],
                 videoTab: [
-                    { path: '/mv/video', name: '视频' },
                     { path: '/mv/index', name: 'MV' },
+                    { path: '/mv/av', name: '视频' },
                 ],
                 eventTab: [
                   { name: '动态' },
