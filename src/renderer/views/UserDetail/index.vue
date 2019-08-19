@@ -24,24 +24,40 @@
           <div class="event">
             <ul class="list">
               <li class="item">
-                <span>{{userInfo && userInfo.eventCount}}</span>
-                <span>动态</span>
+                <p>{{userInfo && userInfo.eventCount}}</p>
+                <p>动态</p>
               </li>
-              <li class="item">
-                <span>{{userInfo && userInfo.follows}}</span>
-                <span>关注</span>
+              <li class="item" @click="goUserFollow(2)">
+                <p>{{userInfo && userInfo.follows}}</p>
+                <p>关注</p>
               </li>
-              <li class="item">
-                <span>{{userInfo &&userInfo.followeds}}</span>
-                <span>粉丝</span>
+              <li class="item" @click="goUserFollow(3)">
+                <p>{{userInfo && userInfo.followeds}}</p>
+                <p>粉丝</p>
               </li>
             </ul>
           </div>
           <div class="desc">
             <p>
-              <span>个人介绍:</span>
-              {{userInfo.description || '暂无介绍'}}
+              <span>个人介绍：</span>
+              {{userInfo && userInfo.signature || '暂无介绍'}}
             </p>
+          </div>
+        </div>
+      </div>
+      <div class="user-playlist">
+        <div class="play-list">
+          <div class="title" v-if="selfPlayList.length > 0">
+            <h4>歌单 ({{selfPlayList.length}})</h4>
+          </div>
+          <div class="list">
+            <play-list :playlists="selfPlayList" @selectId="selectId"></play-list>
+          </div>
+          <div class="title" v-if="subPlayList.length > 0">
+            <h4>收藏 ({{subPlayList.length}})</h4>
+          </div>
+          <div class="list">
+            <play-list :playlists="subPlayList" @selectId="selectId"></play-list>
           </div>
         </div>
       </div>
@@ -53,15 +69,20 @@
 <script>
   import { neteaseApi } from "@/api/"
   import to from "@/utils/await-to.js"
+  import PlayList from '@/components/PlayList/'
+
   export default {
     data() {
       return {
         userInfo:{},
         level:null,
+        selfPlayList:[],
+        subPlayList:[]
       }
     },
     created() {
       this.getUserDetail()
+      this.getUserPlaylist()
     },
     computed: {
       userId() {
@@ -81,7 +102,34 @@
       getGender(gender) {
           return gender === 0 ? '' : (gender === 1 ? 'icon-nan' : 'icon-nv')
       },
+      toggleFollow() {
+
+      },
+      async getUserPlaylist() {
+        let [res] = await to(neteaseApi.userPlayList({
+          uid:this.userId
+        }))
+        this.selfPlayList = res.playlist.filter(item => item.userId === this.userId)
+        
+        this.subPlayList = res.playlist.filter(item => item.userId !== this.userId)
+        console.log(this.subPlayList)
+      },
+      selectId(id) {
+        this.$router.push(`/songlistdetail/${id}`)
+        console.log(id)
+      },
+      goUserFollow(type) {
+        let actions = new Map([
+          [1,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:1}})}],
+          [2,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:2}})}],
+          [3,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:3}})}],
+        ])
+        actions.get(type).call(this)
+      }
     },
+    components: {
+      PlayList
+    }
   }
 </script>
 
@@ -101,6 +149,14 @@
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        &:hover {
+            -webkit-transform: rotate(666turn);
+            transform: rotate(666turn);
+            transition-delay: 1s;
+            transition-property: all;
+            transition-duration: 59s;
+            transition-timing-function: cubic-bezier(.34, 0, .84, 1)
+        }
       }
     }
     .info {
@@ -115,11 +171,19 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        border-bottom: 1px solid $color-border;
+        padding: 10px;
         .btn-group {
+          & > span {
+            margin-right: 10px;
+          }
+          
           .level {
             background: $background-undertintgrey;
             padding: 2px 10px;
             font-size: 12px;
+            border-radius: 10px;
+            font-family: "Times New Roman", Times, serif;
           }
           .sex {
             .iconfont {
@@ -165,17 +229,41 @@
       .event {
         display: flex;
         .list {
-          width: 240px;
           display: flex;
           flex-direction: row;
+          padding: 20px 0;
           .item {
             flex: 1;
-            height: 80px;
-            line-height: 80px;
-            border-right: 1px solid;
+            border-right: 1px solid $color-border;
             text-align: center;
+            padding: 0 20px;
+            &:last-child{
+              border-right: 0;
+            }
+            & > p:first-child {
+              font-size: 32px;
+              font-weight: 400;
+            }
           }
         }
+      }
+
+      .desc {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .user-playlist {
+    .play-list {
+      .title {
+        padding: 0 20px;
+        h4 {
+          margin: 0;
+        }
+      }
+      .list {
+        padding: 20px;
       }
     }
   }

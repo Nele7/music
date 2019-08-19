@@ -3,6 +3,7 @@ import { neteaseApi } from '@/api';
 import to from '@/utils/await-to.js'
 import local from '@/utils/storage.js'
 import * as types from '../mutation_types'
+import { resolve6 } from 'dns';
 // const obj = {}
 // try {
 //   if(local.getItem('userInfo')){
@@ -104,23 +105,23 @@ const actions = {
     })
   },
   // 获取用户--关注列表
-   getUserFollow({commit}){
+   getUserFollow({commit},uid){
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.userFollows({
-        uid: state.userInfo.userId
+        uid
       }))
-      commit(types.USER_FOLLOW,res.follow)
-      resolve()
+      // commit(types.USER_FOLLOW,res.follow)
+      resolve(res)
     })
   },
-  // 获取用户--粉丝列表
-   getUserFollower({commit,state}){
+  // 获取用户--粉丝列resolve6
+   getUserFollower({commit,state},uid){
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.userFollowed({
-        uid: state.userInfo.userId
+        uid
       }))
-      commit(types.USER_FOLLOWER,res.followeds)
-      resolve()
+      // commit(types.USER_FOLLOWER,res.followeds)
+      resolve(res)
     })
   },
   // 获取用户--动态列表

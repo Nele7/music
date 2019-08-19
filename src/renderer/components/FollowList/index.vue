@@ -7,7 +7,7 @@
                         <img v-lazy="item.avatarUrl" :alt="item.nickname">
                     </div>
                     <div class="follow-text">
-                        <p class="name">{{item.nickname}}</p>
+                        <p class="name" @click="selectName(item.userId)">{{item.nickname}}</p>
                         <p class="description">{{item.signature}}</p>
                         <p class="">
                             <a href="">
@@ -63,6 +63,9 @@
         methods: {
             follow(item,index) {
                this.$emit('follow',{item,index})
+           },
+           selectName(uid) {
+               this.$router.push(`/userdetail/${uid}`)
            }
         },
     }
@@ -126,6 +129,7 @@
                     font-weight: bold;
                     font-size: 16px;
                     margin: 10px 0 5px 0;
+                    cursor: pointer;
                 }
                 .description{
                     @include ellipsized;

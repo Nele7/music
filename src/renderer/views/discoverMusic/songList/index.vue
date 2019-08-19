@@ -69,7 +69,7 @@
         </div>
         <!-- 歌单 -->
         <div class="playlist-body" v-if="!loading">
-            <song-lists :playlists="playlistResult" @selectId="selectId"></song-lists>
+            <play-list :playlists="playlistResult" @selectId="selectId"></play-list>
             <div class="page-wrapper" >
               <el-pagination
                 :page-size="limit"
@@ -91,7 +91,7 @@ import { covertUnit } from '@/utils/util.js'
 import { DELAY } from '@/config'
 
 import to from "@/utils/await-to.js"
-import SongLists from './SongLists'
+import PlayList from '@/components/PlayList/'
 import Spinner from 'vue-spinkit'
 import Bus from '@/utils/Bus'
 export default {
@@ -110,12 +110,8 @@ export default {
         }
     },
     mounted() {
-        // this.currentCategory = '欧美'
         Bus.$on('selectTag',(tag) => {
             // this.currentCategory = tag
-
-            // console.log(this)
-            // this.changeCurrentCategory(tag)
         })
         this.getPlaylistHotCategory()
         this.getPlaylistAllCategory()
@@ -171,7 +167,7 @@ export default {
             if (this.isShowPopover) {
                 this.isShowPopover = false
             }
-            // this.currentCategory = name
+            this.currentCategory = name
         },
         selectId(id) {
           this.$router.push(`/songlistdetail/${id}`)
@@ -191,7 +187,7 @@ export default {
         }
     },
     components: {
-        SongLists,
+        PlayList,
         Spinner
     },
 }

@@ -31,6 +31,8 @@ const avDetail = () => import('@/views/avDetail/index.vue')
 
 const userDetail = () => import('@/views/userDetail/index.vue')
 
+const userFollow = () => import('@/views/userFollow/index.vue')
+
 Vue.use(Router)
 
 export default new Router({
@@ -161,26 +163,21 @@ export default new Router({
           component: userDetail,
           name: '_userDetail'
         },
+      ]
+    },
+    {
+      path: '/userfollow',
+      name: 'userfollow',
+      component: Layout,
+      redirect: '/userfollow/:uid',
+      children:[
         {
-          path: 'index',
-          component: follow,
-          name: 'follow'
+          path: ':uid',
+          component: userFollow,
+          name: '_userfollow'
         },
       ]
     },
-    // {
-    //   path: '/userDetail',
-    //   name: 'userDetail',
-    //   component: Layout,
-    //   redirect: '/userDetail/:uid',
-    //   children:[
-    //     {
-    //       path: ':uid',
-    //       component: userDetail,
-    //       name: '_userDetail'
-    //     },
-    //   ]
-    // },
     {
       path: '/songlistdetail',
       name: 'songlistdetail',

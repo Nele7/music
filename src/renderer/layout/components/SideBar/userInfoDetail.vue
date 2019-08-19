@@ -185,8 +185,9 @@ export default {
         },
         // 点击关注进入关注列表
         clickFollowList() {
-            this.$router.push({path:'/userDetail',query:{type:2}})
-            this.closeUserDetail()
+            this.$router.push({path:`/userfollow/${this.uid}`,query:{type:2}})
+            // this.$router.push({path:'/userDetail/follow',query:{type:2}})
+            // this.closeUserDetail()
         },
         // 点击粉丝进入粉丝列表
         clickFollowerList() {

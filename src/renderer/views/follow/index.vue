@@ -1,7 +1,9 @@
 <template>
     <div style="height:100%">
-        <follow-list :list="followList" v-if="queryType == 2"></follow-list>
-        <follow-list :list="followerList" v-if="queryType == 3" @follow="changeFollow"></follow-list>
+        123123
+        <!-- {{$route.params.uid}} -->
+        <!-- <follow-list :list="followList" v-if="queryType == 2"></follow-list>
+        <follow-list :list="followerList" v-if="queryType == 3" @follow="changeFollow"></follow-list> -->
     </div>
 </template>
 
