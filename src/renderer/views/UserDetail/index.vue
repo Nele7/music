@@ -15,9 +15,17 @@
               </span>
             </div>
             <div class="follow-wrapper">
-              <span @click="toggleFollow" class="follow">
+              <span @click="toggleFollow(1)" class="follow" v-if="userInfo && !userInfo.followed">
                 <i class="el-icon-plus"></i>
                 关注
+              </span>
+              <span  class="followed" v-if="userInfo && userInfo.followed && !userInfo.mutual" @click="toggleFollow(0)">
+                <i class="el-icon-check"></i>
+                已关注
+              </span>
+              <span class="followed" v-if="userInfo && userInfo.followed && userInfo.mutual" @click="toggleFollow(0)">
+                <i class="el-icon-check"></i>
+                互相关注
               </span>
             </div>
           </div>
@@ -102,8 +110,14 @@
       getGender(gender) {
           return gender === 0 ? '' : (gender === 1 ? 'icon-nan' : 'icon-nv')
       },
-      toggleFollow() {
-
+      async toggleFollow(t) {
+        let [res] = await to(neteaseApi.follow({
+          id:this.userId,
+          t
+        }))
+        this.userInfo.followed = !this.userInfo.followed
+        let str = this.userInfo.followed ? '关注成功':'取消关注成功'
+        this.$toast(str)
       },
       async getUserPlaylist() {
         let [res] = await to(neteaseApi.userPlayList({
@@ -129,6 +143,12 @@
     },
     components: {
       PlayList
+    },
+    watch:{
+      userId() {
+        this.getUserDetail()
+        this.getUserPlaylist()
+      }
     }
   }
 </script>
@@ -203,7 +223,6 @@
           
         }
         .follow-wrapper {
-          width: 95px;
           text-align: center;
           height: 100%;
           font-size: 14px;
@@ -215,9 +234,9 @@
             border-radius: 28px;
             padding: 0 14px;
             background: rgb(252, 243, 244);
+            cursor: pointer;
             &.follow {
               color: $color-base-red;
-              cursor: pointer;
             }
             &.followed {
               color: $color-base-grey;

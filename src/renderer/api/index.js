@@ -49,6 +49,7 @@ export const neteaseApi = {
   commentAlbum: apiData('/comment/album'),            // 专辑评论
   commentMv: apiData('/comment/mv'),                  // mv 评论
   commentVideo: apiData('/comment/video'),            // 视频评论
+  commentMusic: apiData('/comment/music'),            // 歌曲评论
   // e
 
   // s 播放器api

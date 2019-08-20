@@ -18,7 +18,7 @@
                         <i :class="detailInfo.followed ?'el-icon-folder-checked':'el-icon-folder-add'"></i>
                         {{detailInfo.followed ? '取消收藏':'收藏'}}
                     </div>
-                    <div class="btn-mini">
+                    <div class="btn-mini" @click="goUserDetail">
                         <i class="iconfont icon-yonghu"></i>
                         个人主页
                     </div>
@@ -151,12 +151,15 @@ import { musicMixin } from '@/utils/mixin'
             async toggleSingerFollowed() {
                 let t = this.detailInfo.followed ? -1:1
                 let [res] = await to(neteaseApi.artistSub({
-                    id:this.id,
+                    id:this.singerId,
                     t
                 }))
                 this.$set(this.detailInfo,'followed',!this.detailInfo.followed)
                 let msg = this.detailInfo.followed ? '收藏成功':'取消收藏成功'
                 this.$toast(msg)
+            },
+            goUserDetail() {
+                this.$router.push(`/userdetail/${this.detailInfo.accountId}`)
             },
             selectView(type) {
                 this.viewType = type

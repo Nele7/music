@@ -1,7 +1,7 @@
 <template>
     <el-row class="list-wrapper">
         <el-col :md="12" :lg="6" v-for="(item,index) in collectList" :key="index" class="list-item">
-            <div class="item">
+            <div class="item" @click="selectName(item.userId)">
                 <div class="avatar">
                     <img v-lazy="item.avatarUrl" alt />
                 </div>
@@ -69,6 +69,9 @@ export default {
             }))
             this.isMore = res.more
             this.collectList = [...this.collectList, ...res.subscribers]
+        },
+        selectName(userId) {
+            this.$router.push(`/userdetail/${userId}`)
         },
         // 获取性别
         getGender(gender) {

@@ -4,11 +4,11 @@
       <h4>{{title}}</h4>
       <div class="comment-item" v-for="(item,index) in commentlist" :key="index">
         <div class="avatar">
-          <img v-lazy="item.user.avatarUrl" :alt="item.user.nickname">
+          <img v-lazy="item.user.avatarUrl" :alt="item.user.nickname" @click="selectName(item)">
         </div>
         <div class="content">
           <div class="text">
-              <span class="name">{{item.user.nickname}}：</span>
+              <span class="name" @click="selectName(item)">{{item.user.nickname}}：</span>
               {{item.content}}
           </div>
           <div class="other-reply text" v-if="item.beReplied && item.beReplied.length">
@@ -55,6 +55,9 @@
     methods: {
       toggleCommentLike(index) {
         this.$emit('toggleCommentLike',index)
+      },
+      selectName(item) {
+        this.$emit('selectName',item.user.userId)
       }
     },
     filters: {
@@ -78,6 +81,7 @@
           width: 100%;
           height: 100%;
           border-radius: 50%;
+          cursor: pointer;
         }
       }
       .content {
@@ -90,7 +94,8 @@
         .text{
           font-size: 14px;
           .name {
-            color:rgb(60, 94, 187)
+            color:rgb(60, 94, 187);
+            cursor: pointer;
           }
         }
         .other-reply {

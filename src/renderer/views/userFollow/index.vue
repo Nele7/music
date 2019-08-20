@@ -1,6 +1,6 @@
 <template>
     <div>
-        <follow-list :list="followList" v-if="queryType === 2"></follow-list>
+        <follow-list :list="followList" v-if="queryType === 2" @follow="changeFollow"></follow-list>
         <follow-list :list="followedsList" v-if="queryType === 3" @follow="changeFollow"></follow-list>
     </div>
 </template>
@@ -43,9 +43,18 @@
                 this.followedsList = res.followeds
                 console.log(res)
             },
-            changeFollow() {
-                
-            }
+            async changeFollow({item,index}) {
+                let [res] = await to(neteaseApi.follow({
+                    id: item.userId,
+                    t: 1
+                }))
+                if(this.queryType === 2) {
+                    this.followList[index].followed = true
+                }else if(this.queryType === 3) {
+                    this.followedsList[index].followed = true
+                }
+                this.$toast('关注成功')
+            },
         },
         components: {
             FollowList

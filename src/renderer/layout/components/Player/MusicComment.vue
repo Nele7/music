@@ -44,7 +44,7 @@
         mixins:[commentMixin],
         data() {
             return {
-               hotType: commentListType.album_type,
+               hotType: commentListType.music_type,
             }
         },
         props:['id'],
@@ -54,7 +54,7 @@
         methods: {
             async getCommentList() {
                 let offset = (this.currentPage - 1) * this.pagesize
-                let [res] = await to(neteaseApi.commentAlbum({
+                let [res] = await to(neteaseApi.commentMusic({
                     id:this.id,
                     limit:this.pagesize,
                     offset
@@ -63,7 +63,7 @@
                 this.comments = res.comments
                 if(res.hotComments){            // 没有热门评论时
                     if(res.moreHot) {           // 展示是否显示更多评论
-                        this.getCommentHotList(id)
+                        this.getCommentHotList(this.id)
                     }else {
                         this.hotComments = res.hotComments
                     }
@@ -75,9 +75,6 @@
                 this.currentPage = pages
                 this.getCommentList()
             },
-            selectName(uid) {
-                this.$router.push(`/userdetail/${uid}`)
-            },
             // 监听回复组件内容,发送评论
             changeComment(v) {
                 this.sendComment(v)
@@ -86,6 +83,9 @@
             loadHotMore() {
                 this.currentPageHot += 1
                 this.getCommentHotList(this.id)
+            },
+            selectName(userId) {
+                this.$emit('selectName',userId)
             }
         },
         components: {
@@ -96,10 +96,13 @@
             id:{
                 immediate:false, // immediate:true代表如果在 wacth 里声明了之后，就会立即先去执行里面的handler方法，如果为 false就跟我们以前的效果一样，不会在绑定的时候就执行
                 handler() {
+                    // console.log('id变化----')
+                    this.comments = []
+                    this.hotComments = []
                     this.currentPage = 1
                     this.total = 0
                     this.currentPageHot = 1
-                    this.getCommentList(this.id)
+                    this.getCommentList()
                 }
             }
         }

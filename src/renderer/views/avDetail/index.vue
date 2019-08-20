@@ -17,14 +17,14 @@
           <p>{{detail.creator && detail.creator.nickname}}</p>
         </div>
         <div class="follow-wrapper">
-          <span @click="toggleFollow" class="follow">
-            <i class="el-icon-plus"></i>
-            关注
+          <span @click="toggleFollow(1)" class="follow" v-if="follow">
+              <i class="el-icon-plus"></i>
+              关注
+            </span>
+          <span @click="toggleFollow(0)" class="followed" v-if="followDone">
+            <i class="el-icon-check"></i>
+            已关注
           </span>
-          <!-- <span v-if="item.followed && !item.mutual" class="followed">
-              <i class="el-icon-check"></i>
-              已关注
-          </span>-->
         </div>
       </div>
       <div class="av-detail-info">
@@ -128,6 +128,12 @@ export default {
     },
     praisedTxt() {
       return this.like ? '已赞':'赞'
+    },
+    follow() {
+      return this.detail.creator && !this.detail.creator.followed
+    },
+    followDone() {
+      return this.detail.creator && this.detail.creator.followed
     }
   },
   methods: {
@@ -147,8 +153,14 @@ export default {
       this.playerOptions.sources[0].src = this.url
       // this.playerOptions.autoplay = true
     },
-    toggleFollow() {
-
+    async toggleFollow(t) {
+      let [res] = await to(neteaseApi.follow({
+        id:this.detail.creator.userId,
+        t
+      }))
+      this.detail.creator.followed = !this.detail.creator.followed
+      let str = this.detail.creator.followed ? '关注成功':'取消关注成功'
+      this.$toast(str)
     },
     // 点赞，没找到标识？？？
     async toggleLiked() {
@@ -214,9 +226,9 @@ export default {
         border-radius: 28px;
         padding: 0 14px;
         background: rgb(252, 243, 244);
+        cursor: pointer;
         &.follow {
           color: $color-base-red;
-          cursor: pointer;
         }
         &.followed {
           color: $color-base-grey;

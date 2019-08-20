@@ -8,6 +8,7 @@
         title="精彩评论" 
         :commentlist="hotComments"
         @toggleCommentLike="toggleHotCommentLike"
+        @selectName="selectName"
         v-if="hotComments.length"></comment-list>
         <h4 v-if="isMore" @click="loadHotMore" class="comment-hot-more">
             <a href="#">
@@ -19,6 +20,7 @@
         title="最新评论"
         :commentlist="comments" 
         @toggleCommentLike="toggleCommentLike"
+        @selectName="selectName"
         v-if="comments.length"></comment-list>
         <div class="pages-container" v-if="total > pagesize">
             <el-pagination
@@ -73,6 +75,9 @@
             currentChange(pages) {
                 this.currentPage = pages
                 this.getCommentList()
+            },
+            selectName(uid) {
+                this.$router.push(`/userdetail/${uid}`)
             },
             // 监听回复组件内容,发送评论
             changeComment(v) {

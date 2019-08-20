@@ -6,16 +6,16 @@
                     <div class="user-info-wrapper" v-if="!userInfoLoading">
                         <div class="user-info-count">
                             <div class="info">
-                                <div class="dynamic" @click="clickEventList">
+                                <div class="dynamic" >
                                     <span href class="count">{{eventSum > 99 ? '99+' : eventSum }}</span>
                                     <span>动态</span>
                                 </div>
                                 <div class="follow" @click="clickFollowList">
-                                    <span href class="count">{{ followSum > 99 ? '99+' : followSum }}</span>
+                                    <span class="count">{{ followSum > 99 ? '99+' : followSum }}</span>
                                     <span>关注</span>
                                 </div>
                                 <div class="fans" @click="clickFollowerList">
-                                    <span href class="count">{{ followerSum > 99 ? '99+' : followerSum }}</span>
+                                    <span class="count">{{ followerSum > 99 ? '99+' : followerSum }}</span>
                                     <span>粉丝</span>
                                 </div>
                             </div>
@@ -179,19 +179,19 @@ export default {
             this.$store.commit(`user/${types.USER_SIGN}`,true)
         },
         // 点击动态进入动态列表
-        clickEventList() {
-            this.$router.push({path:'/userDetail',query:{type:1}})
-            this.closeUserDetail()
-        },
+        // clickEventList() {
+        //     this.$router.push({path:'/userDetail',query:{type:1}})
+        //     this.closeUserDetail()
+        // },
         // 点击关注进入关注列表
         clickFollowList() {
             this.$router.push({path:`/userfollow/${this.uid}`,query:{type:2}})
             // this.$router.push({path:'/userDetail/follow',query:{type:2}})
-            // this.closeUserDetail()
+            this.closeUserDetail()
         },
         // 点击粉丝进入粉丝列表
         clickFollowerList() {
-            this.$router.push({path:'/userDetail',query:{type:3}})
+            this.$router.push({path:`/userfollow/${this.uid}`,query:{type:3}})
             this.closeUserDetail()
         },
         // 退出登录

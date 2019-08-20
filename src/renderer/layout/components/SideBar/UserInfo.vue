@@ -19,7 +19,13 @@ import * as types from "@/store/mutation_types"
 import userInfoDetail from './userInfoDetail'
 export default {
   data() {
-    return {}
+    return {
+      userCount:{
+        event:null,
+        follow:null,
+        follower:null,
+      }
+    }
   },
   mounted() { },
   computed: {
@@ -28,6 +34,17 @@ export default {
     },
     userInfo() {
       return this.$store.getters.userInfo
+    },
+    uid() {
+        return this.$store.getters.uid
+    },
+    count:{
+      get() {
+        return this.userCount
+      },
+      set(v) {
+        console.log(v)
+      }
     }
   },
   methods: {
@@ -36,13 +53,23 @@ export default {
         this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, true)
       } else {
         this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, true)
-        this.$store.dispatch('user/getUserInfo')
-        // this.$store.dispatch('user/getUserFollow')
-        // this.$store.dispatch('user/getUserFollower')
-        // this.$store.dispatch('user/getUserEvent')
+        // this.$store.dispatch('user/getUserInfo')
+        this.getCount()
         // this.getUserInfo()
       }
     },
+    getCount() {
+      this.$store.dispatch('user/getUserFollow',this.uid).then(res => {
+        this.userCount.follow = res.follow.length
+      })
+      this.$store.dispatch('user/getUserFollower',this.uid).then(res => {
+        this.userCount.follower = res.followeds.length
+      })
+      // console.log(this.userCount)
+      this.$store.dispatch('user/getUserEvent',this.uid).then(res => {
+        this.userCount.event = res.events.length
+      })
+    }
     //  同时请求接口
     // getUserInfo() {
     //   this.$store.commit(`user/${types.USER_INFO_LOADING}`,true)

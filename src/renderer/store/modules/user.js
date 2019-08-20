@@ -15,7 +15,7 @@ const state = {
   // userInfo: obj,
   userLoginStatus:localStorage.getItem('loginStatus') || false,  // 用户登录状态
   userInfo: local.getItem('userInfo') || {},                     // 用户登录信息       
-  userPlayList: [],             // 用户创建收藏歌单
+  userPlayList: [],                                              // 用户创建收藏歌单
   userSignStatus: false,                                         // 用户签到状态
   userFollowList:[],                                             // 用户关注列表
   userFollowerList:[],                                           // 用户粉丝列表
@@ -104,20 +104,24 @@ const actions = {
       resolve('退出成功')
     })
   },
+
+
   // 获取用户--关注列表
    getUserFollow({commit},uid){
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.userFollows({
+        // uid: state.userInfo.userId
         uid
       }))
       // commit(types.USER_FOLLOW,res.follow)
       resolve(res)
     })
   },
-  // 获取用户--粉丝列resolve6
+  // 获取用户--粉丝列表
    getUserFollower({commit,state},uid){
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.userFollowed({
+        // uid: state.userInfo.userId
         uid
       }))
       // commit(types.USER_FOLLOWER,res.followeds)
@@ -125,13 +129,14 @@ const actions = {
     })
   },
   // 获取用户--动态列表
-   getUserEvent({commit,state}){
+   getUserEvent({commit,state},uid){
     return new Promise(async (resolve) => {
       let [res] = await to(neteaseApi.userEvent({
-        uid: state.userInfo.userId
+        // uid: state.userInfo.userId
+        uid
       }))
-      commit(types.USER_EVENT,res.events)
-      resolve()
+      // commit(types.USER_EVENT,res.events)
+      resolve(res)
     })
   },
   // 获取用户--详情
