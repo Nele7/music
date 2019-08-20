@@ -5,9 +5,6 @@ const getters = {
     loginStatus: state => state.user.userLoginStatus,
     signStatus: state => state.user.userSignStatus,
     playList: state => state.user.userPlayList,
-    followList: state => state.user.userFollowList,
-    followerList: state => state.user.userFollowerList,
-    eventList: state => state.user.userEvent,
     userInfoLoading: state => state.user.userInfoLoading,
     // e
 

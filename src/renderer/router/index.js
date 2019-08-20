@@ -15,7 +15,6 @@ const mv = () => import('@/views/mv/index')
 const av = () => import('@/views/audioVisual/index')
 
 const pal = () => import('@/views/pal/index')
-const follow = () => import('@/views/follow/index')
 
 const songListDetail = () => import('@/views/songListDetail/index')
 

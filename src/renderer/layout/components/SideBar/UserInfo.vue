@@ -10,7 +10,7 @@
         <i class="el-icon-arrow-right"></i>
       </div>
     </div>
-    <user-info-detail/>
+    <user-info-detail :userCount="userCount" />
   </div>
 </template>
 
@@ -38,14 +38,7 @@ export default {
     uid() {
         return this.$store.getters.uid
     },
-    count:{
-      get() {
-        return this.userCount
-      },
-      set(v) {
-        console.log(v)
-      }
-    }
+   
   },
   methods: {
     openLogin() {

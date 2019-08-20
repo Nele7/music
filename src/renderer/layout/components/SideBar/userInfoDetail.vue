@@ -7,15 +7,15 @@
                         <div class="user-info-count">
                             <div class="info">
                                 <div class="dynamic" >
-                                    <span href class="count">{{eventSum > 99 ? '99+' : eventSum }}</span>
+                                    <span href class="count">{{ userCount.event > 99 ? '99+' : userCount.event }}</span>
                                     <span>动态</span>
                                 </div>
                                 <div class="follow" @click="clickFollowList">
-                                    <span class="count">{{ followSum > 99 ? '99+' : followSum }}</span>
+                                    <span class="count">{{ userCount.follow > 99 ? '99+' : userCount.follow }}</span>
                                     <span>关注</span>
                                 </div>
                                 <div class="fans" @click="clickFollowerList">
-                                    <span class="count">{{ followerSum > 99 ? '99+' : followerSum }}</span>
+                                    <span class="count">{{ userCount.follower > 99 ? '99+' : userCount.follower }}</span>
                                     <span>粉丝</span>
                                 </div>
                             </div>
@@ -85,6 +85,7 @@ import to from "@/utils/await-to.js"
 import Spinner from 'vue-spinkit'
 
 export default {
+    props:['userCount'],
     data() {
         return {
             userDetailData: [
@@ -139,15 +140,7 @@ export default {
         uid() {
             return this.$store.getters.uid
         },
-        followSum() {
-            return this.$store.getters.followList.length
-        },
-        followerSum() {
-            return this.$store.getters.followerList.length
-        },
-        eventSum() {
-            return this.$store.getters.eventList.length
-        },
+        
         signStatus() {
             return this.$store.getters.signStatus
         },

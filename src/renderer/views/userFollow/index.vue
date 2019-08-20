@@ -30,18 +30,12 @@
         },
         methods: {
             async getFollow() {
-                let [res] = await to(neteaseApi.userFollows({
-                    uid:this.uid
-                }))
-
-                this.followList = res.follow
+                let {follow} = await this.$store.dispatch('user/getUserFollow',this.uid)
+                this.followList = follow
             },
             async getFollower() {
-                let [res] = await to(neteaseApi.userFollowed({
-                    uid:this.uid
-                }))
-                this.followedsList = res.followeds
-                console.log(res)
+                let {followeds} = await this.$store.dispatch('user/getUserFollower',this.uid)
+                this.followedsList = followeds
             },
             async changeFollow({item,index}) {
                 let [res] = await to(neteaseApi.follow({
