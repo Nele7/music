@@ -27,6 +27,10 @@
                 <i class="el-icon-check"></i>
                 互相关注
               </span>
+              <span class="followed" v-if="userInfo && userInfo.followTime">
+                <i class="iconfont icon-biaoqing"></i>
+                {{userInfo && userInfo.followTime}}
+              </span>
             </div>
           </div>
           <div class="event">
@@ -135,8 +139,8 @@
       goUserFollow(type) {
         let actions = new Map([
           [1,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:1}})}],
-          [2,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:2}})}],
-          [3,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:3}})}],
+          [2,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:2,tab:`${this.userInfo.nickname}的关注`}})}],
+          [3,() => {this.$router.push({path:`/userfollow/${this.userId}`,query:{type:3,tab:`${this.userInfo.nickname}的粉丝`}})}],
         ])
         actions.get(type).call(this)
       }
@@ -256,6 +260,7 @@
             border-right: 1px solid $color-border;
             text-align: center;
             padding: 0 20px;
+            cursor: pointer;
             &:last-child{
               border-right: 0;
             }

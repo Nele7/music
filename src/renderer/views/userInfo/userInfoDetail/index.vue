@@ -140,7 +140,9 @@ export default {
         uid() {
             return this.$store.getters.uid
         },
-        
+        userInfo() {
+            return this.$store.getters.userInfo
+        },
         signStatus() {
             return this.$store.getters.signStatus
         },
@@ -178,13 +180,12 @@ export default {
         // },
         // 点击关注进入关注列表
         clickFollowList() {
-            this.$router.push({path:`/userfollow/${this.uid}`,query:{type:2}})
-            // this.$router.push({path:'/userDetail/follow',query:{type:2}})
+            this.$router.push({path:`/userfollow/${this.uid}`,query:{type:2,tab:`${this.userInfo.nickname}的关注`}})
             this.closeUserDetail()
         },
         // 点击粉丝进入粉丝列表
         clickFollowerList() {
-            this.$router.push({path:`/userfollow/${this.uid}`,query:{type:3}})
+            this.$router.push({path:`/userfollow/${this.uid}`,query:{type:3,tab:`${this.userInfo.nickname}的粉丝`}})
             this.closeUserDetail()
         },
         // 退出登录

@@ -26,7 +26,7 @@
 
 <script>
 import Tab from './Tab'
-import Search from './Search'
+import Search from '@/views/search/'
 export default {
   name: 'navbar',
   components:{

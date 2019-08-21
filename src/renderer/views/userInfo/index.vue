@@ -16,7 +16,7 @@
 
 <script>
 import * as types from "@/store/mutation_types"
-import userInfoDetail from './userInfoDetail'
+import userInfoDetail from './userInfoDetail/'
 export default {
   data() {
     return {
@@ -46,37 +46,26 @@ export default {
         this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, true)
       } else {
         this.$store.commit(`toggle/${types.TOGGLE_USERINFO_DETAIL}`, true)
-        // this.$store.dispatch('user/getUserInfo')
         this.getCount()
-        // this.getUserInfo()
       }
     },
     getCount() {
-      this.$store.dispatch('user/getUserFollow',this.uid).then(res => {
-        this.userCount.follow = res.follow.length
-      })
-      this.$store.dispatch('user/getUserFollower',this.uid).then(res => {
-        this.userCount.follower = res.followeds.length
-      })
-      // console.log(this.userCount)
-      this.$store.dispatch('user/getUserEvent',this.uid).then(res => {
-        this.userCount.event = res.events.length
+      this.$store.commit(`user/${types.USER_INFO_LOADING}`,true)
+      Promise.all([
+        this.$store.dispatch('user/getUserFollow',this.uid),
+        this.$store.dispatch('user/getUserFollower',this.uid),
+        this.$store.dispatch('user/getUserEvent',this.uid)
+      ])
+      .then(res => {
+        setTimeout(() => {
+          this.userCount.follow = res[0].follow.length
+          this.userCount.follower = res[1].followeds.length
+          this.userCount.event = res[2].events.length
+          this.$store.commit(`user/${types.USER_INFO_LOADING}`,false)
+          // console.log('成功')
+        },1500)
       })
     }
-    //  同时请求接口
-    // getUserInfo() {
-    //   this.$store.commit(`user/${types.USER_INFO_LOADING}`,true)
-    //   Promise.all([
-    //     this.$store.dispatch('user/getUserFollow'),
-    //     this.$store.dispatch('user/getUserFollower'),
-    //     this.$store.dispatch('user/getUserEvent')
-    //   ]).then(()=> {
-    //     setTimeout(() => {
-    //       this.$store.commit(`user/${types.USER_INFO_LOADING}`,false)
-    //       console.log('成功')
-    //     },1500)
-    //   })
-    // }
   },
   components:{
     userInfoDetail

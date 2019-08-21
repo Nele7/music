@@ -1,13 +1,13 @@
 <template>
     <div class="side-bar-wrapper">
         <user-info></user-info>
-        <fixed-menus></fixed-menus>
+        <menus></menus>
     </div>
 </template>
 
 <script>
-import FixedMenus from './FixedMenus';
-import UserInfo from './UserInfo';
+import Menus from '@/views/menus/'
+import UserInfo from '@/views/userInfo/'
 export default {
     data() {
         return {
@@ -15,7 +15,7 @@ export default {
         }
     },
     components:{
-        FixedMenus,
+        Menus,
         UserInfo
     }
 };

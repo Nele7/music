@@ -59,7 +59,6 @@
                     limit:this.pagesize,
                     offset
                 }))
-                console.log(res)
                 this.comments = res.comments
                 if(res.hotComments){            // 没有热门评论时
                     if(res.moreHot) {           // 展示是否显示更多评论

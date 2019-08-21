@@ -267,9 +267,9 @@ import { formatTimeMMSS, shuffle } from '@/utils/util'
 import * as types from '@/store/mutation_types'
 import to from "@/utils/await-to.js"
 import PlayerProgress from '@/components/PlayerProgress'
-import PlayerMode from './PlayerMode'
-import playerList from './PlayerList'
-import MusicComment from './MusicComment'
+import PlayerMode from './PlayerMode/'
+import playerList from './PlayerList/'
+import MusicComment from './MusicComment/'
 import Lyric from 'lyric-parser'
 const SOUND = '__sound__'
 export default {
@@ -284,14 +284,37 @@ export default {
             currentTime: 0,               // 当前播放的时间
             lyric: null,                  // 歌词实例
             currentLyricIndex: 0,         // 歌词当前索引
-            // historyRecordList:[],        // 
         }
     },
     mounted() {
         if (this.currentMusicItem && this.currentMusicItem.id) {
             this.getlyric()
-            this.$refs.musicAudio.volume = JSON.parse(localStorage.getItem(SOUND)).volume
-            this.soundPercent = JSON.parse(localStorage.getItem(SOUND)).percent
+            this.$refs.musicAudio.volume = JSON.parse(localStorage.getItem(SOUND)).volume || 0.5
+            this.soundPercent = JSON.parse(localStorage.getItem(SOUND)).percent || this.soundPercent
+            document.onkeydown = (e) => {
+                if(e.keyCode === 32) {
+                    this.togglePlaying()
+                }else if(e.ctrlKey && e.keyCode === 39) {
+                    console.log('xiayisojhou ')
+                    this.next()
+                }else if(e.ctrlKey && e.keyCode === 37){
+                    this.prev()
+                }else if(e.keyCode === 33) {
+                    if(this.soundPercent === 100) {
+                        this.$toast('已经是最大音量了噢...')
+                        return
+                    }
+                    this.soundPercent+=10
+                }else if(e.keyCode === 34) {
+                    if(this.soundPercent === 0) {
+                        this.$toast('已经是最小音量了噢...')
+                        return
+                    }
+                    this.soundPercent-=10
+                }else if(e.ctrlKey && e.keyCode === 76) {
+                    this.musicLiked()
+                }
+            } 
         }
     },
     computed: {
@@ -555,6 +578,9 @@ export default {
         currentTime(newTime) {
             this.percentage = (newTime / this.currentMusicItem.duration) * 100
         },
+        soundPercent(n) { // 监听音量变化
+            this.changeCurrentSound(n)
+        }
         // 也可以监听播放状态，为播放还是暂停
         // playStatus(status) {
         //     const audio = this.$refs.musicAudio

@@ -173,9 +173,12 @@ export default new Router({
         {
           path: ':uid',
           component: userFollow,
-          name: '_userfollow'
+          name: '_userfollow',
+          meta:{
+            hint:'userfollow'
+          }
         },
-      ]
+      ],
     },
     {
       path: '/songlistdetail',

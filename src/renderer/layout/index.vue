@@ -12,11 +12,6 @@
                 style="height:100%;"
                 ref="myScrollbar"
             >
-                <!-- <transition name="fade-transform" mode="out-in">
-                    <keep-alive>
-                        <router-view></router-view>
-                    </keep-alive>
-                </transition> -->
                 <app-main/>
             </el-scrollbar>
         </div>
@@ -30,7 +25,9 @@
 </template>
 
 <script>
-import { Sidebar, Navbar, AppMain, Player, LoginDialog } from "./components";
+import { Sidebar, Navbar, AppMain } from "./components";
+import LoginDialog from '@/views/loginDialog/'
+import Player from '@/views/player/'
 export default {
     name: "Layout",
     components: {

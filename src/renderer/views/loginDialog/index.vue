@@ -50,10 +50,7 @@ export default {
             this.$store.commit(`toggle/${types.TOGGLE_LOGIN_DIALOG}`, false)
         },
         dologin() {
-            // let from = {
-            //     phone:15511396949,
-            //     password:'wfg931124'
-            // }
+            
             if (!this.phone) {
                 this.errorMsg = "请输入手机号或邮箱"
                 return
@@ -151,9 +148,6 @@ export default {
                 &:focus {
                     outline: none;
                 }
-                // &.disabled {
-                //     pointer-events: none;
-                // }
             }
         }
     }

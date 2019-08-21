@@ -19,19 +19,9 @@
         >{{item.name}}</router-link>
       </div>
       <!-- 动态，关注，粉丝 -->
-      <div class="nav-text-area nav-text-start" v-if="this.$route.fullPath === '/userDetail/index?type=1'">
+      <div class="nav-text-area nav-text-start" v-if="this.$route.meta.hint === 'userfollow'">
         <div>
-          {{userInfo.nickname}}{{eventTab[0].name}}
-        </div>
-      </div>
-      <div class="nav-text-area nav-text-start" v-if="this.$route.fullPath === '/userDetail/index?type=2'">
-        <div>
-          {{userInfo.nickname}}{{eventTab[1].name}}
-        </div>
-      </div>
-      <div class="nav-text-area nav-text-start" v-if="this.$route.fullPath === '/userDetail/index?type=3'">
-        <div>
-          {{userInfo.nickname}}{{eventTab[2].name}}
+          {{$route.query.tab}}
         </div>
       </div>
       <div class="nav-null-content"></div>
@@ -55,16 +45,12 @@
                     { path: '/mv/index', name: 'MV' },
                     { path: '/mv/av', name: '视频' },
                 ],
-                eventTab: [
-                  { name: '动态' },
-                  { name: '关注' },
-                  { name: '粉丝' },
-                ],
                 currentShow:false,
                 videoShow: false
             }
         },
         mounted(){
+          console.log(this.$route);
             this.currentShow = this.$route.meta.flag
             this.videoShow = this.$route.meta.show
         },

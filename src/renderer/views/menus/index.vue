@@ -20,8 +20,8 @@
                 </router-link>
                 <!-- 动态加载的 -->
                 <div class="menu-item" 
-                v-if="userStatus && item.playList.length > 0" 
                 v-for="(item,index) in normalPlayList"
+                v-if="userStatus && item.playList.length > 0"
                 >
                     <div class="menu-title">{{item.title}}</div>
                     <!-- <div class="menu-text" v-for="(playlist,i) in item.playList" @click="toSongListDetail(playlist.id)"> -->
@@ -35,8 +35,8 @@
                         <i class="iconfont " :class="[playlist.name === userInfo.nickname + '喜欢的音乐' ? 'icon-xin':'icon-yinyue']"></i>
                         <span>{{ playlist.name === userInfo.nickname + '喜欢的音乐' ? '我喜欢的歌单': playlist.name }}</span>
                     </router-link>
-                    </div>
                 </div>
+            </div>
                 <!-- <div class="menu-item" v-if="userStatus && normalPlayList.collectPlayList.length > 0">
                     <div class="menu-title">收藏的歌单</div>
                     <div class="menu-text"  v-for="(item,index) in normalPlayList.collectPlayList" :key="index">
