@@ -19,12 +19,13 @@
       <i class="el-icon-setting"></i>
       <i class="el-icon-message"></i>
       <i class="iconfont icon-pifu"></i>
-      <i class="el-icon-close"></i>
+      <i class="el-icon-close" @click="clickItem('window-min')"></i>
     </div>
   </div>
 </template>
 
 <script>
+import { ipcRenderer } from 'electron';
 import Tab from './Tab'
 import Search from '@/views/search/'
 export default {
@@ -51,7 +52,11 @@ export default {
     next(){
       console.log('前进了···')
       this.$router.go(1)
-    }
+    },
+     clickItem(item) {
+       console.log(item);
+        ipcRenderer.send(item)
+      }
   },
   watch:{
     

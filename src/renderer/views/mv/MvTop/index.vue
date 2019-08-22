@@ -7,7 +7,7 @@
                   {{index+1}}
               </div>
               <div class="cover-img" @click="selectId(item.id)">
-                  <img v-lazy="item.cover" alt="">
+                  <img :src="item.cover" alt="">
               </div>
               <div class="info">
                   <p class="name">{{item.name}}</p>

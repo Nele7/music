@@ -41,10 +41,14 @@ function createWindow () {
 app.on('ready', () => {
   mainWindow = createWindow()
   // 引入vue-devtools
-  BrowserWindow.addDevToolsExtension("static/devtools")
+  // BrowserWindow.addDevToolsExtension("static/devtools")
   // command(mainWindow)
 })
-
+ipcMain.on('window-min', (event) => {
+  if (!mainWindow.isMinimized()) {
+    mainWindow.minimize()
+  }
+})
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
