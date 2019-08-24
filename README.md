@@ -1,3 +1,9 @@
+# 运行
+```
+$ git clone git@github.com:Nele7/music.git
+$ npm install （不建议使用cnpm install原因：打包时候会有问题）
+$ npm run dev
+```
 # Vue 像素级还原Mac端网易云音乐
 
 前一阵子学习了Vue，为了巩固所学的知识和提高实战经验，决定自己手撸一款网易云音乐。因为听歌一直在用网易云音乐，所以突发奇想就做一款仿网易云音乐吧！开发中遇到了很多在学习中没有遇到过的坑，也很感谢在我改不出BUG时给予帮助的老师同学！本着学习和分享的目的,希望能给你带来一点帮助,大佬轻点喷。
@@ -29,6 +35,11 @@
 - [x] 歌曲、歌单、专辑、歌手、评论
 - [x] 用户关注、粉丝列表
 
+### 未完成
+- [ ] 每日歌曲推荐
+- [ ] 主播电台
+- [ ] 主题换肤
+
 #### 快捷键
 Description|Keys
 ---|---
@@ -39,30 +50,38 @@ Description|Keys
 下一曲|<kbd>Ctrl</kbd>+<kbd>right</kbd>
 喜欢歌曲|<kbd>Ctrl</kbd>+<kbd>L</kbd>
 
-### 未完成
-- [ ] 每日歌曲推荐
-- [ ] 主播电台
-- [ ] 主题换肤
 
 # 预览
 > 项目演示地址：[戳我]()
+
 > 项目源码地址：[戳我](https://github.com/Nele7/music)
+
 > win桌面版地址：[戳我]()
+
 > mac桌面版地址：[戳我]()
 
 >如果觉得我的项目还不错的话，就给个 star 鼓励一下吧~
 
 ### 部分截图
 ![推荐页](https://user-gold-cdn.xitu.io/2019/8/24/16cc321da4b17fb0?w=2000&h=1662&f=png&s=3069205)
-![播放页](https://user-gold-cdn.xitu.io/2019/8/24/16cc32c696e5a8bc?w=2000&h=1340&f=png&s=1262488)
+
+![播放页](https://user-gold-cdn.xitu.io/2019/8/24/16cc34afa163af9e?w=2000&h=1340&f=png&s=1262488)
+
 ![最新音乐](https://user-gold-cdn.xitu.io/2019/8/24/16cc327fe7948120?w=2040&h=1412&f=png&s=471472)
+
 ![歌单](https://user-gold-cdn.xitu.io/2019/8/24/16cc32dacfcfe074?w=2000&h=1340&f=png&s=2130335)
+
 ![歌单详情](https://user-gold-cdn.xitu.io/2019/8/24/16cc32dacfcfe074?w=2000&h=1340&f=png&s=2130335)
+
 ![MV](https://user-gold-cdn.xitu.io/2019/8/24/16cc32e67e98d0e0?w=2040&h=1412&f=png&s=1322293)
+
 ![MV详情](https://user-gold-cdn.xitu.io/2019/8/24/16cc32ed42936ebe?w=2000&h=1662&f=png&s=814324)
+
 ![搜索、播放列表](https://user-gold-cdn.xitu.io/2019/8/24/16cc32f284b7ddb3?w=2040&h=1412&f=png&s=390877)
+
 ![排行榜](https://user-gold-cdn.xitu.io/2019/8/24/16cc32f71fcb86cb?w=2018&h=1374&f=png&s=509293)
-![歌手详情](https://user-gold-cdn.xitu.io/2019/8/24/16cc32fbf4bef408?w=2000&h=1662&f=png&s=858546)
+
+![歌手详情](https://user-gold-cdn.xitu.io/2019/8/24/16cc34bc33622276?w=2000&h=1662&f=png&s=858546)
 
 # 项目结构
 ```
