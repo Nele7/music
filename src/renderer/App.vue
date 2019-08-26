@@ -1,19 +1,29 @@
 <template>
-  <div id="app">
+  <div id="app" :class="getTheme" v-cloak>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'music'
+    name: 'music',
+    computed: {
+      getTheme() {
+        return this.$store.getters.theme
+      }
+    }
   }
 </script>
 
 <style>
+/* CSS */
 #app {
   height: 100%;
   width: 100%;
 }
-  /* CSS */
+[v-cloak] {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 </style>

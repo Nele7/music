@@ -6,6 +6,7 @@ const getters = {
     signStatus: state => state.user.userSignStatus,
     playList: state => state.user.userPlayList,
     userInfoLoading: state => state.user.userInfoLoading,
+    theme: state => state.user.userTheme,
     // e
 
     // s toggle.js

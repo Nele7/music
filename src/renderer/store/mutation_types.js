@@ -6,6 +6,7 @@ export const USER_SIGN = 'USER_SIGN'                             // 用户签到
 export const USER_LIKE_LIST = 'USER_LIKE_LIST'                   // 用户喜欢列表
 export const USER_PLAY_LIST = 'USER_PLAY_LIST'                   // 用户喜欢列表
 export const USER_INFO_LOADING = 'USER_INFO_LOADING'             // 用户详情loading
+export const USER_THEME = 'USER_THEME'                           // 用户主题
 
 // toggle.js
 export const TOGGLE_LOGIN_DIALOG = 'TOGGLE_LOGIN_DIALOG'         // 登录模态框显示状态

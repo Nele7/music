@@ -16,10 +16,10 @@
       </div>
     </div> -->
     <div class="nav-setting-area">
-      <i class="el-icon-setting"></i>
-      <i class="el-icon-message"></i>
-      <i class="iconfont icon-pifu"></i>
-      <i class="el-icon-close" @click="clickItem('window-min')"></i>
+      <span class="el-icon-setting"></span>
+      <span class="el-icon-message"></span>
+      <theme></theme>
+      <span class="el-icon-close" @click="clickItem('window-min')"></span>
     </div>
   </div>
 </template>
@@ -28,11 +28,13 @@
 import { ipcRenderer } from 'electron';
 import Tab from './Tab'
 import Search from '@/views/search/'
+import Theme from '@/views/theme/'
 export default {
   name: 'navbar',
   components:{
     Tab,
-    Search
+    Search,
+    Theme
   },
   data() {
     return {
@@ -90,7 +92,7 @@ export default {
     width: 50px;
     justify-content: space-between;
     -webkit-app-region: no-drag;
-    i {
+    span {
       flex: 1;
       height: 50px;
       line-height: 50px;

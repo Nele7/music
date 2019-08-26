@@ -11,6 +11,7 @@ const state = {
   userSignStatus: false,                                         // 用户签到状态
   userlikelist: [],                                              // 用户喜欢列表
   userInfoLoading:false,                                         // 用户详情loading
+  userTheme:'default',                                                  // 用户主题色
 }
 
 const mutations = {
@@ -47,7 +48,13 @@ const mutations = {
   },
   [types.USER_INFO_LOADING](state,flag) {
     state.userInfoLoading = flag
-  }
+  },
+  [types.USER_THEME](state,theme) {
+    try {
+      state.userTheme = theme
+      localStorage.setItem('theme',theme)
+    } catch (e) { }
+  },
 }
 
 const actions = {
