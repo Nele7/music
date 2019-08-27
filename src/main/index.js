@@ -41,7 +41,7 @@ function createWindow () {
 app.on('ready', () => {
   mainWindow = createWindow()
   // 引入vue-devtools
-  // BrowserWindow.addDevToolsExtension("static/devtools")
+  BrowserWindow.addDevToolsExtension("static/devtools")
   // command(mainWindow)
 })
 ipcMain.on('window-min', (event) => {

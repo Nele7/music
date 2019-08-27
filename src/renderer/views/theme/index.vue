@@ -5,18 +5,22 @@
         height="100px"
       >
           <ul class="themes">
-            <li class="theme-item" @click="selectTheme('default')">
-                <span class="default"></span>
-                <p>浅色</p>
+            <li class="theme-item" @click="selectTheme(item.value)" v-for="(item,index) in themelist" :key="index">
+               <div class="item-bg">
+                    <span :class="[{'el-icon-check':item.value === getTheme},item.value]">
+                        <!-- <i class="el-icon-check" v-show="theme === item.value"></i> -->
+                    </span>
+               </div>
+                <p>{{item.name}}</p>
             </li>
-            <li class="theme-item" @click="selectTheme('dark')">
-                <span class="dark"></span>
+            <!-- <li class="theme-item" @click="selectTheme('dark')">
+                <span class="dark"><i class="el-icon-check"></i></span>
                 <p>深色</p>
             </li>
             <li class="theme-item" @click="selectTheme('red')">
-                <span class="red"></span>
+                <span class="red"><i class="el-icon-check"></i></span>
                 <p>红色</p>
-            </li>
+            </li> -->
           </ul>
         <div slot="reference">
             <span class="iconfont icon-pifu"></span>
@@ -29,6 +33,25 @@
     export default {
         data() {
             return {
+                themelist:[
+                    {
+                        name:'浅色',
+                        value:'default'
+                    },
+                    {
+                        name:'深色',
+                        value:'dark'
+                    },
+                    {
+                        name:'红色',
+                        value:'red'
+                    }
+                ],
+            }
+        },
+        computed:{
+            getTheme() {
+                return this.$store.getters.theme
             }
         },
         methods: {
@@ -40,6 +63,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/variables.scss';
 .themes {
     display: flex;
     flex-direction: row;
@@ -48,25 +72,34 @@
         text-align: center;
         margin: 0 10px;
         cursor: pointer;
-        span {
-            display: inline-block;
+        .item-bg{
             width: 23px;
             height: 23px;
-            border-radius: 50%;
-
-            &.default {
-                background-color: rgb(246, 246, 246);
-            }
-
-            &.dark {
-                background-color: rgb(32, 32, 32);
-            }
-            &.red {
-                background-color: rgb(211, 58, 49);
+            span {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                color:#fff;
+                text-align: center;
+                border: 1px solid $color-border;
+                line-height: 23px;
+                &.default {
+                    color:$color-base-red;
+                    background-color: rgb(246, 246, 246);
+                }
+                &.dark {
+                    background-color: rgb(32, 32, 32);
+                }
+                &.red {
+                    background-color: rgb(211, 58, 49);
+                }
             }
         }
+        
         p {
             font-size: 13px;
+            margin-top: 5px;
         }
     }
 }

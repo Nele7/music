@@ -32,9 +32,9 @@
 #app {
     &.default {
         @include css-var(
-            $color-base-grey: #969696,
+            $color-base-grey: rgb(81,81,81),
             $color-search: #424242,
-            $color-text:#999,
+            $color-text:rgb(81,81,81),
             $color-border:#e9e9e9,
             $color-white:#fff,
             $color-menu-title:#9a9a9a,
@@ -46,10 +46,11 @@
             $background-undertintgrey:rgba(230, 230, 230, 0.377),
             $background-nav-arrows:rgba(243, 243, 243, 0.26)
         );
-        
     }   
     &.dark {
-        
+        // @include css-var(
+        //     $background-nav-arrows:rgb(33,33,33)
+        // )        
     }
     &.red {
 
