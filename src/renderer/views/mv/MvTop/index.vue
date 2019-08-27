@@ -88,7 +88,7 @@
           padding-left: 10px;
           height: 100%;
           min-width: 170px;
-          color:$color-base-black;
+          color:$color-base-grey;
           p {
             margin-top: 15px;
             @include ellipsized;
@@ -99,7 +99,7 @@
           .singer {
             font-size: 12px;
 
-            color:$color-simple-black
+            color:$color-base-grey;
           }
           .brief {
             font-size: 12px;

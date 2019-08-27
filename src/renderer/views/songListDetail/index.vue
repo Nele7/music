@@ -250,7 +250,6 @@ export default {
 $song-cover-width: 240px;
 .loading {
     @include position(absolute, 0, 0, 0, 0);
-    background: #fff;
     z-index: 99999;
     div {
         position: absolute;

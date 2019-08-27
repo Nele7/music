@@ -42,6 +42,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/variables.scss';
+
  .comment-input-wrapper {
     padding: 20px;
     .comment-tools {
@@ -49,10 +51,10 @@
         flex-direction: row-reverse;
         padding: 10px 0;
         .btn {
-            background: #fff;
-            border: 1px solid #e9e9e9;
+            background: $background-grey;
+            border: 1px solid $color-border;
             border-radius: 15px;
-            color: #666;
+            color: $color-base-grey;
             &:hover {
                 background: rgba(223, 223, 223, 0.555);
             }
@@ -61,11 +63,5 @@
 }
 </style>
 <style>
-.el-textarea__inner {
-    border:1px solid #e9e9e9;
-    height: 80px;
-}
-.el-textarea__inner:focus {
-    border-color:#DCDFE6;
-}
+
 </style>

@@ -92,7 +92,7 @@ $background-icon:rgba(12, 12, 12, 0.452);
             & > div {
                 position: absolute;
                 background: $background-icon;
-                color:$color-white;
+                color:#fff;
                 transition: all 0.3s;
             }
             .hover-from{

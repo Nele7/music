@@ -93,7 +93,6 @@ export default {
 }
 .loading {
     @include position(absolute,0,0,0,0);
-    background: #fff;
     z-index: 99999;
     div {
         position: absolute;

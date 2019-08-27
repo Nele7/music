@@ -67,6 +67,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/variables.scss';
+
 .comment-list-wrapper {
   .comment-list {
     padding: 0 20px;
@@ -90,7 +92,7 @@
         flex-direction: column;
         padding-bottom: 15px;
         margin-bottom: 15px;
-        border-bottom: 1px solid #e9e9e9;
+        border-bottom: 1px solid $color-border;
         .text{
           font-size: 14px;
           .name {
@@ -102,7 +104,7 @@
           font-size: 13px;
           margin-top: 10px;
           padding: 5px;
-          background: rgba(233, 233, 233, 0.575);
+          background:  $background-grey;
            line-height: 20px;
         }
         .meta {
@@ -134,8 +136,8 @@
                 margin-right: 5px;
               }
               &:nth-child(2){
-                border-left: 1px solid #e9e9e9;
-                border-right: 1px solid #e9e9e9;
+                border-left: 1px solid $color-border;
+                border-right: 1px solid $color-border;
               }
             }
           }

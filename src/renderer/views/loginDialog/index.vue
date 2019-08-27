@@ -142,7 +142,7 @@ export default {
                 border-radius: 2px;
                 letter-spacing: 4px;
                 font-size: $font-size-baseText;
-                color: $color-white;
+                color: #fff;
                 background: $color-base-red;
                 cursor: pointer;
                 &:focus {

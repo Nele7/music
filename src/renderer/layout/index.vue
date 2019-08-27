@@ -87,6 +87,8 @@ export default {
         calc(100% - #{$sideBarWidth}),
         calc(100% - #{$navplayHeight})
     );
+    background: $background-undertintgrey;
+    color: $color-text;
     z-index: 200;
 }
 .navbar-container {
@@ -94,6 +96,7 @@ export default {
 }
 
 .player-container {
+    background: $background-undertintgrey;
     @include position(absolute, auto, 0, 0, 0, 100%, $playerHeight);
 }
 </style>

@@ -132,7 +132,7 @@ export default {
       }
 
       &:nth-child(2n + 3) {
-        background: rgb(249, 249, 249);
+        background: $background-active;
       }
       div {
         display: flex;

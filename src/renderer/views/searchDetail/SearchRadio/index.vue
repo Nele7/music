@@ -57,7 +57,7 @@
    box-sizing: border-box;
    transition: background 0.2s;
    &:nth-child(2n) {
-     background: #f9f9f9;
+     background: $background-active;
    }
    &:hover {
      background: $background-active

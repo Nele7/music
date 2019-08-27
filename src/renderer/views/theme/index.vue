@@ -13,14 +13,6 @@
                </div>
                 <p>{{item.name}}</p>
             </li>
-            <!-- <li class="theme-item" @click="selectTheme('dark')">
-                <span class="dark"><i class="el-icon-check"></i></span>
-                <p>深色</p>
-            </li>
-            <li class="theme-item" @click="selectTheme('red')">
-                <span class="red"><i class="el-icon-check"></i></span>
-                <p>红色</p>
-            </li> -->
           </ul>
         <div slot="reference">
             <span class="iconfont icon-pifu"></span>

@@ -603,6 +603,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/style/mixin.scss";
+@import "@/assets/style/variables.scss";
 $color: rgba(255, 255, 255, 0.5);
 $color-hover: rgba(255, 255, 255, 0.8);
 $color-bg: rgba(255, 255, 255, 0.1);
@@ -614,6 +615,7 @@ $tools-bg: rgba(0, 0, 0, 0.1);
     // mini播发器样式
     .mini-player-box {
         height: 100%;
+        color:$color-text;
         .progress {
             position: absolute;
             top: 0;
@@ -675,12 +677,12 @@ $tools-bg: rgba(0, 0, 0, 0.1);
                     }
                     .name {
                         font-size: 14px;
-                        color: #969696;
+                        color: $color-base-grey;
                         & > span:first-child {
-                            color: #000;
+                            color: $color-base-grey;
                         }
                         & > span:last-child {
-                            color: #969696;
+                            color: $color-base-grey;
                             font-size: 12px;
                         }
                     }
@@ -931,7 +933,8 @@ $tools-bg: rgba(0, 0, 0, 0.1);
                     }
                 }
                 .comment {
-                    background: #fff;
+                    background:  $color-white;
+                    color:$color-text;
                     padding-bottom: 10px;
                 }
             }

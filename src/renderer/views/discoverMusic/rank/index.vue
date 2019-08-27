@@ -172,7 +172,7 @@ export default {
                 .list {
                     .list-item {
                         &:nth-child(odd) {
-                            background: rgb(249, 249, 249);
+                            background: $background-active;
                         }
                         .item-box {
                             flex:1;
@@ -204,7 +204,7 @@ export default {
                             }
                             .text {
                                 flex: 1;
-                                color:$color-base-black;
+                                color:$color-base-grey;
                                 font-size: 13px;
                             }
                             .name {

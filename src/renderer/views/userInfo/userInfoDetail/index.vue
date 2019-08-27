@@ -213,7 +213,7 @@ export default {
         @include position(absolute, 70px, auto, auto, 184px, 300px);
         display: flex;
         flex-direction: column;
-        background: #fff;
+        background: $color-white;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
         z-index: 201;
         .detail-list {
@@ -244,6 +244,7 @@ export default {
                             span {
                                 text-align: center;
                                 width: 40px;
+                                color: $color-base-grey;
                                 &.count {
                                     font-size: 32px;
                                     font-weight: 400;
@@ -273,7 +274,7 @@ export default {
                             border: 1px solid $color-border;
                             color: $color-simple-black;
                             &.noSign:hover {
-                                color: $color-base-black;
+                                color: $color-base-grey;
                                 background: $background-active;
                                 cursor: pointer;
                             }

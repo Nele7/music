@@ -102,9 +102,9 @@ export default {
     height: 22px;
     line-height: 22px;
     cursor: pointer;
-    &.nickName {
-      color: rgb(66, 66, 66);
-    }
+    // &.nickName {
+    //   color: rgb(66, 66, 66);
+    // }
     span {
       width: 85px;
       height: 22px;

@@ -109,9 +109,11 @@
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/variables.scss";
+
 .noComment {
     text-align: center;
-    color:#969696;
+    color:$color-base-grey;
 }
 .comment-hot-more {
     text-align: center;

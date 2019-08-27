@@ -188,7 +188,7 @@
         border-bottom: 2px solid transparent;
         a {
           display: block;
-          color:$color-base-black;
+          color:$color-text;
           &.active {
             border-bottom: 2px solid $color-base-red;
             color:$color-base-red;
@@ -205,7 +205,7 @@
         height: 80px;
         // line-height: 80px;
         &:nth-child(2n+1) {
-          background: #f9f9f9;
+          background: $background-active;
         }
         .music-list {
           display: flex;
@@ -213,7 +213,7 @@
           height: 100%;
           padding: 7px;
           box-sizing: border-box;
-          color: $color-base-black;
+          color: $color-text;
           font-size: 13px;
           & > div.pd {
             padding: 0 10px;

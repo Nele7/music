@@ -132,7 +132,7 @@
   .song-item {
     padding: 15px 30px;
     &:nth-child(2n+3){
-      background: #f9f9f9;
+      background: $background-active;
     }
     .text {
       display: flex;

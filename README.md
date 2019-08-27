@@ -34,11 +34,11 @@ $ npm run dev
 - [x] MV播放、视频播放
 - [x] 歌曲、歌单、专辑、歌手、评论
 - [x] 用户关注、粉丝列表
+- [x] 主题换肤(浅色，深色，红色)
 
 ### 未完成
 - [ ] 每日歌曲推荐
 - [ ] 主播电台
-- [ ] 主题换肤
 
 #### 快捷键
 Description|Keys
@@ -52,7 +52,7 @@ Description|Keys
 
 
 # 预览
-> 项目演示地址：[戳我]()
+> 项目演示地址：[戳我](http://wyhan.art)
 
 > 项目源码地址：[戳我](https://github.com/Nele7/music)
 

@@ -128,6 +128,7 @@ export default {
         margin-bottom: 4px;
         line-height: 30px;
         cursor: pointer;
+        color:$color-text;
         &.router-link-active {
             background: $background-active;
             color: $color-base-red;

@@ -152,7 +152,7 @@ export default {
         .icon-search {
             position: absolute;
             left: 5px;
-            color: $color-base-grey !important;
+            color: $color-text !important;
         }
         input {
             outline: none;
@@ -168,17 +168,17 @@ export default {
         .icon-close {
             position: absolute;
             right: 5px;
-            color: $color-base-grey !important;
+            color: $color-text !important;
         }
     }
     .search-wrapper {
         @include position(fixed, 52px, 0, 60px, 0, auto, auto);
         .dialog {
             @include position(absolute, 0, 0, 0, auto, 360px, auto);
-            background: #fff;
+            background: $color-white;
             .search {
                 p {
-                    color: $color-base-grey;
+                    color: $color-text;
                     font-size: 14px;
                 }
                 ul {
@@ -190,17 +190,17 @@ export default {
                         border: 1px solid $color-border;
                         margin: 0 9px 9px 0;
                         font-size: 13px;
-                        color: $color-simple-black;
+                        color: $color-text;
                         cursor: pointer;
                         a {
                             display: block;
                             padding: 5px 17px;
-                            color: $color-simple-black;
+                            color: $color-text;
                         }
                         &:hover {
                             background: $background-active;
                             a {
-                                color: $color-base-black;
+                                color:$color-text;
                             }
                         }
                     }

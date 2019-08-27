@@ -141,6 +141,7 @@
 
 <style lang="scss" scoped>
 @import "@/assets/style/mixin.scss";
+@import "@/assets/style/variables.scss";
 
 .player-list-wrapper {
     @include position(fixed,0,0,60px,0);
@@ -149,8 +150,8 @@
     margin: 0;
     .dialog{
         @include position(absolute,52px,0,0,auto,400px,auto);
-        background: #fff;
-        border-left: 1px solid #e9e9e9;
+        background: $color-white;
+        border-left: 1px solid $color-border;
         .title-group {
             height: 60px;
             display: flex;
@@ -160,7 +161,7 @@
                 display: flex;
                 flex-direction: row;
                 border-radius: 30px;
-                border: 1px solid #e9e9e9;
+                border: 1px solid $color-border;
                 li {
                     border-radius: 30px;
                     padding: 7px 24px;
@@ -204,12 +205,12 @@
                 font-size: 13px;
                 cursor: pointer;
                 transition: background 0.2s;
-                color:#969696;
+                color:$color-text;
                 &:nth-child(2n) {
-                    background: #f9f9f9;
+                    background: $background-active;
                 }
                 &:hover {
-                    background: rgba(230, 230, 230, 0.377) !important
+                    background: $background-undertintgrey !important;
                 }
                 & > div {
                     display: flex;

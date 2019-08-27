@@ -97,6 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/style/mixin.scss";
+@import "@/assets/style/variables.scss";
 .list-wrapper {
     padding: 0 20px;
     .item {
@@ -153,8 +154,8 @@ export default {
         text-align: center;
         a {
             display: inline-block;
-            background: #fff;
-            border: 1px solid #e9e9e9;
+            // background: #fff;
+            border: 1px solid $color-border;
             border-radius: 15px;
             color: #666;
             padding: 4px 16px;
