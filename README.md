@@ -52,7 +52,7 @@ Description|Keys
 
 
 # 预览
-> 项目演示地址：[戳我](http://wyhan.art)
+> 项目演示地址：[戳我](http://39.105.232.6)
 
 > 项目源码地址：[戳我](https://github.com/Nele7/music)
 
