@@ -1,8 +1,8 @@
 # 运行
 ```
 $ git clone git@github.com:Nele7/music.git
-$ npm install （不建议使用cnpm install原因：打包时候会有问题）
-$ npm run dev
+$ npm install || yarn install
+$ npm run dev || yarn dev
 ```
 # Vue 像素级还原Mac端网易云音乐
 
