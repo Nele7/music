@@ -51,13 +51,9 @@ Description|Keys
 
 
 # 预览
-> 项目演示地址：[戳我](http://39.105.232.6)
+> 项目演示地址：[戳我](http://netease.wyhan.art)
 
 > 项目源码地址：[戳我](https://github.com/Nele7/music)
-
-> win桌面版地址：[戳我]()
-
-> mac桌面版地址：[戳我]()
 
 >如果觉得我的项目还不错的话，就给个 star 鼓励一下吧~
 
