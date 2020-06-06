@@ -1,11 +1,11 @@
+# Vue 像素级还原Mac端网易云音乐
+
 # 运行
 ```
 $ git clone git@github.com:Nele7/music.git
 $ npm install || yarn install
 $ npm run dev || yarn dev
 ```
-# Vue 像素级还原Mac端网易云音乐
-
 
 # 技术栈
 - `Vue.js` ：用于构建用户界面的 MVVM 框架
